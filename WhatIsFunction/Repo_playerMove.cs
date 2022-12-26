@@ -37,7 +37,6 @@ namespace WhatIsFunction
             bool isMove = false;  // 움직일수 있는 지.
 
             int[,] gameBoard = new int[BOARD_SIZE_Y, BOARD_SIZE_X];
-            int[,] playBoard = new int[BOARD_SIZE_Y-2, BOARD_SIZE_X-2];
             int playerPosY = randomPosition.Next(1, BOARD_SIZE_Y - 1); // 플레이어 최초 랜덤 위치 Y 좌표
             int playerPosX = randomPosition.Next(1, BOARD_SIZE_X - 1);   // 플레이어 최초 랜덤 위치 X 좌표
 
@@ -101,63 +100,63 @@ namespace WhatIsFunction
                     case "w":
                         if (playerPosY - 1 == 0)
                         {
-                            Console.WriteLine("벽으로 가로막혀서 움직일수 없습니다.");
+                            Console.WriteLine("[System] 벽으로 가로막혀서 움직일수 없습니다.");
                             isMove = false;
-                        }
+                        } //if: 위로 한칸 움직일 y좌표가 0으로 벽의 위치인 경우
                         else
                         {
-                            gameBoard[playerPosY, playerPosX] = 0;
-                            playerPosY = playerPosY - 1;
-                            gameBoard[playerPosY, playerPosX] = -1;
+                            gameBoard[playerPosY, playerPosX] = 0; // 이전 위치 보드 상태 빈공간으로 바꿔주고
+                            playerPosY = playerPosY - 1; // 플리이어 y좌표 값 -1 적용한 값으로 바꿔주고
+                            gameBoard[playerPosY, playerPosX] = -1; // 보드 상태도 바뀐 좌표에 유저 상태 적용
                             isMove = true;
-                        }
+                        } //else : 위로 한칸 움직일 y좌표가 0 이 아닌 경우
                         break;
                     case "s":
                         if (playerPosY + 1 >= BOARD_SIZE_Y-1)
                         {
-                            Console.WriteLine("벽으로 가로막혀서 움직일수 없습니다.");
+                            Console.WriteLine("[System] 벽으로 가로막혀서 움직일수 없습니다.");
                             isMove = false;
-                        }
+                        } //if: 아래로 한칸 움직일 y좌표가 보드 세로 맨 아래 끝(벽의 위치)인 경우
                         else
                         {
-                            gameBoard[playerPosY, playerPosX] = 0;
-                            playerPosY = playerPosY + 1;
-                            gameBoard[playerPosY, playerPosX] = -1;
+                            gameBoard[playerPosY, playerPosX] = 0; // 이전 위치 보드 상태 빈공간으로 바꿔주고
+                            playerPosY = playerPosY + 1; // 플리이어 y좌표 값 +1 적용한 값으로 바꿔주고
+                            gameBoard[playerPosY, playerPosX] = -1; // 보드 상태도 바뀐 좌표에 유저 상태 적용
                             isMove = true;
-                        }
+                        } //else: 아래로 한칸 움직일 y좌표가 보드 세로길이 맨 아래 끝(벽)이 아닌경우
                         break;
                     case "a":
                         if (playerPosX - 1 == 0)
                         {
-                            Console.WriteLine("벽으로 가로막혀서 움직일수 없습니다.");
+                            Console.WriteLine("[System] 벽으로 가로막혀서 움직일수 없습니다.");
                             isMove = false;
-                        }
+                        }//if: 왼쪽으로 한칸 움직일 x좌표가 0으로 벽의 위치인 경우
                         else
                         {
                             gameBoard[playerPosY, playerPosX] = 0; // 이전 위치 보드 상태 빈공간으로 바꿔주고
                             playerPosX = playerPosX - 1; // x좌표 값 -1 적용
-                            gameBoard[playerPosY, playerPosX] = -1; // 보드 상태도 바뀐 좌표에 유저 표시
+                            gameBoard[playerPosY, playerPosX] = -1; // 보드 상태도 바뀐 좌표에 유저 상태 적용
                             isMove = true;
-                        }
+                        }//if: 왼쪽으로 한칸 움직일 x좌표가 0이 아닌경우
                         break;
                     case "d":
                         if (playerPosX + 1 >= BOARD_SIZE_X-1)
                         {
-                            Console.WriteLine("벽으로 가로막혀서 움직일수 없습니다.");
+                            Console.WriteLine("[System] 벽으로 가로막혀서 움직일수 없습니다.");
                             isMove = false;
-                        }
+                        }//if: 오른족으로 한칸 움직일 x좌표가 보드 가로길이 맨 오른족 끝(벽)인 경우
                         else
                         {
-                            gameBoard[playerPosY, playerPosX] = 0;
-                            playerPosX = playerPosX + 1;
-                            gameBoard[playerPosY, playerPosX] = -1;
+                            gameBoard[playerPosY, playerPosX] = 0; // 이전 위치 보드 상태 빈공간으로 바꿔주고
+                            playerPosX = playerPosX + 1; // x좌표 값 +1 적용
+                            gameBoard[playerPosY, playerPosX] = -1; // 보드 상태도 바뀐 좌표에 유저 상태 적용
                             isMove = true;
-                        }
+                        }//else: 오른족으로 한칸 움직일 x좌표가 보드 가로길이 맨 오른족 끝(벽)이 아닌 경우
                         break;
                 }//swith
                 if (isMove == true)
                 {
-                    // { 현재 보드의 상태를 플레이 시점으로 보여준다. 
+                    // { 현재 보드의 상태를 출력 한다.
                     for (int y = 0; y < BOARD_SIZE_Y; y++)
                     {
                         for (int x = 0; x < BOARD_SIZE_X; x++)
@@ -178,8 +177,8 @@ namespace WhatIsFunction
                         Console.WriteLine();
                     } // loop : 현재 보드의 상태를 출력하는 루프
                     Console.WriteLine();
-                    // } 현재 보드의 상태를 플레이 시점으로 보여준다.
-                    isMove = false;
+                    // } 현재 보드의 상태를 출력한다.
+                    isMove = false; // 움직인 결과 출력 후 다시 false 로 초기화
                 }
                 else
                 {
