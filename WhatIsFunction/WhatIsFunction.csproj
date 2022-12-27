@@ -10,6 +10,8 @@
   <ItemGroup>
     <Compile Remove="MineGame.cs" />
     <Compile Remove="Program.cs" />
+    <Compile Remove="program1.cs" />
+    <Compile Remove="Repo_playerMove.cs" />
     <Compile Remove="TicTacToe.cs" />
   </ItemGroup>
 
