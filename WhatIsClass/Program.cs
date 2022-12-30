@@ -81,13 +81,20 @@ namespace WhatIsClass
 
                             if(inputKey.Key == ConsoleKey.I)
                             {
-                                // user.InvenDraw(gameItem);
-                                Console.WriteLine("//인벤출력");
+                                Console.WriteLine();
+                                user.InvenDraw(gameItem);
+                                //Console.WriteLine("//인벤출력");
                                 break;
                             }
                             else if (inputKey.Key == ConsoleKey.Enter)
-                            { Console.WriteLine("모험을 계속합니다.");
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("모험을 계속합니다.");
                                 break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("잘못된 입력입니다. 다시 입력하세요.");
                             }
                            
                         }
@@ -100,6 +107,7 @@ namespace WhatIsClass
                         {
                             Console.WriteLine("잘못된 입력입니다. 다시 입력하세요.");
                         }
+                        Console.WriteLine();
                     }
 
                     if (user.hp == 0)
@@ -107,11 +115,39 @@ namespace WhatIsClass
                         break;
                     }
                 }
+
+                Console.WriteLine("          Clear!!!!        ");
                 break;
             }
 
         }
+        //public void InvenOpen(UserCharacter user   ,string[] gameItem)
+        //{
+        //    ConsoleKeyInfo inputKey;
 
+        //    while (true)
+        //    {
+        //        inputKey = Console.ReadKey();
+
+        //        if (inputKey.Key == ConsoleKey.I)
+        //        {
+        //            Console.WriteLine();
+        //            user.InvenDraw(gameItem);
+        //            //Console.WriteLine("//인벤출력");
+        //            break;
+        //        }
+        //        else if (inputKey.Key == ConsoleKey.Enter)
+        //        {
+        //            Console.WriteLine();
+        //            Console.WriteLine("모험을 계속합니다.");
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("잘못된 입력입니다. 다시 입력하세요.");
+        //        }
+        //    }
+        //}
 
     }
 }

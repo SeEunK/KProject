@@ -117,13 +117,17 @@ namespace WhatIsClass
 
     class Player : BasePlayer
     {
-
-        protected int[] inventory = new int[10];
+        public int[] Inven
+        {
+            get { return this.inventory; }
+            set { this.inventory = value; }
+        }
+        public int[] inventory = new int[10];
 
     }
     class UserCharacter : Player
     {
-        //public float criticalRate = 30.0f;
+
         public UserCharacter()
         {
             this.name = string.Empty;
@@ -144,28 +148,55 @@ namespace WhatIsClass
             Console.WriteLine("[SYSTEM] Item ID:{0} 을/를 획득했습니다. ", itemID);
             for (int i = 0; i < inventory.Length; i++)
             {
-                if (inventory[i] != 0)
+                if (inventory[i] == 0)
                 {
                     this.inventory[i] = itemID;
+                    break;
                 }
             }
         }
 
         public void InvenDraw(string[] items)
         {
-            Console.WriteLine("----------------------");
-            for (int i = 1; i <= this.inventory.Length;i++)
+            ConsoleKeyInfo inputKey;
+            Console.WriteLine("-------------------------------------");
+
+            for (int i = 0; i < this.inventory.Length; i++)
             {
                 if (inventory[i] == 0)
                 {
-                    Console.Write("[ - 빈 칸 -  ]");
+                    Console.Write("[  ]");
                 }
-                else{
+                else
+                {
                     Console.Write("[{0}]", items[this.inventory[i]]);
                 }
             }
-            Console.WriteLine("----------------------");
-           
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------");
+
+            Console.WriteLine("=====================================");
+            Console.WriteLine("[가방 닫기] : 'X' Key ");
+            Console.WriteLine("=====================================");
+
+            while (true)
+            {
+                inputKey = Console.ReadKey();
+
+                if (inputKey.Key == ConsoleKey.X)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("모험을 계속합니다.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("잘못된 입력입니다. 다시 입력하세요.");
+
+                }
+            }
+            Console.WriteLine();
         }
     }
 
