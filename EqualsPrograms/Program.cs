@@ -101,7 +101,7 @@ namespace EqualsPrograms
              *      
              *====================================================================================================
              */
-            if (true)
+            if (false)
             {
                 int[] vendingMachine = new int[5] { 1, 2, 3, 4, 5 };
 
@@ -111,31 +111,81 @@ namespace EqualsPrograms
                 Console.WriteLine("|  (1) | (2)  |  (3)      | (4)  | (5) |");
                 Console.WriteLine("=======================================");
 
-                Console.WriteLine("음료를 고르세요.");
-                string strFirstInput = Console.ReadLine();
+                Console.WriteLine("원하는 음료의 숫자를 입력하세요.");
+                while (true)
+                {
 
+                    string strFirstInput = Console.ReadLine();
+                    int intInput = 0;
+                    int.TryParse(strFirstInput, out intInput);
 
+                    if (intInput > 0 && intInput < 6)
+                    {
+                        switch (intInput)
+                        {
+                            case 1:
+                                Console.WriteLine("콜라를 선택하였습니다.");
+                                break;
+                            case 2:
+                                Console.WriteLine("물을 선택하였습니다.");
+                                break;
+                            case 3:
+                                Console.WriteLine("스프라이트를 선택하였습니다.");
+                                break;
+                            case 4:
+                                Console.WriteLine("주스를 선택하였습니다.");
+                                break;
+                            case 5:
+                                Console.WriteLine("커피를 선택하였습니다.");
+                                break;
+                            default:
+                                //Console.WriteLine("입력이 잘못되었습니다.");
+                                break;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("잘못된 입력입니다. 다시 선택하세요.");
+                    }
+                }
             }
 
 
 
 
+            /*===============================================================================
+             * Q - 3) 배열 days[]를 아래와 값이 초기화 하고 배열요소의 값을 다음과 같이 출력하는 프로그램 작성
+             * 배열 days[]는 -> 31,29,31,30,31,30,31,31,30,31,30,31
+             * ex) 1월은 31 일 까지입니다.
+             * 2월은 29일 까지 입니다.
+             * 
+             * hint) 배열의 초기화는 중괄호를 사용한다.
+             *================================================================================
+             */
+            if (true)
+            {
+                int[] days = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
+                Console.WriteLine("1월 ~ 12월 중에, 마지막을 날짜를 알고싶은 달을 숫자로 입력하세요.");
+                while (true)
+                {
+                    string strFirstInput = Console.ReadLine();
+                    int intInput = 0;
+                    int.TryParse(strFirstInput, out intInput);
 
+                    if (intInput > 0 && intInput < 13)
+                    {
+                        Console.WriteLine("{0}월의 마지막 날짜는 {1}입니다.", intInput, days[intInput-1]);
 
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("잘못입력하셨습니다. 다시 입력해주세요.");
+                    }
+                }
+            }
         }
-
-
-
-        /*===============================================================================
-         * Q - 3) 배열 days[]를 아래와 값이 초기화 하고 배열요소의 값을 다음과 같이 출력하는 프로그램 작성
-         * 배열 days[]는 -> 31,29,31,30,31,30,31,31,30,31,30,31
-         * ex) 1월은 31 일 까지입니다.
-         * 2월은 29일 까지 입니다.
-         * 
-         * hint) 배열의 초기화는 중괄호를 사용한다.
-         *================================================================================
-         */
-    }
     }
 }

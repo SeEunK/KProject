@@ -277,131 +277,161 @@ namespace WhatIsArray
 
 
 
-            //문제 2. 야구 ======================================================================
+            // 문제 2.야구 ======================================================================
+            if (true) {
+                int[] computerNum = { 1, 2, 3 };
 
-            //int[] computerNum = { 1, 2, 3 };
+                int userNum1 = default;
+                int userNum2 = default;
+                int userNum3 = default;
 
+                int maxCount = 9;
 
-            //int userNum1 = default;
-            //int userNum2 = default;
-            //int userNum3 = default;
+                Console.Write("0~9 숫자를 사용하여 3자리 숫자를 맞춰보세요. (기회는 {0}번 입니다)", maxCount);
 
+                Console.WriteLine("/로 구분해서 입력하세요.");
+                Console.WriteLine();
 
+                for (int count = 1; count <= maxCount; count++) {
+                    string userInputNumbers = Console.ReadLine();
+                    string[] strUserInputNum = userInputNumbers.Split(new char[] { '/' });
 
-
-
-            //int maxCount = 9;
-
-            //Console.Write("0~9 숫자를 사용하려 3자리 숫자를 맞춰보세요. (기회는 {0}번 입니다)", maxCount);
-
-            //Console.WriteLine("/로 구분해서 입력하세요.");
-            //Console.WriteLine();
-
-            //for (int count = 1; count <= maxCount; count++) {
-            //    string userInputNumbers = Console.ReadLine();
-            //    string[] strUserInputNum = userInputNumbers.Split(new char[] { '/' });
-
-            //    int.TryParse(strUserInputNum[0], out userNum1);
-            //    int.TryParse(strUserInputNum[1], out userNum2);
-            //    int.TryParse(strUserInputNum[2], out userNum3);
-            //    int[] userNum = { userNum1, userNum2, userNum3 };
-
-            //    if (computerNum[0] == userNum[0] || computerNum[1] == userNum[1] || computerNum[2] == userNum[2])
-            //    { //1개 이상 맞음.
+                    int.TryParse(strUserInputNum[0], out userNum1);
+                    int.TryParse(strUserInputNum[1], out userNum2);
+                    int.TryParse(strUserInputNum[2], out userNum3);
+                    int[] userNum = { userNum1, userNum2, userNum3 };
 
 
-            //        if (computerNum[0] == userNum[0] && computerNum[1] == userNum[1] && computerNum[2] == userNum[2])
-            //        {//0,1,2 번째 모두 맞았을때 (모두 스트라이크)
+                    int strikeCount = 0;
+                    int ballCount = 0;
+                    int OutCount = 3 - strikeCount - ballCount;
 
+                    for (int comNumIndex = 0; comNumIndex < userNum.Length; comNumIndex++)
+                    {
+                        for (int userNumIndex = 0; userNumIndex < userNum.Length; userNumIndex++)
+                        {
+                            if (comNumIndex == userNumIndex)
+                            {
+                                if (computerNum[comNumIndex] == userNum[userNumIndex])
+                                {
+                                    strikeCount++;
+                                }
+                            }
+                            else if (computerNum[comNumIndex] == userNum[userNumIndex])
+                            {
+                                ballCount++;
+                            }
+                        }
+                    }
+                    if (strikeCount == 3)
+                    {
+                        Console.WriteLine("{0}/{1}/{2}는 {3}S 정답입니다.", userNum[0], userNum[1], userNum[2], strikeCount);
+                        Console.WriteLine("=============종료=============");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0}/{1}/{2}는 {3}S| {4}B | {5}O 입니다.", userNum[0], userNum[1], userNum[2], strikeCount, ballCount, OutCount);
+                        Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+                        Console.WriteLine("=============다시 입력하세요.=============");
+                    }
+                }
 
-            //            Console.WriteLine("{0}/{1}/{2}는 3S 정답입니다.", userNum[0], userNum[1], userNum[2]);
-            //            Console.WriteLine("=============종료=============");
-            //            break;
+            }
 
-            //        }
-            //        else if (computerNum[0] == userNum[0] && computerNum[1] == userNum[1] 
-            //            || computerNum[1] == userNum[1] && computerNum[2] == userNum[2] 
-            //            || computerNum[0] == userNum[0] && computerNum[2] == userNum[2])
-            //        {//2개 스트라이크 상황
+            //if (isStrike[0] || isStrike[1] || isStrike[2])
+            //{ //1개 이상 맞음.
 
-            //            Console.WriteLine("{0}/{1}/{2}는 2S 입니다.", userNum[0], userNum[1], userNum[2]);
-            //            Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //            Console.WriteLine("=============다시 입력하세요.=============");
+            //if (isStrike[0] && isStrike[1] && isStrike[2])
+            //{//0,1,2 번째 모두 맞았을때 (모두 스트라이크)
 
-            //        }
-            //        else
-            //        {//1개 스트라이크 경우
+            //Console.WriteLine("{0}/{1}/{2}는 3S 정답입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("=============종료=============");
+            //break;
 
-            //            if (computerNum[1] == userNum[2] && computerNum[2] == userNum[1]  //0번 자리 맞음
-            //                    || computerNum[0] == userNum[2] && computerNum[2] == userNum[0] //1번 자리 맞음
-            //                    || computerNum[0] == userNum[1] && computerNum[1] == userNum[0]) //2번 자리 맞음)
-            //            {//1개 스트라이크, 2개는 자리만 틀린경우
+            //}
+            //else if (isStrike[0] && isStrike[1] || isStrike[1] && isStrike[2] || isStrike[0] && isStrike[2])
+            //{//2개 스트라이크 상황
 
-            //                Console.WriteLine("{0}/{1}/{2}는 1S 2B입니다.", userNum[0], userNum[1], userNum[2]);
-            //                Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //                Console.WriteLine("=============다시 입력하세요.=============");
-            //            }
-            //            else if (computerNum[0] == userNum[1] || computerNum[0] == userNum[2] 
-            //                || computerNum[1] == userNum[2] || computerNum[1] == userNum[0] 
-            //                || computerNum[2] == userNum[0] || computerNum[2] == userNum[1])
-            //            {//0번째 맞고, 1,2번 숫자는 맞지만 서로 자리만 틀린경우
+            //Console.WriteLine("{0}/{1}/{2}는 2S 입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
 
-            //                Console.WriteLine("{0}/{1}/{2}는1S 1B입니다.", userNum[0], userNum[1], userNum[2]);
-            //                Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //                Console.WriteLine("=============다시 입력하세요.=============");
-            //            }
-            //            else
-            //            {//0번째만 맞은경우 
-            //                Console.WriteLine("{0}/{1}/{2}는 1S 입니다.", userNum[0], userNum[1], userNum[2]);
-            //                Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //                Console.WriteLine("=============다시 입력하세요.=============");
-            //            }
-            //        }
+            //}
+            //else
+            //{//1개 스트라이크 경우
 
-            //    }
-            //    else //스트라이크 0개
-            //    {
-            //        if (maxCount - count ==0) // 기회 끝
-            //        {
-            //            Console.WriteLine("남은 기회가 없습니다.", maxCount - count);
-            //            Console.WriteLine("=============종료=============");
-            //        }
-            //        else if (  computerNum[0] == userNum[1] && computerNum[1] == userNum[2] && computerNum[2] == userNum[0]
-            //                || computerNum[0] == userNum[2] && computerNum[1] == userNum[0] && computerNum[2] == userNum[1]
-            //                )
-            //        {//3개 모두 자리만 틀린경우 
+            //if (computerNum[1] == userNum[2] && computerNum[2] == userNum[1]  //0번 자리 맞음
+            //|| computerNum[0] == userNum[2] && computerNum[2] == userNum[0] //1번 자리 맞음
+            //|| computerNum[0] == userNum[1] && computerNum[1] == userNum[0]) //2번 자리 맞음)
+            //{//1개 스트라이크, 2개는 자리만 틀린경우
 
-            //            Console.WriteLine("{0}/{1}/{2}는 3B입니다.", userNum[0], userNum[1], userNum[2]);
-            //            Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //            Console.WriteLine("=============다시 입력하세요.=============");
-            //        }
-            //        else if (   computerNum[2] == userNum[1] && computerNum[1] == userNum[0]                         
-            //                ||  computerNum[2] == userNum[0] && computerNum[0] == userNum[1]
-            //                ||  computerNum[1] == userNum[2] && computerNum[2] == userNum[1]
-            //                ||  computerNum[1] == userNum[0] && computerNum[2] == userNum[1]
-            //                ||  computerNum[0] == userNum[2] && computerNum[2] == userNum[0]  
-            //                ||  computerNum[0] == userNum[1] && computerNum[1] == userNum[0]) 
-            //            {//2개는 자리만 틀린경우
+            //Console.WriteLine("{0}/{1}/{2}는 1S 2B입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+            //else if (computerNum[0] == userNum[1] || computerNum[0] == userNum[2] 
+            //|| computerNum[1] == userNum[2] || computerNum[1] == userNum[0] 
+            //|| computerNum[2] == userNum[0] || computerNum[2] == userNum[1])
+            //{//0번째 맞고, 1,2번 숫자는 맞지만 서로 자리만 틀린경우
 
-            //             Console.WriteLine("{0}/{1}/{2}는  2B입니다.", userNum[0], userNum[1], userNum[2]);                           
-            //            Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //                Console.WriteLine("=============다시 입력하세요.=============");
-            //            }
+            //Console.WriteLine("{0}/{1}/{2}는1S 1B입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+            //else
+            //{//0번째만 맞은경우 
+            //Console.WriteLine("{0}/{1}/{2}는 1S 입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+            //}
 
-            //        else if(computerNum[1] == userNum[2] || computerNum[2] == userNum[1]
-            //                || computerNum[0] == userNum[1] || computerNum[0] == userNum[2]
-            //                || computerNum[1] == userNum[0])
-            //        { // 1볼
-            //            Console.WriteLine("{0}/{1}/{2}는  1B입니다.", userNum[0], userNum[1], userNum[2]); 
-            //            Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //            Console.WriteLine("=============다시 입력하세요.=============");
-            //        }
-            //        else
-            //        {// 숫자, 자리 모두 틀림.
-            //            Console.WriteLine("{0}/{1}/{2}는 3O 입니다.", userNum[0], userNum[1], userNum[2]);
-            //            Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
-            //            Console.WriteLine("=============다시 입력하세요.=============");
-            //        }
+            //}
+            //else //스트라이크 0개
+            //{
+            //if (maxCount - count ==0) // 기회 끝
+            //{
+            //Console.WriteLine("남은 기회가 없습니다.", maxCount - count);
+            //Console.WriteLine("=============종료=============");
+            //}
+            ///*    else if (  computerNum[0] == userNum[1] && computerNum[1] == userNum[2] && computerNum[2] == use*/rNum[0]
+            /*            || computerNum[0] == userNum[2] && computerNum[1] == userNum[0] && computerNum[2] == use*/
+            // rNum[1]
+            //)
+            //{//3개 모두 자리만 틀린경우 
+
+            //Console.WriteLine("{0}/{1}/{2}는 3B입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+            //else if (   computerNum[2] == userNum[1] && computerNum[1] == userNum[0]                         
+            //||  computerNum[2] == userNum[0] && computerNum[0] == userNum[1]
+            //||  computerNum[1] == userNum[2] && computerNum[2] == userNum[1]
+            //||  computerNum[1] == userNum[0] && computerNum[2] == userNum[1]
+            //||  computerNum[0] == userNum[2] && computerNum[2] == userNum[0]  
+            //||  computerNum[0] == userNum[1] && computerNum[1] == userNum[0]) 
+            //{//2개는 자리만 틀린경우
+
+            //Console.WriteLine("{0}/{1}/{2}는  2B입니다.", userNum[0], userNum[1], userNum[2]);                           
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+
+            //else if(computerNum[1] == userNum[2] || computerNum[2] == userNum[1]
+            //|| computerNum[0] == userNum[1] || computerNum[0] == userNum[2]
+            //|| computerNum[1] == userNum[0])
+            //{ // 1볼
+            //Console.WriteLine("{0}/{1}/{2}는  1B입니다.", userNum[0], userNum[1], userNum[2]); 
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
+            //else
+            //{// 숫자, 자리 모두 틀림.
+            //Console.WriteLine("{0}/{1}/{2}는 3O 입니다.", userNum[0], userNum[1], userNum[2]);
+            //Console.WriteLine("남은 기회 {0}번 남았습니다.", maxCount - count);
+            //Console.WriteLine("=============다시 입력하세요.=============");
+            //}
             //}
 
 
@@ -475,6 +505,11 @@ namespace WhatIsArray
              * c# 에서 배열을 선언할때는 콤마를 기준으로 차원을 구분한다.
              * 
              */
+        
+
+         if (false)
+            {
+        
             int[] oneArray = new int[2] { 1, 2 }; //1차원 배열 (element 2개를 담을 수 있는 배열)
             int[,] twoArray = new int[2, 2] { { 1, 2 }, { 3, 4 } }; // 2차원 배열 (element 2개를 담을 수 있는 배열 2개 있다)
             int[,] twoArray1 = new int[2, 3] { { 1, 2, 3 }, { 3, 4, 5 } }; // 2차원 배열 (element 3개를 담을 수 있는 배열 2개 있다)
@@ -489,8 +524,7 @@ namespace WhatIsArray
 
             int[,] twoArray3 = new int[3, 3];
 
-            if (false)
-            {
+           
                 for (int y = 0; y < 3; y++)
                 {
                     for (int x = 0; x < 3; x++)
@@ -501,9 +535,7 @@ namespace WhatIsArray
                     }
                     Console.WriteLine();
                 }
-            }
-            if (false)
-            {
+            
                 for (int y = 0; y <= twoArray3.GetUpperBound(0); y++)
                 {
                     for (int x = 0; x <= twoArray3.GetUpperBound(1); x++)
@@ -831,7 +863,7 @@ namespace WhatIsArray
 
             // (어려움 > 변형 3.) Merge sort ========================================================================
 
-            if (true)
+            if (false)
             {
 
                 int mergeSortArraySeed = 0;
