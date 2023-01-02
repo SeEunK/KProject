@@ -27,7 +27,7 @@ namespace WhatIsInterface
             //trumpCardMark = new string[4] { "♥", "♠", "◆", "♣" };
 
             trumpCardSet = new Dictionary<int, string>();
-            trumpCardSet.Add(1, "101/♣  1");
+            trumpCardSet.Add(1, "101/♣  A");
             trumpCardSet.Add(2, "102/♣  2");
             trumpCardSet.Add(3, "103/♣  3");
             trumpCardSet.Add(4, "104/♣  4");
@@ -37,10 +37,10 @@ namespace WhatIsInterface
             trumpCardSet.Add(8, "108/♣  8");
             trumpCardSet.Add(9, "109/♣  9");
             trumpCardSet.Add(10, "110/♣ 10");
-            trumpCardSet.Add(11, "111/♣ 11");
-            trumpCardSet.Add(12, "112/♣ 12");
-            trumpCardSet.Add(13, "113/♣ 13");
-            trumpCardSet.Add(14, "201/♥  1");
+            trumpCardSet.Add(11, "111/♣ J");
+            trumpCardSet.Add(12, "112/♣ Q");
+            trumpCardSet.Add(13, "113/♣ K");
+            trumpCardSet.Add(14, "201/♥  A");
             trumpCardSet.Add(15, "202/♥  2");
             trumpCardSet.Add(16, "203/♥  3");
             trumpCardSet.Add(17, "204/♥  4");
@@ -50,10 +50,10 @@ namespace WhatIsInterface
             trumpCardSet.Add(21, "208/♥  8");
             trumpCardSet.Add(22, "209/♥  9");
             trumpCardSet.Add(23, "210/♥ 10");
-            trumpCardSet.Add(24, "211/♥ 11");
-            trumpCardSet.Add(25, "212/♥ 12");
-            trumpCardSet.Add(26, "213/♥ 13");
-            trumpCardSet.Add(27, "301/◆  1");
+            trumpCardSet.Add(24, "211/♥ J");
+            trumpCardSet.Add(25, "212/♥ Q");
+            trumpCardSet.Add(26, "213/♥ K");
+            trumpCardSet.Add(27, "301/◆  A");
             trumpCardSet.Add(28, "302/◆  2");
             trumpCardSet.Add(29, "303/◆  3");
             trumpCardSet.Add(30, "304/◆  4");
@@ -63,10 +63,10 @@ namespace WhatIsInterface
             trumpCardSet.Add(34, "308/◆  8");
             trumpCardSet.Add(35, "309/◆  9");
             trumpCardSet.Add(36, "310/◆ 10");
-            trumpCardSet.Add(37, "311/◆ 11");
-            trumpCardSet.Add(38, "312/◆ 12");
-            trumpCardSet.Add(39, "313/◆ 13");
-            trumpCardSet.Add(40, "401/♠  1");
+            trumpCardSet.Add(37, "311/◆ J");
+            trumpCardSet.Add(38, "312/◆ Q");
+            trumpCardSet.Add(39, "313/◆ K");
+            trumpCardSet.Add(40, "401/♠  A");
             trumpCardSet.Add(41, "402/♠  2");
             trumpCardSet.Add(42, "403/♠  3");
             trumpCardSet.Add(43, "404/♠  4");
@@ -76,20 +76,11 @@ namespace WhatIsInterface
             trumpCardSet.Add(47, "408/♠  8");
             trumpCardSet.Add(48, "409/♠  9");
             trumpCardSet.Add(49, "410/♠ 10");
-            trumpCardSet.Add(50, "411/♠ 11");
-            trumpCardSet.Add(51, "412/♠ 12");
-            trumpCardSet.Add(52, "413/♠ 13");
-
+            trumpCardSet.Add(50, "411/♠ J");
+            trumpCardSet.Add(51, "412/♠ Q");
+            trumpCardSet.Add(52, "413/♠ K");
         }
 
-        // // 셔플을 N번 실행해서 다시 넣는 함수
-        // public void ShuffleCards(int howManyLoop)
-        // {
-        //     for (int i = 0; i < howManyLoop; i++)
-        //     {
-        //         trumpCardSet = ShuffleOnce(trumpCardSet);
-        //     }
-        // }
 
         
         
@@ -133,7 +124,7 @@ namespace WhatIsInterface
                 string[] split_data = pickCard.Split('/');
                 int.TryParse(split_data[0], out int num);
                 Card card = new Card(num, split_data[1]);
-                cards[i] = card;
+                cards.Add(card);
                 trumpCardSet.Remove(randomNumList[i]);
             }
 
@@ -156,21 +147,6 @@ namespace WhatIsInterface
 
         }
 
-        //섞고 뽑고
-        //public void ReRoll()
-        //{
-        //    ShuffleCards(100);
-        //
-        //}
-
-       // public void PrintCardSet()
-       // {
-       //     foreach (int card in trumpCardSet)
-       //     {
-       //         Console.Write("{0}  ", card);
-       //     }
-       //     Console.WriteLine();
-       // }
 
 
         public int[] ShuffleOnce(int[] intArray)

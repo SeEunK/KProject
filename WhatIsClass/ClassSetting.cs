@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -113,6 +114,11 @@ namespace WhatIsClass
             Console.WriteLine("{0}가 [speed:{1}]움직인다.", name, speed);
 
         }
+
+        public virtual void initBasePlayer()
+        {
+            
+        }
     }
 
     class Player : BasePlayer
@@ -123,6 +129,8 @@ namespace WhatIsClass
             set { this.inventory = value; }
         }
         public int[] inventory = new int[10];
+
+
 
     }
     class UserCharacter : Player
@@ -211,11 +219,20 @@ namespace WhatIsClass
             return monster.dropItem;
         }
 
+     
+
+
+
     }
 
     class Slim : Monster
     {
         public Slim() // Slim class 생성자
+        {
+           initBasePlayer();
+        }
+
+        public override void initBasePlayer()
         {
             this.name = "푸른 슬라임";
             this.hp = 100;
@@ -225,8 +242,6 @@ namespace WhatIsClass
             this.dropItem = 1;
             this.criticalRate = 0;
         }
-
-
     }
 
     class Wolf : Monster

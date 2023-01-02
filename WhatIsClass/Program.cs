@@ -24,6 +24,7 @@ namespace WhatIsClass
             Console.Clear();
 
             Slim monsterSlim = new Slim();
+            monsterSlim.initBasePlayer();
             Wolf mosterWolf = new Wolf();
             Rabbit monsterRabbit = new Rabbit();
             Goblin mosterGoblin = new Goblin();
@@ -112,42 +113,49 @@ namespace WhatIsClass
 
                     if (user.hp == 0)
                     {
+                        Console.WriteLine("        Game Over        ");
                         break;
                     }
                 }
 
-                Console.WriteLine("          Clear!!!!        ");
-                break;
+                Console.WriteLine("        Clear!!!!        ");
+                Console.WriteLine(" 다시하기 : C  || 게임 종료 : Esc ");
+                bool isContinue = false;
+
+                while (true)
+                {
+                    inputKey = Console.ReadKey();
+
+                    if (inputKey.Key == ConsoleKey.C)
+                    {
+                        Console.WriteLine("다시하기");
+                        break;
+                    }
+                    else if (inputKey.Key == ConsoleKey.Escape)
+                    {
+                        Console.WriteLine("게임 종료");
+                        break;
+                    }
+                    else
+                    {
+                        // 잘못 입력.
+                    }
+                }
+
+                if (isContinue == true)
+                {
+                    Console.WriteLine("모험을 계속 합니다.");
+                    // 다시 몬스터 생성 만나기 코드
+                    break;
+                }
+                else
+                { break; }
+                 
             }
-
         }
-        //public void InvenOpen(UserCharacter user   ,string[] gameItem)
-        //{
-        //    ConsoleKeyInfo inputKey;
-
-        //    while (true)
-        //    {
-        //        inputKey = Console.ReadKey();
-
-        //        if (inputKey.Key == ConsoleKey.I)
-        //        {
-        //            Console.WriteLine();
-        //            user.InvenDraw(gameItem);
-        //            //Console.WriteLine("//인벤출력");
-        //            break;
-        //        }
-        //        else if (inputKey.Key == ConsoleKey.Enter)
-        //        {
-        //            Console.WriteLine();
-        //            Console.WriteLine("모험을 계속합니다.");
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("잘못된 입력입니다. 다시 입력하세요.");
-        //        }
-        //    }
-        //}
 
     }
+
+
+
 }
