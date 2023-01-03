@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PorkerGame
 {
-    internal class Card
+    public class Card
     {
         public int cardNumber = 0;
         public int cardType = 0;
