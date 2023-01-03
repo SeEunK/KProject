@@ -11,8 +11,6 @@ namespace PorkerGame
         public int cardNumber = 0;
         public int cardType = 0;
 
-
-
         public string PrintCardType()
         {
             // ♠ >  ◆ > ♥ > ♣ 
