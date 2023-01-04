@@ -25,7 +25,7 @@ namespace PorkerGame
                     }
                     else
                     {
-                        point = point - betPoint; // 차감 
+                        
                         Console.WriteLine("플레이어가 {0}Point 를 베팅하였습니다.", betPoint);
                         return betPoint;
                     }

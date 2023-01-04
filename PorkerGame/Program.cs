@@ -1,113 +1,299 @@
 ﻿using System;
+using System.Net;
 using System.Security.Principal;
 using System.Text;
 
 namespace PorkerGame
 {
+    
     internal class Program
     {
         static int winPoint = 100000;
-        static int initPoint = 1000;
+        static int initPoint = 10000;
         static int betPoint = 0;
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             List<Card> cardList = null;
-
-            if (cardList == null)
-            {
-                cardList = CardSetting();
-            }
-            CardShuffle(cardList, 100);
-
-            // Console.WriteLine("섞은 카드");
-            // PrintDrawCard(cardList);
-
             Player player = new Player(); // 플레이어 생성.
             player.point = initPoint; // 플레이어 초기 포인트 설정.
 
-            List<Card> computerCardList = CardDraw(cardList, 5);
-
-            Console.WriteLine("컴퓨터 카드");
-            PrintDrawCard(computerCardList);
-
-            List<Card> playerCardList = CardDraw(cardList, 5);
-
-            Console.WriteLine("플레이어 카드");
-            PrintDrawCard(playerCardList);
-
-
-
-            // 배팅 
-            Console.WriteLine("======= 베팅 =======");
-            betPoint = player.Betting(); // 베팅 포인트 받아두고,
-            Console.WriteLine(" [ 베팅 Point : {0} ] ", betPoint);
-
-
-            // 컴 카드 추가 받기
-            CardAdd(computerCardList, CardDraw(cardList, 2));
-            Console.WriteLine("컴퓨터 카드 추가");
-            PrintDrawCard(computerCardList);
-
-            // // 플레이어 카드 추가 받기
-            // CardAdd(playerCardList, CardDraw(cardList, 2));
-            // Console.WriteLine("플레이어 카드 추가");
-
-            // 플레이어 카드 추가 안받음!
-            Console.WriteLine("플레이어 카드");
-            PrintDrawCard(playerCardList);
-
-            // 플레이어 카드 변경 여부 체크 
-
-            Console.WriteLine("카드 2장을 바꿀수있습니다. 변경하실겠습니까(Y/N)");
-
             while (true)
             {
-                ConsoleKeyInfo inputKey = Console.ReadKey();
-                int changeCardCount = 0;
-
-                if (inputKey.Key == ConsoleKey.Y)
+                if (cardList == null)
                 {
-                    Console.WriteLine("카드 몇장을 바꾸시겠습니까? (최대 2장 선택가능)");
-                    int.TryParse(Console.ReadLine(), out changeCardCount);
-                  
-                    ChangeCard(playerCardList, changeCardCount);  // 플레이어 카드 변경 (현재 카드랑, 바꾸려는 카드 개수)
-                    CardAdd(playerCardList, CardDraw(cardList, changeCardCount)); 
-                    break;
+                    cardList = CardSetting();
                 }
-                else if (inputKey.Key == ConsoleKey.N)
+                else if (cardList.Count < 14)
                 {
-                    // 플레이어 카드 변경 안함.
-                    break;
+                    cardList = CardSetting();
+                }
+                CardShuffle(cardList, 100);
+
+                // Console.WriteLine("섞은 카드");
+                // PrintDrawCard(cardList);
+
+
+                List<Card> computerCardList = CardDraw(cardList, 5);
+                Console.WriteLine();
+                Console.WriteLine("┌───────────────── 컴퓨터 카드 ───────────────────┐");
+                Console.WriteLine();
+                PrintDrawCard(computerCardList);
+                Console.WriteLine();
+                Console.WriteLine("└─────────────────────────────────────────────────┘");
+                Console.WriteLine();
+
+
+                List<Card> playerCardList = CardDraw(cardList, 5);
+
+                Console.WriteLine();
+                Console.WriteLine("┌───────────────── 플레이어 카드 ─────────────────┐");
+                Console.WriteLine();
+                PrintDrawCard(playerCardList);
+                Console.WriteLine();
+                Console.WriteLine("└─────────────────────────────────────────────────┘");
+                Console.WriteLine();
+
+
+
+                // 배팅 
+                Console.WriteLine("================== 베팅 ==================");
+                Console.WriteLine("[ 플레이어 보유 포인트 : {0}Point]", player.point);
+                Console.WriteLine();
+                Console.WriteLine(" 베팅할 point를 입력하세요.");
+                Console.WriteLine();
+                Console.WriteLine();
+                betPoint = player.Betting(); // 베팅 포인트 받아두고,
+                player.point -= betPoint;
+                Console.WriteLine();
+                Console.WriteLine("[ 베팅 Point : {0} ] ", betPoint);
+                Console.WriteLine();
+                Console.WriteLine("[ 플레이어 보유 Point : {0}Point]", player.point);
+                Console.WriteLine();
+                Console.WriteLine();
+
+                // 컴 카드 추가 받기
+                CardAdd(computerCardList, CardDraw(cardList, 2));
+                Console.WriteLine("컴퓨터가 2장의 카드를 더 받았습니다.");
+                Console.WriteLine();
+                Console.WriteLine("┌───────────────────────── 컴퓨터 카드 ───────────────────────────────┐");
+                Console.WriteLine();
+                PrintDrawCard(computerCardList);
+                Console.WriteLine();
+                Console.WriteLine("└─────────────────────────────────────────────────────────────────────┘");
+                Console.WriteLine();
+
+
+                // 플레이어 카드 추가 안받음!
+                Console.WriteLine();
+                Console.WriteLine("┌───────────────── 플레이어 카드 ─────────────────┐");
+                Console.WriteLine();
+                PrintDrawCard(playerCardList);
+                Console.WriteLine();
+                Console.WriteLine("└─────────────────────────────────────────────────┘");
+                Console.WriteLine();
+
+                // 플레이어 카드 변경 여부 체크 
+                Console.WriteLine("카드 2장을 바꿀수있습니다. 변경하실겠습니까(Y/N)");
+
+                while (true)
+                {
+                    ConsoleKeyInfo inputKey = Console.ReadKey();
+                    int changeCardCount = 0;
+
+
+                    if (inputKey.Key == ConsoleKey.Y) // Yes 응답 인 경우
+                    {
+                        Console.WriteLine("카드 몇장을 바꾸시겠습니까? (최대 2장 선택가능)");
+                        int.TryParse(Console.ReadLine(), out changeCardCount); //바꿀 카드 개수 받기.
+
+                        ChangeCard(playerCardList, changeCardCount);  // 플레이어 카드 변경 함수 호출 (현재 카드랑, 바꾸려는 카드 개수)
+                        CardAdd(playerCardList, CardDraw(cardList, changeCardCount)); // 바꿀 카드 만큼 새로 추가.
+                        break;
+                    }
+                    else if (inputKey.Key == ConsoleKey.N) //No 인 경우, 반복문 나가기
+                    {
+                        // 플레이어 카드 변경 안함.
+                        break;
+                    }
+                    else
+                    { // 예외) Y/N 이 아닌 인풋인 경우, 재입력 요청
+                        Console.WriteLine("Y/N 로 입력하세요.");
+                    }
+
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("┌───────────────── 플레이어 카드 ─────────────────┐");
+                Console.WriteLine();
+                PrintDrawCard(playerCardList);
+                Console.WriteLine();
+                Console.WriteLine("└─────────────────────────────────────────────────┘");
+                Console.WriteLine();
+
+                int computerScore = 0;
+                int playerScore = 0;
+
+                // 족보 판정  ==============================================================
+                computerScore = CardListCheck(computerCardList);
+                playerScore = CardListCheck(playerCardList);
+                Console.WriteLine();
+                Console.WriteLine("[컴퓨터 : {0}]", PrintResult(computerScore));
+                Console.WriteLine();
+                Console.WriteLine("[플레이어 : {0}]", PrintResult(playerScore));
+                Console.WriteLine();
+
+                if (computerScore > playerScore)
+                {
+                    //컴퓨터 승리 
+                    Console.WriteLine();
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("==========o(-`д´- .)======== 컴퓨터 승리 =======(. - `д´-)o===========");
+                    Console.ResetColor();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    betPoint = 0;
+                }
+                else if (computerScore < playerScore)
+                {
+                    //플레이어 승리
+                    Console.WriteLine();
+                    Console.BackgroundColor = ConsoleColor.Blue;
+                    Console.Write("========☆===＼(* ｀∇｀*)／===☆==== 플레이어 승리 ===☆=====＼(*｀∇｀ *)／==☆===");
+                    Console.ResetColor();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    player.point += (betPoint*2) ;
                 }
                 else
-                { // 재입력 요청
-                    Console.WriteLine("Y/N 로 입력하세요.");
+                {
+                    // 비김
+                    Console.WriteLine();
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("========(ㆀ  = ロ= )==========     무승부    ========( =ロ = ㆀ )==========");
+                    Console.ResetColor();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine("[ 플레이어 보유 포인트 : {0}Point]", player.point);
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Task.Delay(500).Wait();
+                Console.WriteLine("                      (샤샤샥.. 샤샥...)                           ");
+                Task.Delay(500).Wait();
+                Console.WriteLine();
+                Console.WriteLine("딜러가 카드를 새로 나눠주었습니다.");
+                Console.WriteLine();
+                Console.WriteLine();
+                Task.Delay(500).Wait();
+                Console.WriteLine();
+                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write("=========================NEW ROUND================================");
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine();
+                // 결과 반영  =============================================================
+
+                if (player.point >= winPoint)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("[플레이어가 {0}Point 획득하여 포커게임의 달인이 되었습니다!", player.point);
+                    Console.ResetColor();
+                    break;
+                }
+                else if (player.point == 0)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine("[플레이어가 Point 를 올인하여, 포커게임에서 퇴장 당했습니다...", player.point);
+                    Console.ResetColor();
+                    break;
                 }
 
             }
 
-            Console.WriteLine("==== 남은 플레이어 카드 ===");
-            PrintDrawCard(playerCardList);
-           
-            
-            //
-            
-            CardListCheck(playerCardList);
+            // 검증용 테스트 리스트 ====================================================
+            if (false)
+            {
+                List<Card> testList = new List<Card>();
+                testList.AddRange(new Card[] {  new Card { cardNumber = 7, cardType = 4 },
+                                            new Card { cardNumber = 7, cardType = 3 },
+                                            new Card { cardNumber = 11, cardType = 1 },
+                                            new Card { cardNumber = 11, cardType = 3 },
+                                            new Card { cardNumber = 1, cardType = 2 },
+                                            new Card { cardNumber = 8, cardType = 1 },
+                                            new Card { cardNumber = 11, cardType = 2 }});
 
-            
+                Console.WriteLine("==== 테스트 리스트 체크용  ===");
+                PrintDrawCard(testList);
 
-            // 족보 판정 함수 보내기 ==============================================================
+                //로티플 체크 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                bool result = Checker.IsRoyalStraightFlush(testList);
+                Console.WriteLine("{0}", result);
+                //로티플 체크 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                // 백 스트레이트 플러쉬 체크 ============================================
+                Console.WriteLine("==== 백 스트레이트 플러쉬 체크  ===");
+                bool result_1 = Checker.IsBackStraightFlush(testList);
+                Console.WriteLine("{0}", result_1);
 
 
+                //스티플 체크 ======================================================
+                Console.WriteLine("==== 스티플 체크  ===");
+                bool result_2 = Checker.IsStraightFlush(testList);
+                Console.WriteLine("{0}", result_2);
+
+                //마운틴 체크
+                Console.WriteLine("==== 마운틴 체크  ===");
+                bool result_3 = Checker.IsMountain(testList);
+                Console.WriteLine("{0}", result_3);
+
+                //포카드 체크 -=======================================================
+                Console.WriteLine("==== 포카드 체크  ===");
+                bool result_4 = Checker.IsFourCard(testList);
+                Console.WriteLine("{0}", result_4);
+
+                //스트레이트 체크 ===================================================
+                Console.WriteLine("==== 스트레이트 체크  ===");
+                bool result_5 = Checker.IsStraight(testList);
+                Console.WriteLine("{0}", result_5);
+
+                //IsFlush =========================================================
+                Console.WriteLine("==== IsFlush ===");
+                bool result_6 = Checker.IsFlush(testList);
+                Console.WriteLine("{0}", result_6);
+
+                //TopNumber ======================================================
+                Console.WriteLine("==== TopNumber ===");
+                int result_7 = Checker.TopNumber(testList);
+                Console.WriteLine("{0}", result_7);
+
+                //IsTriple ======================================================
+                Console.WriteLine("==== IsTriple ===");
+                bool result_8 = Checker.IsTriple(testList);
+                Console.WriteLine("{0}", result_8);
 
 
+                //IsOnePair ======================================================
+                Console.WriteLine("==== IsOnePair ===");
+                bool result_9 = Checker.IsOnePair(testList);
+                Console.WriteLine("{0}", result_9);
 
 
-            // 결과 반영  =============================================================
+                //IsTwoPair ========================================================
+                Console.WriteLine("==== IsTwoPair ===");
+                bool result_10 = Checker.IsTwoPair(testList);
+                Console.WriteLine("{0}", result_10);
 
+                //IsFullHouse ===================================================
+                Console.WriteLine("==== IsFullHouse ===");
+                bool result_11 = Checker.IsFullHouse(testList);
+                Console.WriteLine("{0}", result_11);
 
-
-
+            }
 
 
         } //Main()
@@ -115,149 +301,62 @@ namespace PorkerGame
 
 
 
-        public static void CardListCheck(List<Card> cardList)
+        public static int CardListCheck(List<Card> cardList)
         {
-            List<Card> typeSortList = new List<Card>();
-            List<Card> NumberSortList = new List<Card>();
-            //type으로 정렬
-            typeSortList = cardList.OrderBy(x => x.cardType).ToList();
-            NumberSortList = typeSortList.OrderBy(x =>x.cardNumber).ToList();
 
-           
-
-            Console.WriteLine("//무늬로 정렬한 카드");
-            PrintDrawCard(typeSortList);
-
-            Console.WriteLine("//숫자로 정렬한 카드");
-            PrintDrawCard(NumberSortList);
-            IsSameNumCard(NumberSortList);
-
-
-            //============================================================
-
-            //로티플 : 무늬 같고, 1/ 10/11/12/13
-
-            //백스트레이트 : 무늬 같고, 1/2/3/4/5
-
-            //스티플 : 무늬 같고, 연속 수
-            
-            //플러쉬 : 무늬 같음
-
-
-
-            //1) 무늬 체크
-            if (IsSameTypeCard(typeSortList) == true)
-            { //무늬 5개 이상 같음
-
-                //로티플 : 무늬 같고, 10/11/12/13/1
-
-                // if (NumberSortList[0].cardNumber == 1) //|| NumberSortList[1].cardNumber == 1|| NumberSortList[2].cardNumber == 1)
-                // {
-                //     for (int i = 4; i == 0; i--)
-                //     {
-                //         for (int j = i - 1; j == 0; j--)
-                //         {
-                //             if (NumberSortList[j].cardNumber + 1 != NumberSortList[i].cardNumber)
-                //                 {
-                //                 break;
-                //             }
-                //         }
-                //     }
-                // 
-                //     Console.WriteLine("로티플 ");
-                // }
-
-                //백스트레이트 : 무늬 같고, 1/2/3/4/5
-                //스티플 : 무늬 같고, 연속 수
-                //플러쉬 : 무늬 같음
-                Console.WriteLine("플러쉬");
-
-            }
-            else // 무늬  같지않음.
+            if (Checker.IsRoyalStraightFlush(cardList) == true) { return 1013; }        // 로얄 스트레이트 플러쉬  [1013]
+            else if (Checker.IsBackStraightFlush(cardList) == true) { return 1012; }    // 백 스트레이트 플러쉬    [1012]
+            else if (Checker.IsStraightFlush(cardList) == true) { return 1011; }        //스트레이트 플러쉬        [1011]
+            else if (Checker.IsFourCard(cardList) == true) { return 1010; }              //포카드                 [1010]
+            else if (Checker.IsFullHouse(cardList) == true) { return 109; }                //풀하우스             [109]
+            else if (Checker.IsFlush(cardList) == true) { return 108; }                 //플러쉬                  [108]
+            else if (Checker.IsMountain(cardList) == true) { return 107; }                 //마운틴               [107]
+            else if (Checker.IsBackStraight(cardList) == true) { return 106; }              //백 스트레이트        [106]
+            else if (Checker.IsStraight(cardList) == true) { return 105; }                 //스트레이트            [105]
+            else if (Checker.IsTriple(cardList) == true) { return 104; }                   //트리플                [104]
+            else if (Checker.IsTwoPair(cardList) == true) { return 103; }                   //투페어               [103]
+            else if (Checker.IsOnePair(cardList) == true) { return 102; }                   //원페어               [102]
+            else
             {
-                // 포카드 (같은 숫자 4장)
-                // 풀하우스 (같은 숫자 3장)+ (같은 숫자 2장)
-                // 마운틴   (10/J/Q/K/A) 10/11/12/13/1
-                // 백스트레이트 (1,2,3,4,5)
-                // 스트레이트 (5장 연속 수)
-                // 트리플 (같은 숫자 3장)
-                // 투페어 (같은 숫자 2장 + 같은 숫자 2장)
-                // 원페어 (같은 숫자 2장)
-                // 노페어 (아무것도 같은게없음)
-
-            }
+                int topNum = Checker.TopNumber(cardList);
+                return topNum;
+            }                                                                     //노페어 . 탑 넘버        [n]
 
         }
 
-
-        public static void IsSameNumCard(List<Card> list)
+        public static string PrintResult(int score)
         {
-            Card tempCard = list[0];
-            int isSameCount = 0;
-            string result = string.Empty;
-            List <string> resultResult  = new List<string>();
-
-            // 카드의 숫자만 뺴서 list 만들어
-            List<int> intList = new List<int>();
-
-            for (int i = 1; i < list.Count; i++)
+            switch (score)
             {
-                intList.Add(list[i].cardNumber);
+                case 1013: 
+                    return " 로얄 스트레이트 플러쉬 ";
+                case 1012: 
+                    return " 백 스트레이트 플러쉬 ";
+                case 1011:
+                    return " 스트레이트 플러쉬 ";
+                case 1010: 
+                    return " 포카드 ";
+                case 109: 
+                    return " 풀하우스 ";
+                case 108: 
+                    return " 플러쉬 ";
+                case 107: 
+                    return " 마운틴 ";
+                case 106: 
+                    return " 백 스트레이트 ";
+                case 105: 
+                    return " 스트레이트 ";
+                case 104: 
+                    return " 트리플 ";
+                case 103: 
+                    return " 투페어 ";
+                case 102:
+                    return " 원페어 ";
+                default: 
+                    return "노페어";
             }
-               
-            //result = intList.GroupBy(x => x).Where(g => g.Count() > 1).Select(x => new { Element = x.Key, Count = x.Count() }).ToList();
-
-
-            for (int i = 1; i < list.Count; i++)
-            {
-                // isSameCount = intList.Where(x => x.Equals(intList[i])).Count();
-
-            }
-                switch (isSameCount)
-                {
-                    case 4:
-                        resultResult.Add("포커");
-                        return ;
-
-                    case 3:
-                        resultResult.Add("트리플");
-                        return ;
-
-                    case 2:
-                        resultResult.Add("원페어");
-                        return ;
-
-                    default:
-                        resultResult.Add("노페어");
-                        return;
-
-                }
-                
-            
-            //resultResult = list.GroupBy(x => x.cardNumber).Where(g => g.Count() > 1).Select(x => x.Key).ToString();
-
-            for(int i = 0; i< resultResult.Count; i++)
-            {
-                Console.WriteLine("{0}", resultResult[i]);
-            }
-        }  
-
-
-        public static bool IsSameTypeCard (List<Card> list)
-        {
-            bool isSame = false;
-
-            for (int i = 1; i < 5; i++)
-            {
-                if (list.Where(x => x.cardType.Equals(i)).Count() >= 5)
-                {
-                    isSame = true;
-                    break;
-                }
-            }
-
-            return isSame;
         }
+
 
         public static void ChangeCard(List<Card> playerCardList, int changeCardCount)
         {
@@ -343,7 +442,7 @@ namespace PorkerGame
         {
             for (int i = 0; i < cardList.Count; i++)
             {
-                Console.Write("[{0} {1}]", cardList[i].PrintCardType().PadLeft(2), cardList[i].PrintCardNumber().PadRight(2));
+                Console.Write("  [{0} {1}]", cardList[i].PrintCardType().PadLeft(2), cardList[i].PrintCardNumber().PadRight(2));
                
                 //Console.WriteLine("┌──────┐");
                 //Console.WriteLine("│{0} {1}│", cardList[i].PrintCardType().PadLeft(2), cardList[i].PrintCardNumber().PadLeft(2));
