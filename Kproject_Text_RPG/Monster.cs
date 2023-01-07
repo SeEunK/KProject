@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,20 +8,34 @@ using System.Threading.Tasks;
 namespace Kproject_Text_RPG
 {
 
-    class Monster
+    public class Monster : Character
     {
-        public virtual void Move()
+        
+        MonsterData monsterData;
+        int type = 0;
+        int id = 0;
+        public Monster(MonsterData data)
         {
-            Console.WriteLine("이동한다 " );
+            name = data.name;
+            monsterData = data;
+            id = data.id;
+            type = data.type;
+            hp = data.hp;
+            maxHP = data.hp;
+            attackPower= data.attackPower;
+            defense = data.defense;
 
         }
-    }
-    class Wolf : Monster
-    {
-        public override void Move()
+
+        public override void Attack()
         {
-            Console.WriteLine( "늑대가 이동한다"  );
 
         }
+        public override void SpecialAttack()
+        {
+
+        }
+
     }
+    
 }

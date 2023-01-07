@@ -9,11 +9,12 @@ namespace Kproject_Text_RPG
 {
     internal class Player : Character
     {
+      
         public Player()
         {
             name = string.Empty;
             level = 1;
-
+            maxHP = 100_000;
             hp = 100_000;
             mp = 20_000;
             attackPower = 10;
@@ -23,10 +24,15 @@ namespace Kproject_Text_RPG
 
         }
 
-        public int hp { get; set; }
-        public int mp { get; set; }
 
-      
+        public override void Attack()
+        {
+
+        }
+        public override void SpecialAttack()
+        {
+
+        }
     }
 
 }

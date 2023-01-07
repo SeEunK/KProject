@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Kproject_Text_RPG
 {
@@ -9,7 +10,6 @@ namespace Kproject_Text_RPG
         public static void Main(string[] args)
         {
 
-
             // int left = 9; // x 좌표
             // int top = 5;  // y 좌표
             //Console.SetCursorPosition(left, top);
@@ -19,26 +19,122 @@ namespace Kproject_Text_RPG
 
             int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
             
+            UiManager uiManager = new UiManager();
 
+           
+            uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
 
-            Lobby lobby = new Lobby();
-            lobby.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-            lobby.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            TableManager tableManager =  TableManager.getInstance();
 
-            TableManager tableManager = new TableManager();
-
+            // 레벨 업 체크 잘되는지 확인용.
+            if (false) { 
             bool isLevelUp = false;
-            isLevelUp = tableManager.LevelUpCheck(1, 5, 10);
+            isLevelUp = tableManager.LevelUpCheck (5,10);
             Console.WriteLine("==================================================================================");
             Console.WriteLine("현재 레벨 1, 보유 경험치 5, 획득 경험치 10인 경우 레벨업인가요? {0} ", isLevelUp);
             Console.WriteLine("==================================================================================");
 
-            isLevelUp = tableManager.LevelUpCheck(1, 15, 190);
+            isLevelUp = tableManager.LevelUpCheck(15, 190);
             Console.WriteLine("==================================================================================");
-            Console.WriteLine("현재 레벨 1, 보유 경험치 15, 획득 경험치 200인 경우 레벨업인가요? {0} ", isLevelUp);
+            Console.WriteLine("현재 레벨 1, 보유 경험치 15, 획득 경험치 190인 경우 레벨업인가요? {0} ", isLevelUp);
             Console.WriteLine("==================================================================================");
 
-        
+            }
+
+
+            Player player= new Player();
+
+            Battle(player, 1);
+
+        }
+
+        public static void Battle(Player player, int monsterId)
+        {
+            TableManager tableManager = TableManager.getInstance();
+            Monster monster = new Monster(tableManager.FindMonsterDataByID(monsterId));
+          
+            int turnCount = 0;
+
+            Console.WriteLine("{0}를 만났습니다.", monster.name);
+
+            while (true)
+            {
+                ConsoleKeyInfo inputKey;
+
+               
+                Console.WriteLine("[ 플레이어 HP: {0} / {1} ]", player.hp, player.maxHP);
+                Console.WriteLine("[ {0} HP: {1} / {2} ]", monster.name, monster.hp, monster.maxHP);
+                Console.WriteLine();
+               
+
+                if (turnCount % 2 == 0)
+                {
+                    Console.WriteLine("공격 : F1 / 스킬 : F2 / 물약 : F3");
+
+                    inputKey = Console.ReadKey();
+                    if (inputKey.Key == ConsoleKey.F1)
+                    {
+                        Console.WriteLine("플레이어가 일반 공격을 시도합니다.");
+                        int demage = player.attackPower - monster.defense;
+                        monster.hp = monster.hp - demage;
+                        Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        turnCount++;
+                    }
+                    else if(inputKey.Key == ConsoleKey.F2)
+                    {
+                        Console.WriteLine("플레이어가 스킬을 사용합니다.");
+                        int skillAttack = player.attackPower * 2;
+                        int demage = skillAttack - monster.defense;
+                        monster.hp = monster.hp - (skillAttack - monster.defense);
+                        Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        turnCount++;
+                    }
+                    else if (inputKey.Key == ConsoleKey.F3)
+                    {
+                        int healValue = 30;
+                        if (player.hp == player.maxHP)
+                        {
+                            Console.WriteLine("HP가 가득차 더이상 사용할수없습니다.");
+                        }
+                        else
+                        {
+                            if (player.hp + healValue >= player.maxHP)
+                            {
+                                healValue = player.maxHP - player.hp;
+                            }
+                            
+                            Console.WriteLine("플레이어가 HP 물약을 사용해 {0}회복하였습니다.", healValue);
+                            player.hp = player.hp + healValue;
+                            turnCount++;
+                        }
+                    }
+                   
+                    Console.WriteLine();
+                }
+                else
+                {
+                    int demage = monster.attackPower - player.defense;
+                    player.hp = player.hp - demage;
+                    Console.WriteLine("{0}에게 {1}의 데미지를 입었습니다.", monster.name, demage);
+                    turnCount++;
+                    Console.WriteLine();
+                }
+               
+                if (player.hp <= 0)
+                {
+                    Console.WriteLine("플레이어가 사망하였습니다.");
+                    break;
+                }
+                if (monster.hp <= 0)
+                {
+                    Console.WriteLine("{0}를 처치하였습니다.", monster.name);
+                    break;
+                }
+
+            }
+
+
         }
         
 
