@@ -12,10 +12,10 @@ namespace Kproject_Text_RPG
         public string name = string.Empty;
         public int type = 0;
         public int level = 1;
-        public int hp = 100_000;
-        public int mp = 20_000;
-        public int attackPower = 10;
-        public int defense = 1;
+        public int hp = 0;
+        public int mp = 0;
+        public int attackPower = 0;
+        public int defense = 0;
       
     }
    

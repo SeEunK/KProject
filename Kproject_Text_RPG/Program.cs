@@ -43,8 +43,11 @@ namespace Kproject_Text_RPG
             }
 
 
-            Player player= new Player();
-
+            Console.WriteLine("캐릭터 이름을 입력하세요.");
+            string name = Console.ReadLine();
+            Player player= new Player(name);
+            
+            // !!! 스테이지 데이터 만들었으니이제 스테이지에 따라 배틀 연결하자!!!
             Battle(player, 1);
 
         }
@@ -57,6 +60,10 @@ namespace Kproject_Text_RPG
             int turnCount = 0;
 
             Console.WriteLine("{0}를 만났습니다.", monster.name);
+            
+            // 인벤 체크
+          
+            player.SetIventory(tableManager.FindItemDataByID(300));
 
             while (true)
             {
@@ -92,21 +99,24 @@ namespace Kproject_Text_RPG
                     }
                     else if (inputKey.Key == ConsoleKey.F3)
                     {
-                        int healValue = 30;
-                        if (player.hp == player.maxHP)
+                        // 물약(id:300) 아이템을 가지고있는 경우
+                        if (player.FindItemByID(300)!=null)
                         {
-                            Console.WriteLine("HP가 가득차 더이상 사용할수없습니다.");
-                        }
-                        else
-                        {
-                            if (player.hp + healValue >= player.maxHP)
+
+                            if (player.hp == player.maxHP)
                             {
-                                healValue = player.maxHP - player.hp;
+                                Console.WriteLine("HP가 가득차 더이상 사용할수없습니다.");
                             }
-                            
-                            Console.WriteLine("플레이어가 HP 물약을 사용해 {0}회복하였습니다.", healValue);
-                            player.hp = player.hp + healValue;
-                            turnCount++;
+                            else
+                            {
+                                player.UseItem(player.FindItemByID(300));
+                           
+                                turnCount++;
+                            }
+                        }
+                        else // 소모품(3번타입) 아이템을 가지고있지 않는 경우
+                        {
+                            Console.WriteLine("보유한 HP물약이 없습니다.");
                         }
                     }
                    
