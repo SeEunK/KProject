@@ -15,6 +15,9 @@ namespace Kproject_Text_RPG
         private static TableManager tableManager = new TableManager();
         protected List<Level> _levelTable = null;
         protected List<MonsterData> _monsterTable = null;
+        protected List<ItemData> _itemTable = null;
+        protected List<StageData> _stageTable = null;
+        protected List<StageStepData> _stagestepTable = null;
 
         private TableManager()
         {
@@ -40,26 +43,13 @@ namespace Kproject_Text_RPG
             }
         }
 
-        public void InItLevelTable()
-        {
 
-            if (_levelTable == null)
-            {
-                Console.WriteLine("레벨업 테이블 세팅 결과 ");
-                Console.WriteLine("==============================");
-
-                _levelTable = LevelTableSet();
-
-            }
-            Console.WriteLine("==============================");
-
-        }
         public void InItLevelTables()
         {
 
             if (_levelTable == null)
             {
-                Console.WriteLine("레벨업 테이블 세팅 결과 ");
+                Console.WriteLine("레벨업 테이블 세팅 ");
                 Console.WriteLine("==============================");
 
                 _levelTable = LevelTableSet();
@@ -68,14 +58,176 @@ namespace Kproject_Text_RPG
             Console.WriteLine("==============================");
             if (_monsterTable == null)
             {
-                Console.WriteLine("레벨업 테이블 세팅 결과 ");
+                Console.WriteLine("몬스터 테이블 세팅  ");
                 Console.WriteLine("==============================");
 
                 _monsterTable = MonsterTableSet();
 
             }
             Console.WriteLine("==============================");
+            if (_itemTable == null)
+            {
+                Console.WriteLine("아이템 테이블 세팅  ");
+                Console.WriteLine("==============================");
+
+                _itemTable = ItemDataSet();
+
+            }
+            Console.WriteLine("==============================");
+            if (_stagestepTable == null)
+            {
+                Console.WriteLine("스테이지 스텝 테이블 세팅  ");
+                Console.WriteLine("==============================");
+
+                _stagestepTable = StageStepDataSet();
+
+            }
+            Console.WriteLine("==============================");
+            if (_stageTable == null)
+            {
+                Console.WriteLine("스테이지 테이블 세팅  ");
+                Console.WriteLine("==============================");
+
+                _stageTable = StageDataSet();
+
+            }
+            Console.WriteLine("==============================");
         }
+
+        public List<StageData> StageDataSet()
+        {
+           
+            List<StageData> stageTable = new List<StageData>();
+
+            {
+                StageData stageData = new StageData();
+                stageData.id = 1;
+
+                stageData.stageStepList = new List<StageStepData>(); 
+
+                // stageStep Data 에서 stage id 조회해서 해당 stepData 가 가진 stepData에 add.
+                for (int i = 0; i < _stagestepTable.Count; i++)
+                {
+                    if (_stagestepTable[i].StageID == stageData.id)
+                    {
+                        stageData.stageStepList.Add(_stagestepTable[i]);
+                        
+                    }
+                }
+                
+                stageData.clearRewardID = 101;
+
+                stageTable.Add(stageData);
+            }
+
+            return stageTable;
+        }
+        public List<StageStepData> StageStepDataSet()
+        {
+            List<StageStepData> stageStepTable = new List<StageStepData>();
+
+            //stage 1
+            { //stage 1 -1
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 1;
+                stageStep.StageStepNum = 1;
+                stageStep.monsterID =1;
+                stageStep.monsterDropItemID = 0;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+            { //stage 1- 2
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 1;
+                stageStep.StageStepNum = 2;
+                stageStep.monsterID = 2;
+                stageStep.monsterDropItemID = 0;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+            { //stage 1- 3
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 1;
+                stageStep.StageStepNum = 3;
+                stageStep.monsterID = 2;
+                stageStep.monsterDropItemID = 300;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+
+            return stageStepTable;
+        }
+
+
+        public List<ItemData> ItemDataSet()
+        {
+            List <ItemData> itemTable = new List <ItemData>();
+
+            { 
+                ItemData item = new ItemData();
+                item.id = 300;
+                item.type = ItemData.ItemType.Potion; //소모품
+                item.name = "HP 물약";
+                item.desc = "사용하면, HP를 30만큼 회복합니다.";
+                item.property = "hp+30";
+
+                itemTable.Add(item);
+            }
+
+            {
+                ItemData item = new ItemData();
+                item.id = 100;
+                item.type = ItemData.ItemType.Weapon; //무기
+                item.name = "단단한 몽둥이";
+                item.desc = "단단하지만 날카롭지 못하다.";
+                item.property = "attackPower+10";
+
+                itemTable.Add(item);
+            }
+            {
+                ItemData item = new ItemData();
+                item.id = 101;
+                item.type = ItemData.ItemType.Weapon; //무기
+                item.name = "날카로운 몽둥이";
+                item.desc = "날카롭게 생긴 몽둥이이다.";
+                item.property = "attackPower+15";
+
+                itemTable.Add(item);
+            }
+            {
+                ItemData item = new ItemData();
+                item.id = 200;
+                item.type = ItemData.ItemType.Armor;  //방어구
+                item.name = "무명옷";
+                item.desc = "흔한 천으로된 옷이다.";
+                item.property = "defense+5";
+
+                itemTable.Add(item);
+            }
+
+            return itemTable;
+        }
+
+        public ItemData FindItemDataByID(int id)
+        {
+
+            for (int i = 0; i < _itemTable.Count; i++)
+            {
+                if (_itemTable[i].id == id)
+                {
+                    return _itemTable[i];
+                }
+            }
+
+            return null;
+        }
+
         public List<MonsterData> MonsterTableSet()
         {
             List<MonsterData> monsterDataTable= new List<MonsterData>();
