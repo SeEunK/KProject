@@ -38,8 +38,18 @@ namespace Kproject_Text_RPG
             int.TryParse(itemProperty[1], out int value);
 
             return value;
-
         }
+        public string GetItemProperty()
+        {
+            
+            return itemdata.property;
+        }
+
+        public string GetDescription()
+        {
+            return itemdata.desc;
+        }
+
         public string GetItemName()
         {
             return itemdata.name;

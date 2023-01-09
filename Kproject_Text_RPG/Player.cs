@@ -98,6 +98,7 @@ namespace Kproject_Text_RPG
             invenMaxSize += plusSize;
 
         }
+
         
         public int GetInvenSize()
         {

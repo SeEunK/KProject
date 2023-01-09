@@ -105,7 +105,7 @@ namespace Kproject_Text_RPG
                                 break;
 
                             case ConsoleKey.Escape:
-                                Console.WriteLine("Go to Lobby");
+                                Console.WriteLine(" Go to Lobby");
                                 Lobby.BottomButtonInput(player);
                                 break;
                         }
@@ -122,7 +122,7 @@ namespace Kproject_Text_RPG
                         switch (inputKey.Key)
                         {
                              case ConsoleKey.Escape:
-                                Console.WriteLine("Go to Lobby");
+                                Console.WriteLine(" Go to Lobby");
                                 Lobby.BottomButtonInput(player);
                                 break;
                         }
