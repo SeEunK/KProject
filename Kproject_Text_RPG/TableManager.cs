@@ -95,6 +95,10 @@ namespace Kproject_Text_RPG
             Console.WriteLine("==============================");
         }
 
+        public List<ItemData> GetItemTable()
+        {
+            return _itemTable;
+        }
         public List<StageData> GetStageTable()
         {
             return _stageTable;
@@ -278,6 +282,8 @@ namespace Kproject_Text_RPG
                 item.name = "HP 물약";
                 item.desc = "사용하면, HP를 30만큼 회복합니다.";
                 item.property = "hp+30";
+                item.sellPrice = 10;
+                item.price = 100;
 
                 itemTable.Add(item);
             }
@@ -289,6 +295,8 @@ namespace Kproject_Text_RPG
                 item.name = "단단한 몽둥이";
                 item.desc = "단단하지만 날카롭지 못하다.";
                 item.property = "attackPower+10";
+                item.sellPrice = 30;
+                item.price = 300;
 
                 itemTable.Add(item);
             }
@@ -299,6 +307,8 @@ namespace Kproject_Text_RPG
                 item.name = "날카로운 몽둥이";
                 item.desc = "날카롭게 생긴 몽둥이이다.";
                 item.property = "attackPower+15";
+                item.sellPrice = 50;
+                item.price = 500;
 
                 itemTable.Add(item);
             }
@@ -309,6 +319,8 @@ namespace Kproject_Text_RPG
                 item.name = "무명옷";
                 item.desc = "흔한 천으로된 옷이다.";
                 item.property = "defense+5";
+                item.sellPrice = 20;
+                item.price = 200;
 
                 itemTable.Add(item);
             }
@@ -319,6 +331,8 @@ namespace Kproject_Text_RPG
                 item.name = "얇은 가죽 옷";
                 item.desc = "얇은 가죽으로 된 옷이다.";
                 item.property = "defense+7";
+                item.sellPrice = 40;
+                item.price = 400;
 
                 itemTable.Add(item);
             }

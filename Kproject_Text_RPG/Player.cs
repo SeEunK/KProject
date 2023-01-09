@@ -100,7 +100,7 @@ namespace Kproject_Text_RPG
         }
 
         
-        public int GetInvenSize()
+        public int GetInvenMaxSize()
         {
             return invenMaxSize;
         }
@@ -108,6 +108,11 @@ namespace Kproject_Text_RPG
         {
             return exp;
         }
+        public int GetGold()
+        {
+            return gold;
+        }
+     
         public void SetExp(int gainExp)
         {
             exp += gainExp;

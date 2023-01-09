@@ -48,15 +48,12 @@ namespace Kproject_Text_RPG
             Player player= new Player(name);
 
 
-
-
             Lobby.BottomButtonInput(player);
 
 
            
 
-            // !!! 스테이지 데이터 만들었으니이제 스테이지에 따라 배틀 연결하자!!!
-           // Battle(player, 1);
+        
 
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +24,25 @@ namespace Kproject_Text_RPG
                     Console.WriteLine("[STAGE {0}] ", i + 1);
 
                 }
-                Console.WriteLine("========================");
-                GoToStage(StageSellect(stageCount),player);
-               
+                Console.WriteLine("=====================================================");
+                Console.WriteLine("|| 스테이지 선택 : Numpad 1~ {0} || 모험 그만하기 (로비로 가기) : Esc ||", stageCount);
+                Console.WriteLine("=====================================================");
+                
+                int sellectStageNum = 0;
 
+                sellectStageNum = StageSellect(stageCount, player);
+                if (sellectStageNum == -1)
+                {
+                    ShowStageList(player);
+                }
+                else if(sellectStageNum == 0)
+                {
+                    Lobby.BottomButtonInput(player);
+                }
+                else
+                {
+                    GoToStage(sellectStageNum, player);
+                }
 
             }
 
@@ -99,6 +115,28 @@ namespace Kproject_Text_RPG
                         switch (inputKey.Key)
                         {
                             case ConsoleKey.Enter:
+                                if (player.inventory.Count >= player.GetInvenMaxSize())
+                                {
+                                    Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
+                                    Console.WriteLine("정말로 모험을 계속하시겠습니까? Y/N");
+                                    while (true)
+                                    {
+                                        ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                        if (inputKey_1.Key == ConsoleKey.Y)
+                                        {
+                                            break;
+                                        }
+                                        else if (inputKey_1.Key == ConsoleKey.N)
+                                        {
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("잘못입력하였습니다.");
+                                            Console.WriteLine("정말로 모험을 계속하시겠습니까? Y/N");
+                                        }
+                                    }
+                                }
                                 Console.WriteLine("Next Stage !!");
                                 GoToStage(sellectStage + 1, player);
 
@@ -108,6 +146,10 @@ namespace Kproject_Text_RPG
                                 Console.WriteLine(" Go to Lobby");
                                 Lobby.BottomButtonInput(player);
                                 break;
+                            default : 
+                                Console.WriteLine("잘못된입력입니다.");
+                                break;
+
                         }
                     }
                 }
@@ -122,8 +164,10 @@ namespace Kproject_Text_RPG
                         switch (inputKey.Key)
                         {
                              case ConsoleKey.Escape:
-                                Console.WriteLine(" Go to Lobby");
+                                Console.WriteLine(" Go to Lobby ");
                                 Lobby.BottomButtonInput(player);
+                                break;
+                             default: Console.WriteLine("잘못된 입력입니다.");
                                 break;
                         }
                     }
@@ -132,20 +176,69 @@ namespace Kproject_Text_RPG
         }
 
 
-        public static int StageSellect(int stageCount)
+        public static int StageSellect(int stageCount, Player player)
         {
+           
             while (true)
             {
                 ConsoleKeyInfo inputKey = Console.ReadKey();
-
+                
                 switch (inputKey.Key)
                 {
+                    case ConsoleKey.Escape:
+                        Console.WriteLine(" Go to Lobby ");
+                        
+                        return 0;
                     case ConsoleKey.NumPad1:
                         Console.WriteLine("Stage 1 Sellect!!!");
 
+                        if (player.inventory.Count >= player.GetInvenMaxSize())
+                        {
+                            Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
+                            Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
+                            while (true)
+                            {
+                                ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                if (inputKey_1.Key == ConsoleKey.Y)
+                                {
+                                    return 1; 
+                                }
+                                else if (inputKey_1.Key == ConsoleKey.N)
+                                {
+                                    return -1;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("잘못입력하였습니다.");
+                                    Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
+                                }
+                            }
+                        }
                         return 1;
                     case ConsoleKey.NumPad2:
                         Console.WriteLine("Stage 2 Sellect!!!");
+                        if (player.inventory.Count >= player.GetInvenMaxSize())
+                        {
+                            Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
+                            Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
+                            while (true)
+                            {
+                                ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                if (inputKey_1.Key == ConsoleKey.Y)
+                                {
+                                    return 2;
+                                }
+                                else if (inputKey_1.Key == ConsoleKey.N)
+                                {
+                                    return -1;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("잘못입력하였습니다.");
+                                    Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
+                                }
+                            }
+                        }
                         return 2;
 
                     default:
