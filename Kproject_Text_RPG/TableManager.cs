@@ -6,6 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Kproject_Text_RPG
 {
@@ -94,12 +95,46 @@ namespace Kproject_Text_RPG
             Console.WriteLine("==============================");
         }
 
+        public List<StageData> GetStageTable()
+        {
+            return _stageTable;
+        }
+        public StageData GetStageByID(int StageID)
+        {
+            for (int i = 0; i < _stageTable.Count; i++)
+            {
+                if (_stageTable[i].id == StageID)
+                {
+                    return _stageTable[i];
+                }
+            }
+
+            return null;
+        }
+
+        public List<StageStepData> GetStageStepByID(int StageID)
+        {
+            for (int i = 0; i < _stageTable.Count; i++)
+            {
+                if (_stageTable[i].id == StageID)
+                {
+                    return _stageTable[i].stageStepList;
+                }
+            }
+
+            return null;
+        }
+
+        public int GetStageCount()
+        {
+            return _stageTable.Count;
+        }
         public List<StageData> StageDataSet()
         {
            
             List<StageData> stageTable = new List<StageData>();
 
-            {
+            { //stage 1 
                 StageData stageData = new StageData();
                 stageData.id = 1;
 
@@ -116,6 +151,27 @@ namespace Kproject_Text_RPG
                 }
                 
                 stageData.clearRewardID = 101;
+
+                stageTable.Add(stageData);
+            }
+
+            { //stage 2 
+                StageData stageData = new StageData();
+                stageData.id = 2;
+
+                stageData.stageStepList = new List<StageStepData>();
+
+                // stageStep Data 에서 stage id 조회해서 해당 stepData 가 가진 stepData에 add.
+                for (int i = 0; i < _stagestepTable.Count; i++)
+                {
+                    if (_stagestepTable[i].StageID == stageData.id)
+                    {
+                        stageData.stageStepList.Add(_stagestepTable[i]);
+
+                    }
+                }
+
+                stageData.clearRewardID = 201;
 
                 stageTable.Add(stageData);
             }
@@ -160,6 +216,52 @@ namespace Kproject_Text_RPG
 
                 stageStepTable.Add(stageStep);
             }
+            ///stage 2
+            { //stage 2 -1
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 2;
+                stageStep.StageStepNum = 1;
+                stageStep.monsterID = 1;
+                stageStep.monsterDropItemID = 0;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+            { //stage 2- 2
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 2;
+                stageStep.StageStepNum = 2;
+                stageStep.monsterID = 2;
+                stageStep.monsterDropItemID = 0;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+            { //stage 2- 3
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 2;
+                stageStep.StageStepNum = 3;
+                stageStep.monsterID = 2;
+                stageStep.monsterDropItemID = 300;
+                stageStep.rewardExp = 10;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+            { //stage 2- 4
+                StageStepData stageStep = new StageStepData();
+                stageStep.StageID = 2;
+                stageStep.StageStepNum = 4;
+                stageStep.monsterID = 2;
+                stageStep.monsterDropItemID = 300;
+                stageStep.rewardExp = 15;
+                stageStep.rewardGold = 100;
+
+                stageStepTable.Add(stageStep);
+            }
+
 
             return stageStepTable;
         }
@@ -210,6 +312,16 @@ namespace Kproject_Text_RPG
 
                 itemTable.Add(item);
             }
+            {
+                ItemData item = new ItemData();
+                item.id = 201;
+                item.type = ItemData.ItemType.Armor;  //방어구
+                item.name = "얇은 가죽 옷";
+                item.desc = "얇은 가죽으로 된 옷이다.";
+                item.property = "defense+7";
+
+                itemTable.Add(item);
+            }
 
             return itemTable;
         }
@@ -252,7 +364,7 @@ namespace Kproject_Text_RPG
                 monsterData.name = "늑대";
                 monsterData.type = 1;
                 monsterData.level = 1;
-                monsterData.hp = 1000;
+                monsterData.hp = 500;
                 monsterData.mp = 200;
                 monsterData.attackPower = 10;
                 monsterData.defense = 1;

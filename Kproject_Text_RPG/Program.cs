@@ -46,13 +46,21 @@ namespace Kproject_Text_RPG
             Console.WriteLine("캐릭터 이름을 입력하세요.");
             string name = Console.ReadLine();
             Player player= new Player(name);
-            
+
+
+
+
+            Lobby.BottomButtonInput(player);
+
+
+           
+
             // !!! 스테이지 데이터 만들었으니이제 스테이지에 따라 배틀 연결하자!!!
-            Battle(player, 1);
+           // Battle(player, 1);
 
         }
 
-        public static void Battle(Player player, int monsterId)
+        public static bool Battle(Player player, int monsterId)
         {
             TableManager tableManager = TableManager.getInstance();
             Monster monster = new Monster(tableManager.FindMonsterDataByID(monsterId));
@@ -134,12 +142,12 @@ namespace Kproject_Text_RPG
                 if (player.hp <= 0)
                 {
                     Console.WriteLine("플레이어가 사망하였습니다.");
-                    break;
+                    return false;
                 }
                 if (monster.hp <= 0)
                 {
                     Console.WriteLine("{0}를 처치하였습니다.", monster.name);
-                    break;
+                    return true;
                 }
 
             }

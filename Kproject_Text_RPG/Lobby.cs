@@ -7,18 +7,18 @@ using System.Xml;
 
 namespace Kproject_Text_RPG
 {
-    internal class Lobby
+    public  class Lobby
     {
 
-        
-       
 
-
-
-
-
-        public void BottomButtonInput()
+        public static void BottomButtonInput(Player player)
         {
+
+            Console.WriteLine("================================");
+            Console.WriteLine(" || NumPad1: \"Shop\" || NumPad2: \"Smithy\"  ||  NumPad3: \"Inventory\" || NumPad4: \"Adventure\" || ");
+            Console.WriteLine("================================");
+
+
             while (true)
             {
                 ConsoleKeyInfo inputKey = Console.ReadKey();
@@ -27,6 +27,7 @@ namespace Kproject_Text_RPG
                 {
                     case ConsoleKey.NumPad1:
                         Console.WriteLine("Shop Scene !!!");
+                        
                         break;
                     case ConsoleKey.NumPad2:
                         Console.WriteLine("Smithy Scene !!!");
@@ -36,12 +37,19 @@ namespace Kproject_Text_RPG
                         break;
                     case ConsoleKey.NumPad4:
                         Console.WriteLine("Adventure Scene !!!");
+                        Adventure.ShowStageList(player);
                         break;
                     default:
+                        Console.WriteLine("잘못된입력입니다.");
                         return;
                 }
 
             }
+        }
+
+        public void OpenInventory(Player player)
+        {
+
         }
     }
 }

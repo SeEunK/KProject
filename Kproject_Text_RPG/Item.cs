@@ -25,6 +25,7 @@ namespace Kproject_Text_RPG
             return itemdata.id;
         }
 
+    
         public ItemData.ItemType GetItemType()
         {
             return itemdata.type;
