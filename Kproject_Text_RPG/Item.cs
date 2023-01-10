@@ -9,13 +9,9 @@ namespace Kproject_Text_RPG
     public  class Item
     {
 
-
         ItemData itemdata;
         int enhanceLevel;
         public int durability;
-       
-
-
         public Item(ItemData data)
         {
             this.itemdata = data;

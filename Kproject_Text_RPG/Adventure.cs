@@ -14,6 +14,8 @@ namespace Kproject_Text_RPG
             
             TableManager tableManager = TableManager.getInstance();
             int stageCount = tableManager.GetStageTable().Count;
+            int sellectStageNum = 0;
+
             if (stageCount != 0)
             {
                 Console.WriteLine("모험 할 stage를 선택하세요. ");
@@ -27,8 +29,6 @@ namespace Kproject_Text_RPG
                 Console.WriteLine("=====================================================");
                 Console.WriteLine("|| 스테이지 선택 : Numpad 1~ {0} || 모험 그만하기 (로비로 가기) : Esc ||", stageCount);
                 Console.WriteLine("=====================================================");
-                
-                int sellectStageNum = 0;
 
                 sellectStageNum = StageSellect(stageCount, player);
                 if (sellectStageNum == -1)
@@ -43,11 +43,7 @@ namespace Kproject_Text_RPG
                 {
                     GoToStage(sellectStageNum, player);
                 }
-
             }
-
-
-
         }
         public static void GoToStage(int sellectStage, Player player)
         {
@@ -61,7 +57,6 @@ namespace Kproject_Text_RPG
 
                 List<StageStepData> stageStepList = tableManager.GetStageStepByID(sellectStage);
 
-               
                 for (int i = 0; i < stageStepList.Count; i++)
                 {
                    if( Program.Battle(player, stageStepList[i].monsterID) == false)
@@ -69,7 +64,7 @@ namespace Kproject_Text_RPG
                         break;
                     }
                     else
-                    {
+                    {  //!!!! 레벨업 체크하고 레벨업 표시가 빠짐!!!! =====================================================
                         tableManager.LevelUpCheck(player.GetExp(), stageStepList[i].rewardExp);
                        
                         Console.WriteLine("====== Reward ======");
@@ -143,7 +138,7 @@ namespace Kproject_Text_RPG
                                 break;
 
                             case ConsoleKey.Escape:
-                                Console.WriteLine(" Go to Lobby");
+                                Console.WriteLine("Go to Lobby");
                                 Lobby.BottomButtonInput(player);
                                 break;
                             default : 
@@ -243,7 +238,7 @@ namespace Kproject_Text_RPG
 
                     default:
                         Console.WriteLine("잘못된입력입니다. 1 ~ {0} 중 입장할 스테이지 번호를 입력하세요.", stageCount);
-                        return 0;
+                        return -1;
                 }
 
             }

@@ -11,6 +11,5 @@ namespace Kproject_Text_RPG
         public int levelNum = 0;
         public int needExp = 0;
        
-
     }
 }

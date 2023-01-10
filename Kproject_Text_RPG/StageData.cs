@@ -14,10 +14,6 @@ namespace Kproject_Text_RPG
         public int id = 0;
         public List<StageStepData> stageStepList=null;
         public int clearRewardID = 0;
-        
-
-        
-
 
     }
 }

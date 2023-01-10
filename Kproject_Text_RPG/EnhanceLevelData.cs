@@ -14,8 +14,6 @@ namespace Kproject_Text_RPG
         public int enhanceCost = 0;
         public string enhanceStat = null;
         public int enhanceValue = 0;
-       
-
 
     }
 }

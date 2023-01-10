@@ -14,8 +14,8 @@ namespace Kproject_Text_RPG
             // int top = 5;  // y 좌표
             //Console.SetCursorPosition(left, top);
            
-            const int UI_SIZE_X = 33;
-            const int UI_SIZE_Y = 50;
+            const int UI_SIZE_X = 59;
+            const int UI_SIZE_Y = 30;
 
             int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
             
@@ -28,19 +28,19 @@ namespace Kproject_Text_RPG
             TableManager tableManager =  TableManager.getInstance();
 
             // 레벨 업 체크 잘되는지 확인용.
-            if (false) { 
-            bool isLevelUp = false;
-            isLevelUp = tableManager.LevelUpCheck (5,10);
-            Console.WriteLine("==================================================================================");
-            Console.WriteLine("현재 레벨 1, 보유 경험치 5, 획득 경험치 10인 경우 레벨업인가요? {0} ", isLevelUp);
-            Console.WriteLine("==================================================================================");
-
-            isLevelUp = tableManager.LevelUpCheck(15, 190);
-            Console.WriteLine("==================================================================================");
-            Console.WriteLine("현재 레벨 1, 보유 경험치 15, 획득 경험치 190인 경우 레벨업인가요? {0} ", isLevelUp);
-            Console.WriteLine("==================================================================================");
-
-            }
+           // if (false) { 
+           // bool isLevelUp = false;
+           // isLevelUp = tableManager.LevelUpCheck (5,10);
+           // Console.WriteLine("==================================================================================");
+           // Console.WriteLine("현재 레벨 1, 보유 경험치 5, 획득 경험치 10인 경우 레벨업인가요? {0} ", isLevelUp);
+           // Console.WriteLine("==================================================================================");
+           // 
+           // isLevelUp = tableManager.LevelUpCheck(15, 190);
+           // Console.WriteLine("==================================================================================");
+           // Console.WriteLine("현재 레벨 1, 보유 경험치 15, 획득 경험치 190인 경우 레벨업인가요? {0} ", isLevelUp);
+           // Console.WriteLine("==================================================================================");
+           // 
+           // }
 
 
             Console.WriteLine("캐릭터 이름을 입력하세요.");
@@ -49,11 +49,6 @@ namespace Kproject_Text_RPG
 
 
             Lobby.BottomButtonInput(player);
-
-
-           
-
-        
 
         }
 
@@ -204,8 +199,6 @@ namespace Kproject_Text_RPG
                     {
                         player.GetEquipItemBySlotIndex(1).SetDurability(-10);
                     }
-               
-
                     return false;
                 }
                 if (monster.hp <= 0)
@@ -213,17 +206,9 @@ namespace Kproject_Text_RPG
                     Console.WriteLine("{0}를 처치하였습니다.", monster.name);
                     return true;
                 }
-
             }
-
-
         }
         
-
-
-      
-
-
 
 
         public void SlimeDote()
