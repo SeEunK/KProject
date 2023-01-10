@@ -14,9 +14,6 @@ namespace Kproject_Text_RPG
         public int monsterDropItemID = 0;
         public int rewardExp = 0;
         public int rewardGold = 0;
-
-
-
        
     }
 }

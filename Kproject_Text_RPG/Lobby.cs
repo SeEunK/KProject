@@ -11,13 +11,11 @@ namespace Kproject_Text_RPG
     public class Lobby
     {
 
-
         public static void BottomButtonInput(Player player)
         {
-
-            Console.WriteLine("================================");
-            Console.WriteLine(" || NumPad1: \"Shop\" || NumPad2: \"Smithy\"  ||  NumPad3: \"Inventory\" || NumPad4: \"Adventure\" || ");
-            Console.WriteLine("================================");
+            Console.WriteLine(String.Format("{0}", "========================================================================================================================").PadLeft(120 - (60 - ("================================".Length / 2))));
+            Console.WriteLine(String.Format("{0}", "||     NumPad1: \"Shop\"   ||   NumPad2: \"Smithy\"    ||    NumPad3: \"Inventory\"   ||   NumPad4: \"Adventure\"     ||").PadLeft(120 - (60 - ("||     NumPad1: \"Shop\"   ||   NumPad2: \"Smithy\"    ||    NumPad3: \"Inventory\"   ||   NumPad4: \"Adventure\"     ||".Length / 2))));
+            Console.WriteLine(String.Format("{0}", "========================================================================================================================").PadLeft(120 - (60 - ("================================".Length / 2))));
 
 
             while (true)

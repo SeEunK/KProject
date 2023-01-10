@@ -10,7 +10,6 @@ namespace Kproject_Text_RPG
     {
         public void UISet(int UI_SIZE_Y, int UI_SIZE_X, int[,] ui_screen)
         {
-
             for (int y = 0; y < UI_SIZE_Y; y++)
             {
                 for (int x = 0; x < UI_SIZE_X; x++)
@@ -29,7 +28,6 @@ namespace Kproject_Text_RPG
                         {
                             ui_screen[y, x] = -1; // 벽으로 세팅
                         }
-
                     }
                     else
                     {
@@ -48,7 +46,7 @@ namespace Kproject_Text_RPG
                     switch (ui_screen[y, x])
                     {
                         case -3:
-                            Console.Write("▩".PadRight(2, ' '));
+                            Console.Write("╊".PadRight(2, ' '));
                             break;
 
                         case -2:

@@ -24,22 +24,17 @@ namespace Kproject_Text_RPG
 
         private TableManager()
         {
-            Console.WriteLine("===TableManager()===========================");
-            InItLevelTables();
+            InItTables();
         }
         public static TableManager getInstance()
         {
             return tableManager;
         }
-        
-
-
         public List<Level> levelTable
         {
             get {
                 if (_levelTable == null)
                 {
-                    Console.WriteLine("============get==================");
                     _levelTable = LevelTableSet();
                 }
                 return _levelTable;
@@ -47,66 +42,48 @@ namespace Kproject_Text_RPG
         }
 
 
-        public void InItLevelTables()
+        public void InItTables()
         {
-
             if (_levelTable == null)
             {
-                Console.WriteLine("레벨업 테이블 세팅 ");
-                Console.WriteLine("==============================");
-
+               // Console.WriteLine("레벨업 테이블 세팅 ");
+               // Console.WriteLine("==============================");
                 _levelTable = LevelTableSet();
-
             }
-            Console.WriteLine("==============================");
             if (_monsterTable == null)
             {
-                Console.WriteLine("몬스터 테이블 세팅  ");
-                Console.WriteLine("==============================");
-
+                // Console.WriteLine("몬스터 테이블 세팅  ");
+                // Console.WriteLine("==============================");
                 _monsterTable = MonsterTableSet();
-
             }
-            Console.WriteLine("==============================");
             if (_itemTable == null)
             {
-                Console.WriteLine("아이템 테이블 세팅  ");
-                Console.WriteLine("==============================");
-
+               // Console.WriteLine("아이템 테이블 세팅  ");
+               // Console.WriteLine("==============================");
                 _itemTable = ItemDataSet();
-
             }
-            Console.WriteLine("==============================");
             if (_stagestepTable == null)
             {
-                Console.WriteLine("스테이지 스텝 테이블 세팅  ");
-                Console.WriteLine("==============================");
-
+               // Console.WriteLine("스테이지 스텝 테이블 세팅  ");
+               // Console.WriteLine("==============================");
                 _stagestepTable = StageStepDataSet();
-
             }
-            Console.WriteLine("==============================");
             if (_stageTable == null)
             {
-                Console.WriteLine("스테이지 테이블 세팅  ");
-                Console.WriteLine("==============================");
-
+                //Console.WriteLine("스테이지 테이블 세팅  ");
+                //Console.WriteLine("==============================");
                 _stageTable = StageDataSet();
-
             }
-            Console.WriteLine("==============================");
             if(_enhanceLevelTable== null)
             {
-                Console.WriteLine("강화 레벨 테이블 세팅");
+              //  Console.WriteLine("강화 레벨 테이블 세팅");
                 _enhanceLevelTable = EnhanceLevelDataSet();
             }
-            Console.WriteLine("==============================");
             if (_enhanceTable == null)
             {
-                Console.WriteLine("강화 테이블 세팅");
+               // Console.WriteLine("강화 테이블 세팅");
                 _enhanceTable = EnhanceDataSet();
             }
-            Console.WriteLine("==============================");
         }
 
         public List<EnhanceData> GetEnhanceTable()
@@ -206,12 +183,9 @@ namespace Kproject_Text_RPG
                         
                     }
                 }
-                
                 stageData.clearRewardID = 101;
-
                 stageTable.Add(stageData);
             }
-
             { //stage 2 
                 StageData stageData = new StageData();
                 stageData.id = 2;
@@ -227,19 +201,15 @@ namespace Kproject_Text_RPG
 
                     }
                 }
-
                 stageData.clearRewardID = 201;
-
                 stageTable.Add(stageData);
             }
-
             return stageTable;
         }
 
 
         public List<EnhanceData> EnhanceDataSet()
         {
-
             List<EnhanceData> enhanceTable = new List<EnhanceData>();
 
             { //enhance 1 
@@ -392,13 +362,8 @@ namespace Kproject_Text_RPG
 
                 enhanceLevelTable.Add(enhanceLevel);
             }
-
             return enhanceLevelTable;
         }
-    
-
-
-
         public List<StageStepData> StageStepDataSet()
         {
             List<StageStepData> stageStepTable = new List<StageStepData>();
@@ -482,7 +447,6 @@ namespace Kproject_Text_RPG
 
                 stageStepTable.Add(stageStep);
             }
-
 
             return stageStepTable;
         }
@@ -576,7 +540,6 @@ namespace Kproject_Text_RPG
 
             return null;
         }
-
         public List<MonsterData> MonsterTableSet()
         {
             List<MonsterData> monsterDataTable= new List<MonsterData>();
@@ -626,9 +589,6 @@ namespace Kproject_Text_RPG
             return null;
         }
 
-
-
-
         public static List<Level>  LevelTableSet()
         {
             List<Level> levelTable = new List<Level>();
@@ -641,17 +601,14 @@ namespace Kproject_Text_RPG
                 levelTable.Add(level);
             }
 
-             Console.WriteLine("========LevelTable============");
-            
-             foreach (Level level in levelTable)
-             {
-                 Console.WriteLine("LEVEL:  {0} /  Need EXP : {1} ", level.levelNum, level.needExp);
-             }
-            
+            // Console.WriteLine("========LevelTable============");
+            //
+            // foreach (Level level in levelTable)
+            // {
+            //     Console.WriteLine("LEVEL:  {0} /  Need EXP : {1} ", level.levelNum, level.needExp);
+            // }
              return levelTable;
         }
-
-        
 
         public int GetLevelByExp(int retentionExp)
         {
@@ -679,10 +636,6 @@ namespace Kproject_Text_RPG
             int nextLevel = GetLevelByExp(currExp + gainExp);
             int nextNeedExp = _levelTable[nextLevel].needExp;
 
-
-            // 현재경험치 + 획득 경험치 적용 했을때, 레벨을 찾는 반복문.
-
-
             int displayExp = 0;
 
             if (currLevel == nextLevel)
@@ -704,10 +657,6 @@ namespace Kproject_Text_RPG
                 Console.WriteLine("[ERROR] 알수없는 레벨입니다.");
                 return false;
             }
-           
-
         }
-
-
     }
 }

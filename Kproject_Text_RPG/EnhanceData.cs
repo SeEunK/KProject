@@ -13,8 +13,6 @@ namespace Kproject_Text_RPG
 
         public int id = 0;
         public List<EnhanceLevelData> enhanceLevelList = null;
-        
-
 
     }
 }
