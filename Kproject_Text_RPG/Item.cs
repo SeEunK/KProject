@@ -12,18 +12,34 @@ namespace Kproject_Text_RPG
 
         ItemData itemdata;
         int enhanceLevel;
+        public int durability;
        
+
+
         public Item(ItemData data)
         {
             this.itemdata = data;
             enhanceLevel = 0;
-
-
+            durability = data.maxDurability;
+            
         }
 
         public int GetID()
         {
             return itemdata.id;
+        }
+        public int GetDurability()
+        {
+            return durability;
+        }
+
+        public int GetMaxDurability()
+        {
+            return itemdata.maxDurability;
+        }
+        public void SetDurability(int value)
+        {
+            durability += value;
         }
 
         public int GetEnhanceLevel()

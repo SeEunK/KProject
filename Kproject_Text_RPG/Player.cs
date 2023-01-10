@@ -55,13 +55,13 @@ namespace Kproject_Text_RPG
 
             if (equipSlot[typeIndex] != null)
             {
-                Console.WriteLine("{0}가 장착중입니다. 해제하고 장착하시겠습니까? Y/N  ", equipSlot[0].GetItemName());
+                Console.WriteLine("{0}가 장착중입니다. 해제하고 장착하시겠습니까? Y/N  ", equipSlot[typeIndex].GetItemName());
                 ConsoleKeyInfo inputKey = Console.ReadKey();
                 if (inputKey.Key == ConsoleKey.Y)
                 {
-                    UnEquipItem(equipSlot[0]);
-                    tempItem = equipSlot[0];
-                    equipSlot[0] = eqiupItem;
+                    UnEquipItem(equipSlot[typeIndex]);
+                    tempItem = equipSlot[typeIndex];
+                    equipSlot[typeIndex] = eqiupItem;
                     inventory.Add(tempItem);
                     UseItem(eqiupItem);
                 }
@@ -77,7 +77,7 @@ namespace Kproject_Text_RPG
             }
             else
             {
-                equipSlot[0] = eqiupItem;
+                equipSlot[typeIndex] = eqiupItem;
                 UseItem(eqiupItem);
             }
 
@@ -99,7 +99,16 @@ namespace Kproject_Text_RPG
 
         }
 
-        
+        public Item[] GetEquipSlotList()
+        {
+            return equipSlot;
+        }
+        public Item GetEquipItemBySlotIndex(int slotIndex)
+        {
+            return equipSlot[slotIndex];
+        }
+
+
         public int GetInvenMaxSize()
         {
             return invenMaxSize;
@@ -112,7 +121,8 @@ namespace Kproject_Text_RPG
         {
             return gold;
         }
-     
+        
+
         public void SetExp(int gainExp)
         {
             exp += gainExp;
@@ -192,11 +202,14 @@ namespace Kproject_Text_RPG
                 case ItemData.ItemType.Weapon:
                     attackPower += itemProValue;
                     Console.WriteLine("{0}를 장착하여 공격력이 {1}상승했습니다.", itemName, itemProValue);
+                    inventory.Remove(item);
+
                     break;
 
                 case ItemData.ItemType.Armor:
                     defense += itemProValue;
                     Console.WriteLine("{0}를 장착하여 방어력이 {1}상승했습니다.", itemName, itemProValue);
+                    inventory.Remove(item);
                     break;
 
                 case ItemData.ItemType.Potion:

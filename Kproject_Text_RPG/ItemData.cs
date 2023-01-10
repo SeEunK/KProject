@@ -24,6 +24,7 @@ namespace Kproject_Text_RPG
         public string property = string.Empty;
         public int sellPrice = 0;
         public int price = 0;
-       
+        public int maxDurability = 0;
+
     }
 }

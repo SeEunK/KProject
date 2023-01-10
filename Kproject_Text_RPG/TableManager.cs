@@ -514,6 +514,8 @@ namespace Kproject_Text_RPG
                 item.property = "attackPower+10";
                 item.sellPrice = 30;
                 item.price = 300;
+                item.maxDurability = 70;
+               
 
                 itemTable.Add(item);
             }
@@ -526,6 +528,7 @@ namespace Kproject_Text_RPG
                 item.property = "attackPower+15";
                 item.sellPrice = 50;
                 item.price = 500;
+                item.maxDurability = 100;
 
                 itemTable.Add(item);
             }
@@ -538,6 +541,7 @@ namespace Kproject_Text_RPG
                 item.property = "defense+5";
                 item.sellPrice = 20;
                 item.price = 200;
+                item.maxDurability = 50;
 
                 itemTable.Add(item);
             }
@@ -548,8 +552,10 @@ namespace Kproject_Text_RPG
                 item.name = "얇은 가죽 옷";
                 item.desc = "얇은 가죽으로 된 옷이다.";
                 item.property = "defense+7";
-                item.sellPrice = 40;
+                item.sellPrice = 100;
                 item.price = 400;
+                item.maxDurability = 15;
+                
 
                 itemTable.Add(item);
             }

@@ -91,6 +91,23 @@ namespace Kproject_Text_RPG
                         int demage = player.attackPower - monster.defense;
                         monster.hp = monster.hp - demage;
                         Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        // 플레이어 장착 무기 내구도 1 깍기
+                        if (player.GetEquipItemBySlotIndex(0) != null)
+                        {
+                            if (player.GetEquipItemBySlotIndex(0).GetDurability() > 0)
+                            {
+                                // 장착한 무기,  내구도가 0이상인 경우 내구도 1 차감
+                                player.GetEquipItemBySlotIndex(0).SetDurability(-1);
+
+                                if (player.GetEquipItemBySlotIndex(0).GetDurability() == 0)
+                                {
+                                    // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
+                                    player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
+                                    Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
+
+                                }
+                            }
+                        }
                         turnCount++;
                     }
                     else if(inputKey.Key == ConsoleKey.F2)
@@ -100,6 +117,24 @@ namespace Kproject_Text_RPG
                         int demage = skillAttack - monster.defense;
                         monster.hp = monster.hp - (skillAttack - monster.defense);
                         Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        // 플레이어 장착 무기 내구도 1 깍기
+                        if (player.GetEquipItemBySlotIndex(0) != null)
+                        {
+                           
+                            if (player.GetEquipItemBySlotIndex(0).GetDurability() > 0)
+                            {
+                                // 장착한 무기,  내구도가 0이상인 경우 내구도 1 차감
+                                player.GetEquipItemBySlotIndex(0).SetDurability(-1);
+
+                                if (player.GetEquipItemBySlotIndex(0).GetDurability() == 0)
+                                {
+                                    // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
+                                    player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
+                                    Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
+
+                                }
+                            }
+                        }
                         turnCount++;
                     }
                     else if (inputKey.Key == ConsoleKey.F3)
@@ -129,16 +164,48 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    int demage = monster.attackPower - player.defense;
+                    int  demage = monster.attackPower - player.defense;
+
                     player.hp = player.hp - demage;
+
                     Console.WriteLine("{0}에게 {1}의 데미지를 입었습니다.", monster.name, demage);
+
+                    // 플레이어 장착 방어구 내구도 1 깍기
+                    if (player.GetEquipItemBySlotIndex(1) != null)
+                    {
+                        if (player.GetEquipItemBySlotIndex(1).GetDurability() > 0)
+                        {
+                            // 장착한 방어구,  내구도가 0이상인 경우 내구도 1 차감
+                            player.GetEquipItemBySlotIndex(1).SetDurability(-1);
+                            if(player.GetEquipItemBySlotIndex(1).GetDurability() == 0)
+                            {
+                                // 차감 후 내구도 0인경우, 방어구로 적용되던 stat 해제.
+                                player.defense -= player.GetEquipItemBySlotIndex(1).GetItemPropertyValue();
+                                Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(1).GetItemName());
+
+                            }
+                        }
+                    }
+
                     turnCount++;
                     Console.WriteLine();
                 }
-               
+
                 if (player.hp <= 0)
                 {
                     Console.WriteLine("플레이어가 사망하였습니다.");
+
+                    // 플레이어 장착 무기 , 방어구 내구도 10 깍기
+                    if (player.GetEquipItemBySlotIndex(0) != null)
+                    {
+                        player.GetEquipItemBySlotIndex(0).SetDurability(-10);
+                    }
+                    if (player.GetEquipItemBySlotIndex(1) != null)
+                    {
+                        player.GetEquipItemBySlotIndex(1).SetDurability(-10);
+                    }
+               
+
                     return false;
                 }
                 if (monster.hp <= 0)
