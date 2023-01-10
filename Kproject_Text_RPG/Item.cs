@@ -11,13 +11,14 @@ namespace Kproject_Text_RPG
 
 
         ItemData itemdata;
-
+        int enhanceLevel;
        
         public Item(ItemData data)
         {
             this.itemdata = data;
-            
-          
+            enhanceLevel = 0;
+
+
         }
 
         public int GetID()
@@ -25,19 +26,42 @@ namespace Kproject_Text_RPG
             return itemdata.id;
         }
 
-    
+        public int GetEnhanceLevel()
+        {
+            return enhanceLevel;
+        }
+        public void SetEnhanceLevelUp(int incValue)
+        {
+            string stat = GetItemPropertyStat();
+            int statValue = GetItemPropertyValue();
+            int statUpValue = statValue + incValue;
+            
+            itemdata.property = string.Format($"{stat} + {statUpValue.ToString()}");
+            enhanceLevel ++;
+            
+        }
+
+
         public ItemData.ItemType GetItemType()
         {
             return itemdata.type;
         }
 
-        public int GetItemPropertyValus()
+        public int GetItemPropertyValue()
         {
 
             string[] itemProperty = itemdata.property.Split("+");
             int.TryParse(itemProperty[1], out int value);
 
             return value;
+        }
+        public string GetItemPropertyStat()
+        {
+
+            string[] itemProperty = itemdata.property.Split("+");
+            string Stat = itemProperty[0];
+
+            return Stat;
         }
         public string GetItemProperty()
         {
@@ -48,6 +72,10 @@ namespace Kproject_Text_RPG
         public string GetDescription()
         {
             return itemdata.desc;
+        }
+        public int GetSellPrice()
+        {
+            return itemdata.sellPrice;
         }
 
         public string GetItemName()

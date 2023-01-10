@@ -32,6 +32,7 @@ namespace Kproject_Text_RPG
                         break;
                     case ConsoleKey.NumPad2:
                         Console.WriteLine("Smithy Scene !!!");
+                        Smithy.ShowSmithy(player);
                         break;
                     case ConsoleKey.NumPad3:
                         Console.WriteLine("Inventory Open !!!");
@@ -43,7 +44,7 @@ namespace Kproject_Text_RPG
                         break;
                     default:
                         Console.WriteLine("잘못된입력입니다.");
-                        return;
+                        break;
                 }
 
             }

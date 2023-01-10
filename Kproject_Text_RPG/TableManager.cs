@@ -19,6 +19,8 @@ namespace Kproject_Text_RPG
         protected List<ItemData> _itemTable = null;
         protected List<StageData> _stageTable = null;
         protected List<StageStepData> _stagestepTable = null;
+        protected List<EnhanceData> _enhanceTable = null;
+        protected List<EnhanceLevelData> _enhanceLevelTable = null;
 
         private TableManager()
         {
@@ -93,6 +95,23 @@ namespace Kproject_Text_RPG
 
             }
             Console.WriteLine("==============================");
+            if(_enhanceLevelTable== null)
+            {
+                Console.WriteLine("강화 레벨 테이블 세팅");
+                _enhanceLevelTable = EnhanceLevelDataSet();
+            }
+            Console.WriteLine("==============================");
+            if (_enhanceTable == null)
+            {
+                Console.WriteLine("강화 테이블 세팅");
+                _enhanceTable = EnhanceDataSet();
+            }
+            Console.WriteLine("==============================");
+        }
+
+        public List<EnhanceData> GetEnhanceTable()
+        {
+            return _enhanceTable;
         }
 
         public List<ItemData> GetItemTable()
@@ -127,6 +146,40 @@ namespace Kproject_Text_RPG
             }
 
             return null;
+        }
+
+        public  int GetEnhanceCost(int enhanceID, int enhanceLevel)
+        {
+            for(int i = 0; i< _enhanceTable.Count; i++)
+            {
+                if(_enhanceTable[i].id == enhanceID)
+                {
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceCost;
+                }
+            }
+            return 0;
+        }
+        public int GetEnhanceValue(int enhanceID, int enhanceLevel)
+        {
+            for (int i = 0; i < _enhanceTable.Count; i++)
+            {
+                if (_enhanceTable[i].id == enhanceID)
+                {
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceValue;
+                }
+            }
+            return 0;
+        }
+        public float GetEnhanceSuccessRate(int enhanceID, int enhanceLevel)
+        {
+            for (int i = 0; i < _enhanceTable.Count; i++)
+            {
+                if (_enhanceTable[i].id == enhanceID)
+                {
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceSuccessRate;
+                }
+            }
+            return 0;
         }
 
         public int GetStageCount()
@@ -182,6 +235,170 @@ namespace Kproject_Text_RPG
 
             return stageTable;
         }
+
+
+        public List<EnhanceData> EnhanceDataSet()
+        {
+
+            List<EnhanceData> enhanceTable = new List<EnhanceData>();
+
+            { //enhance 1 
+                EnhanceData enhanceData = new EnhanceData();
+                enhanceData.id = 1;
+                enhanceData.enhanceLevelList = new List<EnhanceLevelData>();
+
+                // EnhanceLevelData 에서 enhance id 조회 해서 해당 enhanceData 가 가진 enhanceLevelList 에 add.
+                for (int i = 0; i < _enhanceLevelTable.Count; i++)
+                {
+                    if (_enhanceLevelTable[i].enhanceID == enhanceData.id)
+                    {
+                        enhanceData.enhanceLevelList.Add(_enhanceLevelTable[i]);
+                    }
+                }
+                enhanceTable.Add(enhanceData);
+            }
+
+            { //enhance 2 
+                EnhanceData enhanceData = new EnhanceData();
+                enhanceData.id = 2;
+                enhanceData.enhanceLevelList = new List<EnhanceLevelData>();
+
+                // EnhanceLevelData 에서 enhance id 조회 해서 해당 enhanceData 가 가진 enhanceLevelList 에 add.
+                for (int i = 0; i < _enhanceLevelTable.Count; i++)
+                {
+                    if (_enhanceLevelTable[i].enhanceID == enhanceData.id)
+                    {
+                        enhanceData.enhanceLevelList.Add(_enhanceLevelTable[i]);
+                    }
+                }
+                enhanceTable.Add(enhanceData);
+            }
+            return enhanceTable;
+        }
+
+        public List<EnhanceLevelData> EnhanceLevelDataSet()
+        {
+            List<EnhanceLevelData> enhanceLevelTable = new List<EnhanceLevelData>();
+
+            // enhance 1
+            { //1-1
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 1;
+                enhanceLevel.enhanceLevel = 1;
+                enhanceLevel.enhanceSuccessRate = 90;
+                enhanceLevel.enhanceCost = 150;
+                enhanceLevel.enhanceStat = "AttackPower";
+                enhanceLevel.enhanceValue = 3;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //1-2
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 1;
+                enhanceLevel.enhanceLevel = 2;
+                enhanceLevel.enhanceSuccessRate = 70;
+                enhanceLevel.enhanceCost = 300;
+                enhanceLevel.enhanceStat = "AttackPower";
+                enhanceLevel.enhanceValue = 5;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //1-3
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 1;
+                enhanceLevel.enhanceLevel = 3;
+                enhanceLevel.enhanceSuccessRate = 50;
+                enhanceLevel.enhanceCost = 500;
+                enhanceLevel.enhanceStat = "AttackPower";
+                enhanceLevel.enhanceValue = 10;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //1-4
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 1;
+                enhanceLevel.enhanceLevel = 4;
+                enhanceLevel.enhanceSuccessRate = 30;
+                enhanceLevel.enhanceCost = 700;
+                enhanceLevel.enhanceStat = "AttackPower";
+                enhanceLevel.enhanceValue = 15;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //1-5
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 1;
+                enhanceLevel.enhanceLevel = 5;
+                enhanceLevel.enhanceSuccessRate = 20;
+                enhanceLevel.enhanceCost = 1000;
+                enhanceLevel.enhanceStat = "AttackPower";
+                enhanceLevel.enhanceValue = 20;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            // enhance 2
+            { //2-1
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 2;
+                enhanceLevel.enhanceLevel = 1;
+                enhanceLevel.enhanceSuccessRate = 90;
+                enhanceLevel.enhanceCost = 100;
+                enhanceLevel.enhanceStat = "defense";
+                enhanceLevel.enhanceValue = 3;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //2-2
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 2;
+                enhanceLevel.enhanceLevel = 2;
+                enhanceLevel.enhanceSuccessRate =70;
+                enhanceLevel.enhanceCost = 200;
+                enhanceLevel.enhanceStat = "defense";
+                enhanceLevel.enhanceValue = 5;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //2-3
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 2;
+                enhanceLevel.enhanceLevel = 3;
+                enhanceLevel.enhanceSuccessRate = 50;
+                enhanceLevel.enhanceCost = 300;
+                enhanceLevel.enhanceStat = "defense";
+                enhanceLevel.enhanceValue = 10;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //2-4
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 2;
+                enhanceLevel.enhanceLevel = 4;
+                enhanceLevel.enhanceSuccessRate = 30;
+                enhanceLevel.enhanceCost = 400;
+                enhanceLevel.enhanceStat = "defense";
+                enhanceLevel.enhanceValue = 15;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+            { //2-5
+                EnhanceLevelData enhanceLevel = new EnhanceLevelData();
+                enhanceLevel.enhanceID = 2;
+                enhanceLevel.enhanceLevel = 5;
+                enhanceLevel.enhanceSuccessRate = 20;
+                enhanceLevel.enhanceCost = 500;
+                enhanceLevel.enhanceStat = "defense";
+                enhanceLevel.enhanceValue = 20;
+
+                enhanceLevelTable.Add(enhanceLevel);
+            }
+
+            return enhanceLevelTable;
+        }
+    
+
+
+
         public List<StageStepData> StageStepDataSet()
         {
             List<StageStepData> stageStepTable = new List<StageStepData>();

@@ -162,7 +162,7 @@ namespace Kproject_Text_RPG
         public void UnEquipItem(Item item)
         {
             ItemData.ItemType itemType = item.GetItemType();
-            int itemProValue = item.GetItemPropertyValus();
+            int itemProValue = item.GetItemPropertyValue();
             switch (itemType)
             {
                 case ItemData.ItemType.Weapon:
@@ -182,7 +182,7 @@ namespace Kproject_Text_RPG
         public void UseItem(Item item)
         {
             ItemData.ItemType itemType = item.GetItemType();
-            int itemProValue = item.GetItemPropertyValus();
+            int itemProValue = item.GetItemPropertyValue();
             string itemName = item.GetItemName();
 
             // 1: 무기 //2 :방어구 //3:소모품
