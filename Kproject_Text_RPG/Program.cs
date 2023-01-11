@@ -1,5 +1,6 @@
 ﻿using System;
 using static System.Net.Mime.MediaTypeNames;
+using System.Threading.Tasks;
 
 namespace Kproject_Text_RPG
 {
@@ -13,43 +14,72 @@ namespace Kproject_Text_RPG
             // int left = 9; // x 좌표
             // int top = 5;  // y 좌표
             //Console.SetCursorPosition(left, top);
-           
-            const int UI_SIZE_X = 59;
-            const int UI_SIZE_Y = 30;
 
-            int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
-            
-            UiManager uiManager = new UiManager();
+            //const int UI_SIZE_X = 60;
+            //const int UI_SIZE_Y = 30;
 
-           
-            uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-            uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            //int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
+
+            //UiManager uiManager = new UiManager();
+
+            //uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            //uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            Ui();
 
             TableManager tableManager =  TableManager.getInstance();
 
-            // 레벨 업 체크 잘되는지 확인용.
-           // if (false) { 
-           // bool isLevelUp = false;
-           // isLevelUp = tableManager.LevelUpCheck (5,10);
-           // Console.WriteLine("==================================================================================");
-           // Console.WriteLine("현재 레벨 1, 보유 경험치 5, 획득 경험치 10인 경우 레벨업인가요? {0} ", isLevelUp);
-           // Console.WriteLine("==================================================================================");
-           // 
-           // isLevelUp = tableManager.LevelUpCheck(15, 190);
-           // Console.WriteLine("==================================================================================");
-           // Console.WriteLine("현재 레벨 1, 보유 경험치 15, 획득 경험치 190인 경우 레벨업인가요? {0} ", isLevelUp);
-           // Console.WriteLine("==================================================================================");
-           // 
-           // }
+            if(false){
+                Console.SetCursorPosition(0, 0);
 
+                for (int i = 1; i < 10; i++)
+                {
 
-            Console.WriteLine("캐릭터 이름을 입력하세요.");
-            string name = Console.ReadLine();
-            Player player= new Player(name);
+                    Console.Read();
+                    BackGround(i);
+                    Task.Delay(100).Wait();
+                    // BackGround(0);
 
+                }
 
-            Lobby.BottomButtonInput(player);
+                Console.Read();
+            }
+            
+            //{ 캐릭터 닉네임 입력 부분
+            Console.SetCursorPosition(45, 10);
+                string[] inputChracterNmae = { "캐", "릭", "터", " ", "이", "름", "을", " ", "입", "력", "하", "세", "요." };
 
+                for (int i = 0; i < inputChracterNmae.Length; i++)
+                {
+                    Task.Delay(100).Wait();
+                    Console.Write("{0}", inputChracterNmae[i]);
+
+                }
+                Console.WriteLine();
+
+                Console.SetCursorPosition(45, 12);
+                Console.Write($"[                       ]");
+                Console.SetCursorPosition(47, 12);
+                string name = Console.ReadLine();
+
+                Player player = new Player(name);
+            // } 캐릭터 닉네임 입력 부분
+            
+            Console.SetCursorPosition(2, 1);
+            Lobby.ShowLobby(player);
+
+        }
+
+        public static void Ui()
+        {
+            const int UI_SIZE_X = 60;
+            const int UI_SIZE_Y = 30;
+
+            int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
+
+            UiManager uiManager = new UiManager();
+
+            uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+            uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
         }
 
         public static bool Battle(Player player, int monsterId)
@@ -374,6 +404,339 @@ namespace Kproject_Text_RPG
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■■■■■■■■■■■■");
             Console.WriteLine(); // 10
+        }
+        public static void BackGround(int value)
+        {
+            switch (value)
+            {
+                case 1:
+                    Console.SetCursorPosition(6, 5);
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.WriteLine("									                                                                   ");
+                    Console.WriteLine("                                                                                                    ");
+                    Console.WriteLine("      ..                                                                                            ");
+                    Console.WriteLine("    .~^~~.                                                                                          ");
+                    Console.WriteLine("    7:  :7                                                                                          ");
+                    Console.WriteLine("    7^  ^7                                                                                          ");
+                    Console.WriteLine("    .~77~.                                                                                          ");
+                    Console.WriteLine("      ?!.                                                                                           ");
+                    Console.WriteLine("     ^?:!                                                                                           ");
+                    Console.WriteLine("     ~! 7                                                                                           ");
+                    Console.WriteLine("     7^ 7.                                                                                          ");
+                    Console.WriteLine("     ?: 7^                                                                                          ");
+                    Console.WriteLine("     ?. ~!                                                                                          ");
+                    Console.WriteLine("    .?  ^~                                                                                          ");
+                    Console.WriteLine("     ?. ~:                                                                                          ");
+                    Console.WriteLine("     7! !                                                                                           ");
+                    Console.WriteLine("    ~7J!^~                                                                                          ");
+                    Console.WriteLine("   :?J!^~7.                                                                                         ");
+                    Console.WriteLine(" .!557  ~~!                                                                                         ");
+                    Console.WriteLine("^?Y!.    ~~~:                                                                                       ");
+                    Console.WriteLine("!J~       :~~                                                                                       ");
+                    Console.WriteLine("^JY~~~~~~^!Y7                                                                                       ");
+                    Console.ResetColor();
+                    
+                    break;
+
+                case 2:
+                    Console.SetCursorPosition(6, 5);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("									                                                                    ");
+                    Console.WriteLine("                   .^~^                                                                              ");
+                    Console.WriteLine("                  ^7..^!                                                                             ");
+                    Console.WriteLine("                  !:   !.                                                                            ");
+                    Console.WriteLine("                  .!^:^!                                                                             ");
+                    Console.WriteLine("                   .~7^                                                                              ");
+                    Console.WriteLine("                    ~^^                                                                              ");
+                    Console.WriteLine("                    !.!                                                                              ");
+                    Console.WriteLine("                   :^ !                                                                              ");
+                    Console.WriteLine("                   ^: ~:                                                                             ");
+                    Console.WriteLine("                   ^. ^^                                                                             ");
+                    Console.WriteLine("                   ^  .^                                                                             ");
+                    Console.WriteLine("                   ~   ~                                                                             ");
+                    Console.WriteLine("                   7. .7                                                                             ");
+                    Console.WriteLine("                   ~^ !^                                                                             ");
+                    Console.WriteLine("                   :J.~:                                                                             ");
+                    Console.WriteLine("                   ^YJ.~                                                                             ");
+                    Console.WriteLine("                 .:75?^~.                                                                            ");
+                    Console.WriteLine("                !JJ?~:!~:                                                                            ");
+                    Console.WriteLine("               ~GJ   :!!.                                                                            ");
+                    Console.WriteLine("               ?Y.   :?7:^!:                                                                         ");
+                    Console.WriteLine("               !~^~~~~J!7J?~                                                                         ");
+                    Console.ResetColor();
+                   
+                    break;
+
+                case 3:
+                    Console.SetCursorPosition(6, 5);
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.WriteLine("									                                                                   ");
+                    Console.WriteLine("		    	                  :~~!~                                                                ");
+                    Console.WriteLine("                             .7   !^                                                                ");
+                    Console.WriteLine("                              7.  ~^                                                                ");
+                    Console.WriteLine("                              :~~!!                                                                 ");
+                    Console.WriteLine("                               .?^                                                                  ");
+                    Console.WriteLine("                               ~~7                                                                  ");
+                    Console.WriteLine("                               7.!:                                                                 ");
+                    Console.WriteLine("                               ? ^~                                                                 ");
+                    Console.WriteLine("                              .? .7                                                                 ");
+                    Console.WriteLine("                              .!  7                                                                 ");
+                    Console.WriteLine("                              :~  7:                                                                ");
+                    Console.WriteLine("                              ^!  !^                                                                ");
+                    Console.WriteLine("                              ^!  7:                                                                ");
+                    Console.WriteLine("                              :!  J.                                                                ");
+                    Console.WriteLine("                               7 .5.                                                                ");
+                    Console.WriteLine("                               7 ^5^                                                                ");
+                    Console.WriteLine("                             7JY.?5^                                                                ");
+                    Console.WriteLine("                             5?~^Y:                                                                 ");
+                    Console.WriteLine("                            ^5.:!J                                                                  ");
+                    Console.WriteLine("                           ::.  !7:..                                                               ");
+                    Console.WriteLine("                           ~^^^!Y?7?J7                                                              ");
+                    Console.ResetColor();
+                    
+                    break;
+
+                case 4:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition(6, 5);
+                   
+                    Console.WriteLine("						                                                                               ");
+                    Console.WriteLine("                                          :^~~.                                                     ");
+                    Console.WriteLine("                                         ^^  .?.                                                    ");
+                    Console.WriteLine("                                         ^^  .J.                                                    ");
+                    Console.WriteLine("                                          ^^:::                                                     ");
+                    Console.WriteLine("                                           !~.                                                      ");
+                    Console.WriteLine("                                          ^~^^                                                      ");
+                    Console.WriteLine("                                          !::~                                                      ");
+                    Console.WriteLine("                                          ! .!                                                      ");
+                    Console.WriteLine("                                         :~ .7                                                      ");
+                    Console.WriteLine("                                         !^  7.                                                     ");
+                    Console.WriteLine("                                         7:  !.                                                     ");
+                    Console.WriteLine("                                         7:  7.                                                     ");
+                    Console.WriteLine("                                         ~~ :Y:                                                     ");
+                    Console.WriteLine("                                         :7 757                                                     ");
+                    Console.WriteLine("                                         .7.JJJ~                                                    ");
+                    Console.WriteLine("                                         ^^!::??:                                                   ");
+                    Console.WriteLine("                                        ^~!^  .?!                                                   ");
+                    Console.WriteLine("                                      .!!!:    77:                                                  ");
+                    Console.WriteLine("                                      .!!:     !P5                                                  ");
+                    Console.WriteLine("                                      ^!7??~^^^!?!                                                  ");
+                    Console.WriteLine("									                                                                   ");
+                    Console.ResetColor();
+                    
+
+                    break;
+
+                case 5:
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.SetCursorPosition(6, 5);
+                    Console.WriteLine("									                                                                   ");
+                    Console.SetCursorPosition(6, 6);
+                    Console.WriteLine("									                                                                   ");
+                    Console.SetCursorPosition(6, 7);
+                    Console.WriteLine("                                                       ..                                           ");
+                    Console.SetCursorPosition(6, 8);
+                    Console.WriteLine("                                                      ~~^!:                                         ");
+                    Console.SetCursorPosition(6, 9);
+                    Console.WriteLine("                                                     ~^   7.                                        ");
+                    Console.SetCursorPosition(6, 10);
+                    Console.WriteLine("                                                     ~!  :?.                                        ");
+                    Console.SetCursorPosition(6, 11);
+                    Console.WriteLine("                                                      ^77!:                                         ");
+                    Console.SetCursorPosition(6, 12);
+                    Console.WriteLine("                                                       77^                                          ");
+                    Console.SetCursorPosition(6, 13);
+                    Console.WriteLine("                                                      .J.7                                          ");
+                    Console.SetCursorPosition(6, 14);
+                    Console.WriteLine("                                                      :? 7.                                         ");
+                    Console.SetCursorPosition(6, 15);
+                    Console.WriteLine("                                                      ^7 !^                                         ");
+                    Console.SetCursorPosition(6, 16);
+                    Console.WriteLine("                                                      ~~ ^7                                         ");
+                    Console.SetCursorPosition(6, 17);
+                    Console.WriteLine("                                                      !^ .?                                         ");
+                    Console.SetCursorPosition(6, 18);
+                    Console.WriteLine("                                                      7: .!                                         ");
+                    Console.SetCursorPosition(6, 19);
+                    Console.WriteLine("                                                      7: ^~                                         ");
+                    Console.SetCursorPosition(6, 20);
+                    Console.WriteLine("                                                      ~..J:                                         ");
+                    Console.SetCursorPosition(6, 21);
+                    Console.WriteLine("                                                     :!:J!7                                         ");
+                    Console.SetCursorPosition(6, 22);
+                    Console.WriteLine("                                                    .!^7^7?^                                        ");
+                    Console.SetCursorPosition(6, 23);
+                    Console.WriteLine("                                                   ^??7  ^?7.                                       ");
+                    Console.SetCursorPosition(6, 24);
+                    Console.WriteLine("                                                  Y5!:    ^!7.                                      ");
+                    Console.SetCursorPosition(6, 25);
+                    Console.WriteLine("                                                  57       ^??                                      ");
+                    Console.SetCursorPosition(6, 26);
+                    Console.WriteLine("                                                  7J!^^^^^^^J?                                      ");
+                    Console.ResetColor();
+                    break;
+
+                case 6:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition(6, 5);
+                    Console.WriteLine("																		                               ");
+                    Console.SetCursorPosition(6, 6); 
+                    Console.WriteLine("					    							                   .::                             ");
+                    Console.SetCursorPosition(6, 7);
+                    Console.WriteLine("                                                                   ~..:7.                           ");
+                    Console.SetCursorPosition(6, 8);
+                    Console.WriteLine("                                                                  .!   ~~                           ");
+                    Console.SetCursorPosition(6, 9);
+                    Console.WriteLine("                                                                   ~~.:?.                           ");
+                    Console.SetCursorPosition(6, 10);
+                    Console.WriteLine("                                                                    :7~.                            ");
+                    Console.SetCursorPosition(6, 11);
+                    Console.WriteLine("                                                                    ^~^                             ");
+                    Console.SetCursorPosition(6, 12);
+                    Console.WriteLine("                                                                    ~ ~                             ");
+                    Console.SetCursorPosition(6, 13);
+                    Console.WriteLine("                                                                   .^ ~.                            ");
+                    Console.SetCursorPosition(6, 14);
+                    Console.WriteLine("                                                                   :^ ^^                            ");
+                    Console.SetCursorPosition(6, 15);
+                    Console.WriteLine("                                                                   ~: .~                            ");
+                    Console.SetCursorPosition(6, 16);
+                    Console.WriteLine("                                                                   !.  ^                            ");
+                    Console.SetCursorPosition(6, 17);
+                    Console.WriteLine("                                                                   7.  ^                            ");
+                    Console.SetCursorPosition(6, 18);
+                    Console.WriteLine("                                                                   ~:  7                            ");
+                    Console.SetCursorPosition(6, 19);
+                    Console.WriteLine("                                                                   .~ ^~                            ");
+                    Console.SetCursorPosition(6, 20);
+                    Console.WriteLine("                                                                   .! J^                            ");
+                    Console.SetCursorPosition(6, 21);
+                    Console.WriteLine("                                                                   ^~:57                            ");
+                    Console.SetCursorPosition(6, 22);
+                    Console.WriteLine("                                                                 .:!:75J:                           ");
+                    Console.SetCursorPosition(6, 23);
+                    Console.WriteLine("                                                                !!!!^:?7!                           ");
+                    Console.SetCursorPosition(6, 24);
+                    Console.WriteLine("                                                              ~J57.   ?J^                           ");
+                    Console.SetCursorPosition(6, 25);
+                    Console.WriteLine("                                                              ?~?:    7Y!~7                         ");
+                    Console.SetCursorPosition(6, 26);
+                    Console.WriteLine("                                                              ~^~^^^^^!JJ5Y                         ");
+                    Console.ResetColor();
+                  
+
+                    break;
+                case 7:
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                   
+                    Console.SetCursorPosition(6, 5);
+                    Console.WriteLine("					   										                     ^~~!^                 ");
+                    Console.SetCursorPosition(6, 6);
+                    Console.WriteLine("                                                                             ^~  .7                 ");
+                    Console.SetCursorPosition(6, 7);
+                    Console.WriteLine("                                                                             ^!   7.                ");
+                    Console.SetCursorPosition(6, 8);
+                    Console.WriteLine("                                                                              ^~!7^                 ");
+                    Console.SetCursorPosition(6, 9);
+                    Console.WriteLine("                                                                               ^?.                  ");
+                    Console.SetCursorPosition(6, 10);
+                    Console.WriteLine("                                                                               7^!                  ");
+                    Console.SetCursorPosition(6, 11);
+                    Console.WriteLine("                                                                              .? ?                  ");
+                    Console.SetCursorPosition(6, 12);
+                    Console.WriteLine("                                                                              ^7 !:                 ");
+                    Console.SetCursorPosition(6, 13);
+                    Console.WriteLine("                                                                              ~~ ^~                 ");
+                    Console.SetCursorPosition(6, 14);
+                    Console.WriteLine("                                                                              ^^ :!                 ");
+                    Console.SetCursorPosition(6, 15);
+                    Console.WriteLine("                                                                              ~: .?                 ");
+                    Console.SetCursorPosition(6, 16);
+                    Console.WriteLine("                                                                              7:  ?                 ");
+                    Console.SetCursorPosition(6, 17);
+                    Console.WriteLine("                                                                              7: .7                 ");
+                    Console.SetCursorPosition(6, 18);
+                    Console.WriteLine("                                                                              !7 :?                 ");
+                    Console.SetCursorPosition(6, 19);
+                    Console.WriteLine("                                                                              ^5^ ?                 ");
+                    Console.SetCursorPosition(6, 20);
+                    Console.WriteLine("                                                                              :YY.7.                ");
+                    Console.SetCursorPosition(6, 21);
+                    Console.WriteLine("                                                                            .7?YJ??.                ");
+                    Console.SetCursorPosition(6, 22);
+                    Console.WriteLine("                                                                            ^J^??Y                  ");
+                    Console.SetCursorPosition(6, 23);
+                    Console.WriteLine("                                                                            ?7 ~Y7                  ");
+                    Console.SetCursorPosition(6, 24);
+                    Console.WriteLine("                                                                           :^  :Y7:.                ");
+                    Console.SetCursorPosition(6, 26);
+                    Console.WriteLine("                                                                           ~^^^75Y5YJ               ");
+                    Console.ResetColor();
+                    break;
+
+                case 8:
+                   
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition(6, 5);
+                    Console.WriteLine("																		                       .       ");
+                    Console.SetCursorPosition(6, 6);
+                    Console.WriteLine("                                                                                          :~^~^     ");
+                    Console.SetCursorPosition(6, 7);
+                    Console.WriteLine("                                                                                         :!   ~^    ");
+                    Console.SetCursorPosition(6, 8);
+                    Console.WriteLine("                                                                                         .!   ^~    ");
+                    Console.SetCursorPosition(6, 9);
+                    Console.WriteLine("                                                                                          ^~^~^     ");
+                    Console.SetCursorPosition(6, 10);
+                    Console.WriteLine("                                                                                           :~.      ");
+                    Console.SetCursorPosition(6, 11);
+                    Console.WriteLine("                                                                                          .~:~      ");
+                    Console.SetCursorPosition(6, 12);
+                    Console.WriteLine("                                                                                          ~^ !      ");
+                    Console.SetCursorPosition(6, 13);
+                    Console.WriteLine("                                                                                          7. !      ");
+                    Console.SetCursorPosition(6, 14);
+                    Console.WriteLine("                                                                                         .~  !:     ");
+                    Console.SetCursorPosition(6, 15);
+                    Console.WriteLine("                                                                                         ^^  ^^     ");
+                    Console.SetCursorPosition(6, 16);
+                    Console.WriteLine("                                                                                         ~:  ^^     ");
+                    Console.SetCursorPosition(6, 17);
+                    Console.WriteLine("                                                                                         ^^  ^.     ");
+                    Console.SetCursorPosition(6, 18);
+                    Console.WriteLine("                                                                                         .?. :^     ");
+                    Console.SetCursorPosition(6, 19);
+                    Console.WriteLine("                                                                                          J?: 7.    ");
+                    Console.SetCursorPosition(6, 20);
+                    Console.WriteLine("                                                                                          J!?^:7    ");
+                    Console.SetCursorPosition(6, 21);
+                    Console.WriteLine("                                                                                         :YJ^.^~~   ");
+                    Console.SetCursorPosition(6, 22);
+                    Console.WriteLine("                                                                                        :Y?~  .?!.  ");
+                    Console.SetCursorPosition(6, 23);
+                    Console.WriteLine("                                                                                      .7Y?~    J7:::");
+                    Console.SetCursorPosition(6, 24);
+                    Console.WriteLine("                                                                                       ?5^     7J?7:");
+                    Console.SetCursorPosition(6, 25);
+                    Console.WriteLine("                                                                                     ~^~JJ7:::.^!^  ");
+                    Console.SetCursorPosition(6, 26);
+                    Console.ResetColor();
+                 
+                    break;
+
+                case 0:
+                    
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    for (int i = 0; i < 22; i++)
+                    {
+                        Console.SetCursorPosition(6, 5+i);
+                        Console.WriteLine("                                                                                       ");
+                    }
+                    Console.ResetColor();
+                    Task.Delay(50).Wait();
+                    break;
+
+            }
         }
     }
 }

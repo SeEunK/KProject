@@ -167,6 +167,32 @@ namespace Kproject_Text_RPG
             return null;
         }
 
+        public string LevelDisplay()
+        {
+            TableManager tableManager = TableManager.getInstance();
+
+            int prevNeedExp = 0;
+            int displayExp = 0;
+
+            if (level > 1)
+            {
+                prevNeedExp = tableManager.levelTable[level - 1].needExp;
+                displayExp = prevNeedExp - exp;
+            }
+            else
+            {
+                prevNeedExp = 0;
+                displayExp = exp;
+            }
+
+            int nextNeedExp = tableManager.levelTable[level].needExp;
+
+            string returnValue = $"Lv.{level} (Exp: {displayExp} / {nextNeedExp})";
+
+            return returnValue;
+
+        }
+
 
 
         public void UnEquipItem(Item item)

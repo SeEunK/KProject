@@ -601,13 +601,13 @@ namespace Kproject_Text_RPG
                 levelTable.Add(level);
             }
 
-            // Console.WriteLine("========LevelTable============");
-            //
-            // foreach (Level level in levelTable)
-            // {
-            //     Console.WriteLine("LEVEL:  {0} /  Need EXP : {1} ", level.levelNum, level.needExp);
-            // }
-             return levelTable;
+           // Console.WriteLine("========LevelTable============");
+           // 
+           // foreach (Level level in levelTable)
+           // {
+           //     Console.WriteLine("LEVEL:  {0} /  Need EXP : {1} ", level.levelNum, level.needExp);
+           // }
+            return levelTable;
         }
 
         public int GetLevelByExp(int retentionExp)
@@ -629,6 +629,7 @@ namespace Kproject_Text_RPG
             return level;
 
         }
+      
         public bool LevelUpCheck(int currExp, int gainExp)
         {
 

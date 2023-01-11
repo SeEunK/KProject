@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kproject_Text_RPG
 {
-    internal class UiManager
+    public  class UiManager
     {
         public void UISet(int UI_SIZE_Y, int UI_SIZE_X, int[,] ui_screen)
         {
@@ -36,8 +36,9 @@ namespace Kproject_Text_RPG
                 }
             }
         }
-        public void DrawUI(int UI_SIZE_Y, int UI_SIZE_X, int[,] ui_screen)
+        public  void DrawUI(int UI_SIZE_Y, int UI_SIZE_X, int[,] ui_screen)
         {
+
 
             for (int y = 0; y < UI_SIZE_Y; y++)
             {
@@ -46,14 +47,20 @@ namespace Kproject_Text_RPG
                     switch (ui_screen[y, x])
                     {
                         case -3:
-                            Console.Write("╊".PadRight(2, ' '));
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.Write("  ".PadRight(2, ' '));
+                            Console.ResetColor();
                             break;
 
                         case -2:
-                            Console.Write("━".PadRight(2, ' '));
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.Write(" ".PadRight(2, ' '));
+                            Console.ResetColor();
                             break;
                         case -1:
-                            Console.Write("┃".PadRight(2, ' '));
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.Write(" ".PadRight(2, ' '));
+                            Console.ResetColor();
                             break;
 
                         default:
@@ -67,6 +74,7 @@ namespace Kproject_Text_RPG
             }
             Console.WriteLine();
 
+        Console.SetCursorPosition(0, 0);
         }
     }
 }

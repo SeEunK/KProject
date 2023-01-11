@@ -10,12 +10,38 @@ namespace Kproject_Text_RPG
 {
     public class Lobby
     {
+        public static void ShowLobby (Player player)
+        {
+            Console.Clear();
+            Program.Ui();
 
+            Console.SetCursorPosition(2, 1);
+            Console.WriteLine(String.Format("{0}", "                                                      LOBBY                                                        "));
+            Console.SetCursorPosition(2, 2);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+            Console.SetCursorPosition(2, 3);
+            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
+            Console.SetCursorPosition(2, 4);
+            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(), -10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
+            Console.SetCursorPosition(2, 5);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+
+
+
+
+
+
+            BottomButtonInput(player);
+        }
         public static void BottomButtonInput(Player player)
         {
-            Console.WriteLine(String.Format("{0}", "========================================================================================================================").PadLeft(120 - (60 - ("================================".Length / 2))));
-            Console.WriteLine(String.Format("{0}", "||     NumPad1: \"Shop\"   ||   NumPad2: \"Smithy\"    ||    NumPad3: \"Inventory\"   ||   NumPad4: \"Adventure\"     ||").PadLeft(120 - (60 - ("||     NumPad1: \"Shop\"   ||   NumPad2: \"Smithy\"    ||    NumPad3: \"Inventory\"   ||   NumPad4: \"Adventure\"     ||".Length / 2))));
-            Console.WriteLine(String.Format("{0}", "========================================================================================================================").PadLeft(120 - (60 - ("================================".Length / 2))));
+            Console.SetCursorPosition(2, 27);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+           
+            Console.SetCursorPosition(2, 28);
+            Console.WriteLine(String.Format("{0}", "     NumPad1: \"Shop\"     ||     NumPad2: \"Smithy\"   ||     NumPad3: \"Inventory\"     ||    NumPad4: \"Adventure\" "));
 
 
             while (true)
@@ -25,71 +51,108 @@ namespace Kproject_Text_RPG
                 switch (inputKey.Key)
                 {
                     case ConsoleKey.NumPad1:
-                        Console.WriteLine("Shop Scene !!!");
+                    case ConsoleKey.D1:
+                        //Console.WriteLine("Shop Scene !!!");
                         Shop.ShowShop(player);
                         break;
                     case ConsoleKey.NumPad2:
-                        Console.WriteLine("Smithy Scene !!!");
+                    case ConsoleKey.D2:
+                        //Console.WriteLine("Smithy Scene !!!");
                         Smithy.ShowSmithy(player);
                         break;
                     case ConsoleKey.NumPad3:
-                        Console.WriteLine("Inventory Open !!!");
+                    case ConsoleKey.D3:
+                       // Console.WriteLine("Inventory Open !!!");
                         OpenInventory(player);
                         break;
                     case ConsoleKey.NumPad4:
-                        Console.WriteLine("Adventure Scene !!!");
+                    case ConsoleKey.D4:
+                        //Console.WriteLine("Adventure Scene !!!");
                         Adventure.ShowStageList(player);
                         break;
                     default:
+                        Console.SetCursorPosition(50, 7);
                         Console.WriteLine("잘못된입력입니다.");
+
+                        Task.Delay(1000).Wait();
+                        Console.SetCursorPosition(40, 7);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("                                          ");
                         break;
                 }
 
             }
         }
 
+        // !!!!!!!!!!!!!!!!!!!!! 23-01-11 인벤 오픈 출력 고쳐야함!!!!
         public static void OpenInventory(Player player)
         {
-            Console.WriteLine("┌────────────────────────────────────────────────────────────────────────────────────────────────┐");
+            Console.SetCursorPosition(2, 20);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+
+            string[] strInventoryList = null;
+            
             for (int i = 0; i < player.GetInvenMaxSize(); i++)
             {
-                Console.Write("[ {0} 번 슬롯: ", i + 1);
+                
+                // strSlotInfo = string.Format("[ {0} 번 슬롯: ", i + 1);
+                // Console.Write("[ {0} 번 슬롯: ", i + 1);
 
                 if (player.inventory.Count() == 0 || i >= player.inventory.Count())
                 {
-                    Console.Write("empty ]");
+                    strInventoryList[i] = string.Format("[ {0} 번 슬롯:  empty  ]", i + 1);
+                    
                 }
                 else if (player.inventory[i] != null)
                 {
-                    Console.Write("{0}]", player.inventory[i].GetItemName());
+                    strInventoryList[i] = string.Format("[ {0} 번 슬롯:  {1}  ]", i + 1, player.inventory[i].GetItemName());
+                    //Console.Write("{0}]", player.inventory[i].GetItemName());
                 }
-
-                if (i == 4)
-                {
-                    Console.WriteLine();
-                }
+               
+                // if (i == 4)
+                // {
+                //     Console.WriteLine();
+                // }
             }
+
+            Console.SetCursorPosition(2, 22);
+            Console.WriteLine(String.Format($"{strInventoryList[0]}, {strInventoryList[1]} , {strInventoryList[2]}, {strInventoryList[3]} , {strInventoryList[4]}"));
+            Console.SetCursorPosition(2, 23);
+            Console.WriteLine(String.Format($"{strInventoryList[5]}, {strInventoryList[6]} , {strInventoryList[7]}, {strInventoryList[8]} , {strInventoryList[9]}"));
+
+
+
             Console.WriteLine();
-            Console.WriteLine("└────────────────────────────────────────────────────────────────────────────────────────────────┘");
+            
+            Console.SetCursorPosition(2, 26);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+
             Console.WriteLine();
 
-            if (player.inventory.Count == 0) { 
-            Console.WriteLine("============================================================================");
-            Console.WriteLine("== [   close inventory : Esc ] ==");
-            Console.WriteLine("============================================================================");
+            if (player.inventory.Count == 0) {
+
+                Console.SetCursorPosition(2, 27);
+                Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                Console.SetCursorPosition(2, 28);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine(String.Format("{0}", "                                                                        Esc :        close inventory              "));
+                Console.ResetColor();
+          
             }
             else 
             {
-                Console.WriteLine("============================================================================");
-                Console.WriteLine("== [ select : slot number F1 ~ F10  /  close inventory : Esc ] ==");
-                Console.WriteLine("============================================================================");
+                Console.SetCursorPosition(2, 27);
+                Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                Console.SetCursorPosition(2, 28);
+                Console.WriteLine(String.Format("{0}", "        F1 ~ F10  :   slot number select   ||          Esc :        close inventory                   "));
+
             }
             while (true)
             {
                 ConsoleKeyInfo inputKey = Console.ReadKey();
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
-                    BottomButtonInput(player);
+                    ShowLobby(player);
                     break;
                 }
                 else

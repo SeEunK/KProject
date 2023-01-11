@@ -16,19 +16,45 @@ namespace Kproject_Text_RPG
             int stageCount = tableManager.GetStageTable().Count;
             int sellectStageNum = 0;
 
+
+
+
+            Console.Clear();
+            Program.Ui();
+
+            Console.SetCursorPosition(2, 1);
+            Console.WriteLine(String.Format("{0}", "                                                   Adventure                                                       "));
+            Console.SetCursorPosition(2, 2);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+            Console.SetCursorPosition(2, 3);
+            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
+            Console.SetCursorPosition(2, 4);
+            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
+            Console.SetCursorPosition(2, 5);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+
+         
+
+
             if (stageCount != 0)
             {
+                Console.SetCursorPosition(45, 7);
                 Console.WriteLine("모험 할 stage를 선택하세요. ");
+                Console.SetCursorPosition(45, 9);
                 Console.WriteLine("====== Stage List ======");
                 for (int i = 0; i < stageCount; i++)
                 {
-
+                    Console.SetCursorPosition(45, 10+i);
                     Console.WriteLine("[STAGE {0}] ", i + 1);
 
                 }
-                Console.WriteLine("=====================================================");
-                Console.WriteLine("|| 스테이지 선택 : Numpad 1~ {0} || 모험 그만하기 (로비로 가기) : Esc ||", stageCount);
-                Console.WriteLine("=====================================================");
+                Console.SetCursorPosition(2, 27);
+                Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                Console.SetCursorPosition(2, 28);
+                Console.WriteLine(String.Format("{0}", $"          NumPad 1 ~ {stageCount} : 스테이지 선택            ||            Esc : \"Go To Lobby\"     "));
+
 
                 sellectStageNum = StageSellect(stageCount, player);
                 if (sellectStageNum == -1)
@@ -37,7 +63,7 @@ namespace Kproject_Text_RPG
                 }
                 else if(sellectStageNum == 0)
                 {
-                    Lobby.BottomButtonInput(player);
+                    Lobby.ShowLobby(player);
                 }
                 else
                 {
@@ -139,7 +165,7 @@ namespace Kproject_Text_RPG
 
                             case ConsoleKey.Escape:
                                 Console.WriteLine("Go to Lobby");
-                                Lobby.BottomButtonInput(player);
+                                Lobby.ShowLobby(player);
                                 break;
                             default : 
                                 Console.WriteLine("잘못된입력입니다.");
@@ -160,7 +186,7 @@ namespace Kproject_Text_RPG
                         {
                              case ConsoleKey.Escape:
                                 Console.WriteLine(" Go to Lobby ");
-                                Lobby.BottomButtonInput(player);
+                                Lobby.ShowLobby(player);
                                 break;
                              default: Console.WriteLine("잘못된 입력입니다.");
                                 break;

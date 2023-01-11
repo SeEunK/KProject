@@ -18,18 +18,35 @@ namespace Kproject_Text_RPG
             List<EnhanceData> enhanceTable = tableManager.GetEnhanceTable();
 
             int smithySubMenu = 0;
+            Console.Clear();
+            Program.Ui();
+            
 
-            Console.WriteLine(String.Format("{0}","================Smithy =================").PadLeft(50 -(25-("================Smithy =================".Length/2))));
-            Console.WriteLine("======================================");
-            Console.WriteLine("|| [ F1 : Enhance ]  [ F2 : Repair ]  [ esc : Go To Lobby ]||");
-            Console.WriteLine("======================================");
+            Console.SetCursorPosition(2, 1);
+            Console.WriteLine(String.Format("{0}", "                                                     Smithy                                                        "));
+            Console.SetCursorPosition(2, 2);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+            Console.SetCursorPosition(2, 3);
+            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
+            Console.SetCursorPosition(2, 4);
+            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
+            Console.SetCursorPosition(2, 5);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+
+
+            Console.SetCursorPosition(2, 27);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.SetCursorPosition(2, 28);
+            Console.WriteLine(String.Format("{0}", "         F1 : \"Enhance\"            ||          F2 : \"Repair\"            ||        Esc : \"Go To Lobby\"     "));
 
             while (true)
             {
                 ConsoleKeyInfo inputKey = Console.ReadKey();
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
-                    Lobby.BottomButtonInput(player);
+                    Lobby.ShowLobby(player);
                     break;
                 }
                 else if (inputKey.Key == ConsoleKey.F1)
