@@ -159,6 +159,10 @@ namespace Kproject_Text_RPG
             return 0;
         }
 
+        public string GetStageName(int index)
+        {
+            return _stageTable[index].stageName;
+        }
         public int GetStageCount()
         {
             return _stageTable.Count;
@@ -171,7 +175,7 @@ namespace Kproject_Text_RPG
             { //stage 1 
                 StageData stageData = new StageData();
                 stageData.id = 1;
-
+                stageData.stageName = "왕의 골짜기";
                 stageData.stageStepList = new List<StageStepData>(); 
 
                 // stageStep Data 에서 stage id 조회해서 해당 stepData 가 가진 stepData에 add.
@@ -189,7 +193,7 @@ namespace Kproject_Text_RPG
             { //stage 2 
                 StageData stageData = new StageData();
                 stageData.id = 2;
-
+                stageData.stageName = "고요한 성터";
                 stageData.stageStepList = new List<StageStepData>();
 
                 // stageStep Data 에서 stage id 조회해서 해당 stepData 가 가진 stepData에 add.
@@ -612,22 +616,19 @@ namespace Kproject_Text_RPG
 
         public int GetLevelByExp(int retentionExp)
         {
-            int level = 0;
-
-            for (int i = 0; i < _levelTable.Count; ++i)
+            for (int i = _levelTable.Count -1; i >= 0 ; --i)
             {
-                if (retentionExp > _levelTable[i].needExp)
+                if (retentionExp >= _levelTable[i].needExp)
                 {
-                    level += 1;
-
-                }
-                else if (retentionExp <= _levelTable[i].needExp)
-                {
-                    break;
+                    return _levelTable[i].levelNum;
                 }
             }
-            return level;
+            return 1; 
 
+        }
+        public int GetMaxLevel()
+        {
+            return _levelTable[_levelTable.Count - 1].levelNum;
         }
       
         public bool LevelUpCheck(int currExp, int gainExp)
@@ -635,13 +636,20 @@ namespace Kproject_Text_RPG
 
             int currLevel = GetLevelByExp(currExp);
             int nextLevel = GetLevelByExp(currExp + gainExp);
-            int nextNeedExp = _levelTable[nextLevel].needExp;
+            int nextNeedExp = 0;
 
             int displayExp = 0;
 
+            if(GetMaxLevel() == currLevel)
+            {
+                return false;
+            }
+           
             if (currLevel == nextLevel)
             {
                 displayExp = currExp + gainExp;
+                nextNeedExp = _levelTable[nextLevel].needExp;
+                Console.SetCursorPosition(40, 7);
                 Console.WriteLine("Lv.{0} (Exp: {1} / {2}) ", nextLevel, displayExp, nextNeedExp);
 
                 return false; //레벨업 X
@@ -649,15 +657,20 @@ namespace Kproject_Text_RPG
             else if (currLevel < nextLevel)
             {
                 //실제 필요경험치보다 획득한 경험치가 크거나 같으면,
+                nextNeedExp = _levelTable[nextLevel].needExp;
                 displayExp = (currExp + gainExp) - _levelTable[currLevel].needExp;
+                Console.SetCursorPosition(40, 7);
                 Console.WriteLine("Lv.{0} (Exp: {1} / {2}) ", nextLevel, displayExp, nextNeedExp);
                 return true; // 레벨업
             }
            else
             { // 있을수없는 경우지만, 예외적인 애러 발생할수있으니...  
+
+                Console.SetCursorPosition(40, 7);
                 Console.WriteLine("[ERROR] 알수없는 레벨입니다.");
                 return false;
             }
+           
         }
     }
 }

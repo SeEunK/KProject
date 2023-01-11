@@ -63,7 +63,13 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.SetCursorPosition(50, 7);
+                    Console.WriteLine("잘못된입력입니다.");
+
+                    Task.Delay(1000).Wait();
+                    Console.SetCursorPosition(40, 7);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("                                          ");
                 }
             }
         }

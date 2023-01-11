@@ -78,6 +78,7 @@ namespace Kproject_Text_RPG
                         Console.SetCursorPosition(40, 7);
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.WriteLine("                                          ");
+                        Console.ResetColor();
                         break;
                 }
 
@@ -87,47 +88,34 @@ namespace Kproject_Text_RPG
         // !!!!!!!!!!!!!!!!!!!!! 23-01-11 인벤 오픈 출력 고쳐야함!!!!
         public static void OpenInventory(Player player)
         {
-            Console.SetCursorPosition(2, 20);
+            Console.SetCursorPosition(2, 21);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ [ INVENTORY ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.SetCursorPosition(2, 22);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
-            string[] strInventoryList = null;
+            string[] strInventoryList = new string [10];
             
             for (int i = 0; i < player.GetInvenMaxSize(); i++)
             {
-                
-                // strSlotInfo = string.Format("[ {0} 번 슬롯: ", i + 1);
-                // Console.Write("[ {0} 번 슬롯: ", i + 1);
-
+               
                 if (player.inventory.Count() == 0 || i >= player.inventory.Count())
                 {
-                    strInventoryList[i] = string.Format("[ {0} 번 슬롯:  empty  ]", i + 1);
-                    
+                    strInventoryList[i] = string.Format("{0, -2} : {1, 10}", $"[{i + 1}]"," -- empty -- ");
                 }
                 else if (player.inventory[i] != null)
                 {
-                    strInventoryList[i] = string.Format("[ {0} 번 슬롯:  {1}  ]", i + 1, player.inventory[i].GetItemName());
-                    //Console.Write("{0}]", player.inventory[i].GetItemName());
-                }
+                    strInventoryList[i] = string.Format("{0, -2} : {1, 10}", $"[{i + 1}]",  player.inventory[i].GetItemName());
                
-                // if (i == 4)
-                // {
-                //     Console.WriteLine();
-                // }
+                }
+        
             }
 
-            Console.SetCursorPosition(2, 22);
-            Console.WriteLine(String.Format($"{strInventoryList[0]}, {strInventoryList[1]} , {strInventoryList[2]}, {strInventoryList[3]} , {strInventoryList[4]}"));
-            Console.SetCursorPosition(2, 23);
-            Console.WriteLine(String.Format($"{strInventoryList[5]}, {strInventoryList[6]} , {strInventoryList[7]}, {strInventoryList[8]} , {strInventoryList[9]}"));
+            Console.SetCursorPosition(2, 24);
+            Console.WriteLine(String.Format($"{strInventoryList[0],22}|{strInventoryList[1],22}|{strInventoryList[2],22}|{strInventoryList[3],22}|{strInventoryList[4],22}"));
+            Console.SetCursorPosition(2, 25);
+            Console.WriteLine(String.Format($"{strInventoryList[5],22}|{strInventoryList[6],22}|{strInventoryList[7],22}|{strInventoryList[8],22}|{strInventoryList[9],22}"));
 
-
-
-            Console.WriteLine();
-            
-            Console.SetCursorPosition(2, 26);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-
-            Console.WriteLine();
+           
 
             if (player.inventory.Count == 0) {
 
@@ -135,7 +123,7 @@ namespace Kproject_Text_RPG
                 Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                 Console.SetCursorPosition(2, 28);
                 Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine(String.Format("{0}", "                                                                        Esc :        close inventory              "));
+                Console.WriteLine(String.Format("{0}", "                                                                              Esc :        close inventory        "));
                 Console.ResetColor();
           
             }
@@ -144,7 +132,7 @@ namespace Kproject_Text_RPG
                 Console.SetCursorPosition(2, 27);
                 Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                 Console.SetCursorPosition(2, 28);
-                Console.WriteLine(String.Format("{0}", "        F1 ~ F10  :   slot number select   ||          Esc :        close inventory                   "));
+                Console.WriteLine(String.Format("{0}", "        F1 ~ F10  :   slot number select            ||             Esc :        close inventory          "));
 
             }
             while (true)
