@@ -1,6 +1,7 @@
 ﻿using System;
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Kproject_Text_RPG
 {
@@ -82,40 +83,91 @@ namespace Kproject_Text_RPG
             uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
         }
 
-        public static bool Battle(Player player, int monsterId)
+        public static bool Battle(Player player, int monsterId, int stageNum )
         {
             TableManager tableManager = TableManager.getInstance();
             Monster monster = new Monster(tableManager.FindMonsterDataByID(monsterId));
           
             int turnCount = 0;
 
+            Console.Clear();
+            Program.Ui();
+
+            Console.SetCursorPosition(2, 1);
+            Console.WriteLine(String.Format("{0}", $"                            STAGE {stageNum}. {tableManager.GetStageName(stageNum-1)}                       "));
+            Console.SetCursorPosition(2, 2);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+
+            PlayerStatUI(player);
+   
+            Console.SetCursorPosition(45, 7);
             Console.WriteLine("{0}를 만났습니다.", monster.name);
-            
+            Task.Delay(1000).Wait();
+            Console.SetCursorPosition(40, 7);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                                       ");
+            Console.ResetColor();
+
             // 인벤 체크
-          
             player.SetIventory(tableManager.FindItemDataByID(300));
 
             while (true)
             {
                 ConsoleKeyInfo inputKey;
 
-               
-                Console.WriteLine("[ 플레이어 HP: {0} / {1} ]", player.hp, player.maxHP);
+                Console.SetCursorPosition(45, 7);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine("                                    ");
+                Console.ResetColor();
+
+                Console.SetCursorPosition(45, 7);
                 Console.WriteLine("[ {0} HP: {1} / {2} ]", monster.name, monster.hp, monster.maxHP);
-                Console.WriteLine();
-               
+                
+                SlimeDote();
+
 
                 if (turnCount % 2 == 0)
                 {
-                    Console.WriteLine("공격 : F1 / 스킬 : F2 / 물약 : F3");
+                    PlayerStatUI(player);
 
+                    Console.SetCursorPosition(45, 22);
+                    Console.WriteLine("플레이어 턴 입니다. 행동을 선택해주세요. ");
+                    
+                   
+                    Console.SetCursorPosition(2, 27);
+                    Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    Console.SetCursorPosition(2, 28);
+                    Console.WriteLine(String.Format("{0}", "             F1 : 공격          ||             F2 : 스킬            ||         F3 :  HP 물약             "));
+                   
                     inputKey = Console.ReadKey();
+
+                    Console.SetCursorPosition(45, 22);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("                                                                     ");
+                    Console.ResetColor();
+
+
                     if (inputKey.Key == ConsoleKey.F1)
                     {
+                        Console.SetCursorPosition(45, 22);
                         Console.WriteLine("플레이어가 일반 공격을 시도합니다.");
+                        Task.Delay(1000).Wait();
+                        Console.SetCursorPosition(45, 22);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("                                                                       ");
+                        Console.ResetColor();
+
                         int demage = player.attackPower - monster.defense;
                         monster.hp = monster.hp - demage;
+
+                        Console.SetCursorPosition(40, 22);
                         Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        Task.Delay(1000).Wait();
+                        Console.SetCursorPosition(40, 22);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("                                                                         ");
+                        Console.ResetColor(); 
+
                         // 플레이어 장착 무기 내구도 1 깍기
                         if (player.GetEquipItemBySlotIndex(0) != null)
                         {
@@ -128,7 +180,13 @@ namespace Kproject_Text_RPG
                                 {
                                     // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
                                     player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
+                                    Console.SetCursorPosition(45, 22);
                                     Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
+                                    Task.Delay(1000).Wait();
+                                    Console.SetCursorPosition(45, 22);
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.WriteLine("                                                                                    ");
+                                    Console.ResetColor();
 
                                 }
                             }
@@ -137,11 +195,25 @@ namespace Kproject_Text_RPG
                     }
                     else if(inputKey.Key == ConsoleKey.F2)
                     {
+                        Console.SetCursorPosition(45, 22);
                         Console.WriteLine("플레이어가 스킬을 사용합니다.");
+                        Task.Delay(1000).Wait();
+                        Console.SetCursorPosition(45, 22);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("                                                                         ");
+                        Console.ResetColor();
+
                         int skillAttack = player.attackPower * 2;
                         int demage = skillAttack - monster.defense;
                         monster.hp = monster.hp - (skillAttack - monster.defense);
+                        Console.SetCursorPosition(40, 22);
                         Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
+                        Task.Delay(1000).Wait();
+                        Console.SetCursorPosition(40, 22);
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("                                                                         ");
+                        Console.ResetColor();
+
                         // 플레이어 장착 무기 내구도 1 깍기
                         if (player.GetEquipItemBySlotIndex(0) != null)
                         {
@@ -155,7 +227,13 @@ namespace Kproject_Text_RPG
                                 {
                                     // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
                                     player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
+                                    Console.SetCursorPosition(45, 22);
                                     Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
+                                    Task.Delay(1000).Wait();
+                                    Console.SetCursorPosition(45, 22);
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.WriteLine("                                                                              ");
+                                    Console.ResetColor();
 
                                 }
                             }
@@ -170,18 +248,30 @@ namespace Kproject_Text_RPG
 
                             if (player.hp == player.maxHP)
                             {
+                                Console.SetCursorPosition(45, 22);
                                 Console.WriteLine("HP가 가득차 더이상 사용할수없습니다.");
+                                Task.Delay(1000).Wait();
+                                Console.SetCursorPosition(45, 22);
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.WriteLine("                                                                              ");
+                                Console.ResetColor();
                             }
                             else
                             {
                                 player.UseItem(player.FindItemByID(300));
-                           
+                                PlayerStatUI(player);
                                 turnCount++;
                             }
                         }
                         else // 소모품(3번타입) 아이템을 가지고있지 않는 경우
                         {
+                            Console.SetCursorPosition(45, 22);
                             Console.WriteLine("보유한 HP물약이 없습니다.");
+                            Task.Delay(1000).Wait();
+                            Console.SetCursorPosition(45, 22);
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.WriteLine("                                                                                 ");
+                            Console.ResetColor();
                         }
                     }
                    
@@ -189,11 +279,19 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
+                    
                     int  demage = monster.attackPower - player.defense;
 
                     player.hp = player.hp - demage;
 
+                    Console.SetCursorPosition(45, 22);
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("{0}에게 {1}의 데미지를 입었습니다.", monster.name, demage);
+                    Task.Delay(1000).Wait();
+                    Console.SetCursorPosition(45, 22);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("                                                                         ");
+                    Console.ResetColor();
 
                     // 플레이어 장착 방어구 내구도 1 깍기
                     if (player.GetEquipItemBySlotIndex(1) != null)
@@ -206,18 +304,26 @@ namespace Kproject_Text_RPG
                             {
                                 // 차감 후 내구도 0인경우, 방어구로 적용되던 stat 해제.
                                 player.defense -= player.GetEquipItemBySlotIndex(1).GetItemPropertyValue();
+                                Console.SetCursorPosition(45, 22);
                                 Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(1).GetItemName());
+                                Task.Delay(1000).Wait();
+                                Console.SetCursorPosition(45, 22);
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.WriteLine("                                                                       ");
+                                Console.ResetColor();
 
                             }
                         }
                     }
 
+                    PlayerStatUI(player);
                     turnCount++;
                     Console.WriteLine();
                 }
 
                 if (player.hp <= 0)
                 {
+                    Console.SetCursorPosition(45, 22);
                     Console.WriteLine("플레이어가 사망하였습니다.");
 
                     // 플레이어 장착 무기 , 방어구 내구도 10 깍기
@@ -229,29 +335,43 @@ namespace Kproject_Text_RPG
                     {
                         player.GetEquipItemBySlotIndex(1).SetDurability(-10);
                     }
+                    Task.Delay(500).Wait();
                     return false;
                 }
                 if (monster.hp <= 0)
                 {
+                    Console.SetCursorPosition(45, 22);
                     Console.WriteLine("{0}를 처치하였습니다.", monster.name);
+                    //Task.Delay(500).Wait();
                     return true;
                 }
             }
         }
         
+        public static void PlayerStatUI(Player player)
+        {
+            Console.SetCursorPosition(2, 3);
+            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
+            Console.SetCursorPosition(2, 4);
+            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
+            Console.SetCursorPosition(2, 5);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.ResetColor();
+        }
 
 
-        public void SlimeDote()
+        public static void SlimeDote()
         {
             //Slime Test 도트..?
+            Console.SetCursorPosition(48, 9);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■■■");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□□□□□");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■■■");
-            Console.WriteLine(); // 1
-
+            
+            Console.SetCursorPosition(48, 10);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■");
             Console.ForegroundColor = ConsoleColor.Black;
@@ -268,8 +388,9 @@ namespace Kproject_Text_RPG
             Console.Write("□□");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■");
-            Console.WriteLine(); // 2
+            
 
+            Console.SetCursorPosition(48,11);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
             Console.ForegroundColor = ConsoleColor.Black;
@@ -286,8 +407,9 @@ namespace Kproject_Text_RPG
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
-            Console.WriteLine(); // 3
+           
 
+            Console.SetCursorPosition(48, 12);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
             Console.ForegroundColor = ConsoleColor.Black;
@@ -308,8 +430,9 @@ namespace Kproject_Text_RPG
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
-            Console.WriteLine(); // 4
+          
 
+            Console.SetCursorPosition(48, 13);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□□");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -329,8 +452,8 @@ namespace Kproject_Text_RPG
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□□");
 
-            Console.WriteLine(); // 5
-
+           
+            Console.SetCursorPosition(48, 14);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -347,8 +470,8 @@ namespace Kproject_Text_RPG
             Console.Write("■■");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
-            Console.WriteLine(); // 6
 
+            Console.SetCursorPosition(48, 15);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -361,8 +484,8 @@ namespace Kproject_Text_RPG
             Console.Write("■■");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
-            Console.WriteLine(); // 7
 
+            Console.SetCursorPosition(48, 16);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -373,9 +496,9 @@ namespace Kproject_Text_RPG
             Console.Write("■■");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
-            Console.WriteLine(); // 8
 
 
+            Console.SetCursorPosition(48, 17);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -390,9 +513,9 @@ namespace Kproject_Text_RPG
             Console.Write("■");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("□");
-            Console.WriteLine(); // 9
+           
 
-
+            Console.SetCursorPosition(48, 18);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
             Console.ForegroundColor = ConsoleColor.Black;
@@ -401,6 +524,7 @@ namespace Kproject_Text_RPG
             Console.Write("■");
             Console.WriteLine(); // 10
 
+            Console.SetCursorPosition(48, 19);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■■■■■■■■■■■■");
             Console.WriteLine(); // 10
