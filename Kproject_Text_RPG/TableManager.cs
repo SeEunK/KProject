@@ -125,6 +125,18 @@ namespace Kproject_Text_RPG
             return null;
         }
 
+        public string[] GetStageNameList()
+        {  
+            string[] result = new string[_stageTable.Count];
+
+            for (int i = 0; i < _stageTable.Count; i++)
+            {
+                result[i] = _stageTable[i].stageName;
+            }
+
+            return result;
+        }
+
         public  int GetEnhanceCost(int enhanceID, int enhanceLevel)
         {
             for(int i = 0; i< _enhanceTable.Count; i++)

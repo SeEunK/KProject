@@ -25,7 +25,10 @@ namespace Kproject_Text_RPG
 
             //uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
             //uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-            Ui();
+
+            UiManager.UiInit();
+
+            //UiManager.UiInit();
 
             TableManager tableManager =  TableManager.getInstance();
 
@@ -34,12 +37,10 @@ namespace Kproject_Text_RPG
 
                 for (int i = 1; i < 10; i++)
                 {
-
                     Console.Read();
                     BackGround(i);
                     Task.Delay(100).Wait();
                     // BackGround(0);
-
                 }
 
                 Console.Read();
@@ -55,7 +56,6 @@ namespace Kproject_Text_RPG
                     Console.Write("{0}", inputChracterNmae[i]);
 
                 }
-                Console.WriteLine();
 
                 Console.SetCursorPosition(45, 12);
                 Console.Write($"[                       ]");
@@ -70,18 +70,7 @@ namespace Kproject_Text_RPG
 
         }
 
-        public static void Ui()
-        {
-            const int UI_SIZE_X = 60;
-            const int UI_SIZE_Y = 30;
-
-            int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
-
-            UiManager uiManager = new UiManager();
-
-            uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-            uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-        }
+      
 
         public static bool Battle(Player player, int monsterId, int stageNum )
         {
@@ -90,23 +79,18 @@ namespace Kproject_Text_RPG
           
             int turnCount = 0;
 
-            Console.Clear();
-            Program.Ui();
+            UiManager.UiInit();
 
-            Console.SetCursorPosition(2, 1);
-            Console.WriteLine(String.Format("{0}", $"                            STAGE {stageNum}. {tableManager.GetStageName(stageNum-1)}                       "));
-            Console.SetCursorPosition(2, 2);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
+            // 스테이지 타이틀 출력
+            UiManager.StageTitleDraw(stageNum, tableManager.GetStageName(stageNum - 1));
+            
+            // 플레이어 스텟 출력
             PlayerStatUI(player);
-   
-            Console.SetCursorPosition(45, 7);
-            Console.WriteLine("{0}를 만났습니다.", monster.name);
-            Task.Delay(1000).Wait();
-            Console.SetCursorPosition(40, 7);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                       ");
-            Console.ResetColor();
+
+            // 몬스터 조우 메시지 출력
+            UiManager.MonsterAppearMessage(monster.name);
+
 
             // 인벤 체크
             player.SetIventory(tableManager.FindItemDataByID(300));
@@ -115,14 +99,10 @@ namespace Kproject_Text_RPG
             {
                 ConsoleKeyInfo inputKey;
 
-                Console.SetCursorPosition(45, 7);
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine("                                    ");
-                Console.ResetColor();
+                // 몬스터 hp bar 출력
+                UiManager.MonsterStatDraw(monster.name, monster.hp, monster.maxHP);
 
-                Console.SetCursorPosition(45, 7);
-                Console.WriteLine("[ {0} HP: {1} / {2} ]", monster.name, monster.hp, monster.maxHP);
-                
+               
                 SlimeDote();
 
 
@@ -130,43 +110,36 @@ namespace Kproject_Text_RPG
                 {
                     PlayerStatUI(player);
 
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("플레이어 턴 입니다. 행동을 선택해주세요. ");
-                    
+                    // 플레이어 턴 안내 메시지 
+                    UiManager.PlayerTurnGuideMessage();
+     
+                    // 플레이어 턴 행동 버튼 출력
+                    UiManager.PlayerTurnActionButtonDraw();
+                    //Console.SetCursorPosition(2, 27);
+                    //Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    //Console.SetCursorPosition(2, 28);
+                    //Console.WriteLine(String.Format("{0}", "             F1 : 공격          ||             F2 : 스킬            ||         F3 :  HP 물약             "));
                    
-                    Console.SetCursorPosition(2, 27);
-                    Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                    Console.SetCursorPosition(2, 28);
-                    Console.WriteLine(String.Format("{0}", "             F1 : 공격          ||             F2 : 스킬            ||         F3 :  HP 물약             "));
-                   
+                    // 행동 입력 대기
                     inputKey = Console.ReadKey();
 
-                    Console.SetCursorPosition(45, 22);
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                                                     ");
-                    Console.ResetColor();
+                    // 행동 입력 후 버튼 막기.
+                    UiManager.PlayerTurnActionButtinBlock();
 
-
+                    // 플레이어 턴 안내 메시지 삭제
+                    UiManager.PlayerTurnGuideMessageClear();
+          
                     if (inputKey.Key == ConsoleKey.F1)
                     {
-                        Console.SetCursorPosition(45, 22);
-                        Console.WriteLine("플레이어가 일반 공격을 시도합니다.");
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(45, 22);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                                                       ");
-                        Console.ResetColor();
+                        // 플레이어 공격 메시지 출력
+                         UiManager.PlayerAttackMessage(1);
 
+                        // 데미지 계산
                         int demage = player.attackPower - monster.defense;
                         monster.hp = monster.hp - demage;
 
-                        Console.SetCursorPosition(40, 22);
-                        Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(40, 22);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                                                         ");
-                        Console.ResetColor(); 
+                        // 플레이어 공격 데미지 출력
+                        UiManager.InflictDamageMessage(monster.name, demage);
 
                         // 플레이어 장착 무기 내구도 1 깍기
                         if (player.GetEquipItemBySlotIndex(0) != null)
@@ -180,13 +153,9 @@ namespace Kproject_Text_RPG
                                 {
                                     // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
                                     player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
-                                    Console.SetCursorPosition(45, 22);
-                                    Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
-                                    Task.Delay(1000).Wait();
-                                    Console.SetCursorPosition(45, 22);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                                    ");
-                                    Console.ResetColor();
+                                  
+                                    // 내구도 0으로 장착 아이템 효과 해제 메시지 출력
+                                    UiManager.EquipItemBrokenMessage(player.GetEquipItemBySlotIndex(0).GetItemName());
 
                                 }
                             }
@@ -195,29 +164,21 @@ namespace Kproject_Text_RPG
                     }
                     else if(inputKey.Key == ConsoleKey.F2)
                     {
-                        Console.SetCursorPosition(45, 22);
-                        Console.WriteLine("플레이어가 스킬을 사용합니다.");
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(45, 22);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                                                         ");
-                        Console.ResetColor();
-
+                        // 플레이어 공격 메시지 출력
+                        UiManager.PlayerAttackMessage(2);
+                        
+                        // 데미지 계산
                         int skillAttack = player.attackPower * 2;
                         int demage = skillAttack - monster.defense;
                         monster.hp = monster.hp - (skillAttack - monster.defense);
-                        Console.SetCursorPosition(40, 22);
-                        Console.WriteLine("플레이어가 {0}에게 {1}의 데미지를 입혔습니다.", monster.name, demage);
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(40, 22);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                                                         ");
-                        Console.ResetColor();
 
+                        // 플레이어 공격 데미지 출력
+                        UiManager.InflictDamageMessage(monster.name, demage);
+
+                   
                         // 플레이어 장착 무기 내구도 1 깍기
                         if (player.GetEquipItemBySlotIndex(0) != null)
                         {
-                           
                             if (player.GetEquipItemBySlotIndex(0).GetDurability() > 0)
                             {
                                 // 장착한 무기,  내구도가 0이상인 경우 내구도 1 차감
@@ -227,13 +188,9 @@ namespace Kproject_Text_RPG
                                 {
                                     // 차감 후 내구도 0인경우, 무기로 적용되던 stat 해제.
                                     player.attackPower -= player.GetEquipItemBySlotIndex(0).GetItemPropertyValue();
-                                    Console.SetCursorPosition(45, 22);
-                                    Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(0).GetItemName());
-                                    Task.Delay(1000).Wait();
-                                    Console.SetCursorPosition(45, 22);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                              ");
-                                    Console.ResetColor();
+
+                                    // 내구도 0으로 장착 아이템 효과 해제 메시지 출력
+                                    UiManager.EquipItemBrokenMessage(player.GetEquipItemBySlotIndex(0).GetItemName());
 
                                 }
                             }
@@ -248,13 +205,7 @@ namespace Kproject_Text_RPG
 
                             if (player.hp == player.maxHP)
                             {
-                                Console.SetCursorPosition(45, 22);
-                                Console.WriteLine("HP가 가득차 더이상 사용할수없습니다.");
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(45, 22);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                              ");
-                                Console.ResetColor();
+                                UiManager.DoNotUseItemHpFullMessage();
                             }
                             else
                             {
@@ -265,33 +216,21 @@ namespace Kproject_Text_RPG
                         }
                         else // 소모품(3번타입) 아이템을 가지고있지 않는 경우
                         {
-                            Console.SetCursorPosition(45, 22);
-                            Console.WriteLine("보유한 HP물약이 없습니다.");
-                            Task.Delay(1000).Wait();
-                            Console.SetCursorPosition(45, 22);
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine("                                                                                 ");
-                            Console.ResetColor();
+                            UiManager.DoNotHaveHpPotion();
                         }
                     }
-                   
-                    Console.WriteLine();
+                    
                 }
                 else
-                {
-                    
+                { //몬스터 턴
+                    // 몬스터 턴 안내 메시지 
+                    UiManager.MonsterTurnGuideMessage();
+                    // 데미지 계산
                     int  demage = monster.attackPower - player.defense;
-
                     player.hp = player.hp - demage;
 
-                    Console.SetCursorPosition(45, 22);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("{0}에게 {1}의 데미지를 입었습니다.", monster.name, demage);
-                    Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 22);
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                                                         ");
-                    Console.ResetColor();
+                    //입은 데미지 출력
+                    UiManager.TakeDamageMessage(monster.name, demage);
 
                     // 플레이어 장착 방어구 내구도 1 깍기
                     if (player.GetEquipItemBySlotIndex(1) != null)
@@ -304,27 +243,31 @@ namespace Kproject_Text_RPG
                             {
                                 // 차감 후 내구도 0인경우, 방어구로 적용되던 stat 해제.
                                 player.defense -= player.GetEquipItemBySlotIndex(1).GetItemPropertyValue();
-                                Console.SetCursorPosition(45, 22);
-                                Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(1).GetItemName());
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(45, 22);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                       ");
-                                Console.ResetColor();
+
+                                // 내구도 0으로 장착 아이템 효과 해제 메시지 출력
+                                UiManager.EquipItemBrokenMessage(player.GetEquipItemBySlotIndex(1).GetItemName());
+                                //Console.SetCursorPosition(45, 22);
+                                //Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(1).GetItemName());
+                                //Task.Delay(1000).Wait();
+                                //Console.SetCursorPosition(45, 22);
+                                //Console.BackgroundColor = ConsoleColor.Black;
+                                //Console.WriteLine("                                                                       ");
+                                //Console.ResetColor();
 
                             }
                         }
                     }
-
+                    // 플레이어 스탯 갱신
                     PlayerStatUI(player);
+                    // 몬스터 턴 안내 메시지 삭제
+                    UiManager.MonsterTurnGuideMessageClear();
+                    // 턴 넘기기
                     turnCount++;
-                    Console.WriteLine();
                 }
-
                 if (player.hp <= 0)
                 {
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("플레이어가 사망하였습니다.");
+                    // 플레이어 사망 출력
+                    UiManager.PlayerDieDraw();
 
                     // 플레이어 장착 무기 , 방어구 내구도 10 깍기
                     if (player.GetEquipItemBySlotIndex(0) != null)
@@ -335,14 +278,23 @@ namespace Kproject_Text_RPG
                     {
                         player.GetEquipItemBySlotIndex(1).SetDurability(-10);
                     }
-                    Task.Delay(500).Wait();
+
+                    // 아무키 입력 안내 메시지 출력
+                    UiManager.EnterAnyKeyMessage();
+                    // 입력 받기
+                    Console.ReadKey();
+                    // 아무키 입력 안내 메시지 삭제
+                    UiManager.EnterAnyKeyMessageClear();
+                    // 플레이어 사망 출력 삭제
+                    UiManager.PlayerDieDrawClear();
+
                     return false;
                 }
                 if (monster.hp <= 0)
                 {
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("{0}를 처치하였습니다.", monster.name);
-                    //Task.Delay(500).Wait();
+                    // 몬스터 처치 출력
+                    UiManager.MonsterKillDraw(monster.name);
+                   
                     return true;
                 }
             }
@@ -350,6 +302,7 @@ namespace Kproject_Text_RPG
         
         public static void PlayerStatUI(Player player)
         {
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.SetCursorPosition(2, 3);
             Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
             Console.SetCursorPosition(2, 4);
@@ -522,12 +475,12 @@ namespace Kproject_Text_RPG
             Console.Write("□□□□□□□□□□□");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■");
-            Console.WriteLine(); // 10
+           
 
             Console.SetCursorPosition(48, 19);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("■■■■■■■■■■■■■");
-            Console.WriteLine(); // 10
+           
         }
         public static void BackGround(int value)
         {

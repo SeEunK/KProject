@@ -18,29 +18,20 @@ namespace Kproject_Text_RPG
             List<EnhanceData> enhanceTable = tableManager.GetEnhanceTable();
 
             int smithySubMenu = 0;
-            Console.Clear();
-            Program.Ui();
-            
+           
+
+            UiManager.UiInit();
+
 
             Console.SetCursorPosition(2, 1);
             Console.WriteLine(String.Format("{0}", "                                                     Smithy                                                        "));
             Console.SetCursorPosition(2, 2);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 3);
-            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
-            Console.SetCursorPosition(2, 4);
-            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
-            Console.SetCursorPosition(2, 5);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
 
+            Program.PlayerStatUI(player);
 
-            Console.SetCursorPosition(2, 27);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.SetCursorPosition(2, 28);
-            Console.WriteLine(String.Format("{0}", "         F1 : \"Enhance\"            ||          F2 : \"Repair\"            ||        Esc : \"Go To Lobby\"     "));
-
+            UiManager.SmithyBottombutton();
+           
             while (true)
             {
                 ConsoleKeyInfo inputKey = Console.ReadKey();
@@ -63,13 +54,7 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    Console.SetCursorPosition(50, 7);
-                    Console.WriteLine("잘못된입력입니다.");
-
-                    Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(40, 7);
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                          ");
+                    UiManager.ErrorInputKey();
                 }
             }
         }
@@ -93,7 +78,7 @@ namespace Kproject_Text_RPG
                 }
 
             }
-            Console.WriteLine();
+            
             Console.WriteLine("└────────────────────────────────────────────────────────────────────────────────────────────────┘");
             Console.WriteLine("┌────────────────────────────────────────inven Slot────────────────────────────────────────────────┐");
             for (int i = 0; i < player.GetInvenMaxSize(); i++)
@@ -203,7 +188,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 9;
                                 break;
                             default:
-                                Console.WriteLine("잘못된 입력입니다.");
+                                UiManager.ErrorInputKey();
                                 break;
                         }
                         
@@ -390,7 +375,7 @@ namespace Kproject_Text_RPG
                     }
                     else
                     {
-                        Console.WriteLine("잘못된 입력입니다.");
+                         UiManager.ErrorInputKey();
                     }
                 }
         }
@@ -501,7 +486,7 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    UiManager.ErrorInputKey();
                 }
             }
         }
@@ -613,7 +598,7 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    UiManager.ErrorInputKey();
                 }
             }
         }

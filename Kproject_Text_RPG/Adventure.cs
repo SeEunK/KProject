@@ -16,57 +16,47 @@ namespace Kproject_Text_RPG
             int stageCount = tableManager.GetStageTable().Count;
             int sellectStageNum = 0;
 
-
-
-
-            Console.Clear();
-            Program.Ui();
+            UiManager.UiInit();
 
             Console.SetCursorPosition(2, 1);
             Console.WriteLine(String.Format("{0}", "                                                   Adventure                                                       "));
             Console.SetCursorPosition(2, 2);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 3);
-            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
-            Console.SetCursorPosition(2, 4);
-            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
-            Console.SetCursorPosition(2, 5);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
 
-         
+            Program.PlayerStatUI(player);
 
+            
 
             if (stageCount != 0)
             {
-                Console.SetCursorPosition(45, 7);
-                Console.WriteLine("모험 할 stage를 선택하세요. ");
-                Console.SetCursorPosition(45, 9);
-                Console.WriteLine("====== Stage List ======");
-                for (int i = 0; i < stageCount; i++)
-                {
-                    Console.SetCursorPosition(45, 10+i);
-                    Console.WriteLine("[STAGE {0}] {1}", i + 1, tableManager.GetStageName(i));
-
-                }
-                Console.SetCursorPosition(2, 27);
-                Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                Console.SetCursorPosition(2, 28);
-                Console.WriteLine(String.Format("{0}", $"             NumPad 1 ~ {stageCount} : 스테이지 선택            ||            Esc : \"Go To Lobby\"     "));
-
+                // 스테이지 리스트 출력
+                UiManager.StageListDraw(stageCount, tableManager.GetStageNameList());
+                // 스테이지 선택 버튼 노출
+                UiManager.StageSellctButtonDraw(stageCount);
 
                 sellectStageNum = StageSellect(stageCount, player);
+
                 if (sellectStageNum == -1)
                 {
+                    //선택 잘못했거나, 선택했지만 가방이 full로 진행안하기로 선택한 경우, 
                     ShowStageList(player);
                 }
                 else if(sellectStageNum == 0)
-                {
+                { 
+                    // 스테이지 리스트 출력 삭제
+                    UiManager.StageListDrawClear(stageCount);
+                    // 스테이지 선택 버튼 삭제
+                    UiManager.StageSellctButtonClear();
+                    // 로비로 씬전환
                     Lobby.ShowLobby(player);
                 }
                 else
                 {
+                    // 스테이지 리스트 출력 삭제
+                    UiManager.StageListDrawClear(stageCount);
+                    // 스테이지 선택 버튼 삭제
+                    UiManager.StageSellctButtonClear();
+                    // 스테이지 입장 
                     GoToStage(sellectStageNum, player);
                 }
             }
@@ -87,232 +77,210 @@ namespace Kproject_Text_RPG
                 {
                    if( Program.Battle(player, stageStepList[i].monsterID, sellectStage) == false)
                     {
+                        // 플레이어 사망 으로 배틀 종료
                         break;
                     }
                     else
-                    {
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.SetCursorPosition(40, 7);
-                        Console.WriteLine("                                                   ");
-                        Console.ResetColor();
+                    { // 몬스터 처치로 배틀 종료
+                        UiManager.MonsterStatDrawClear();
+
+                        // {몬스터 이미지 지우기
+                        UiManager.MonsterImageClear();
 
                         if (tableManager.LevelUpCheck(player.GetExp(), stageStepList[i].rewardExp) == true)
                         {
-                            Console.SetCursorPosition(40, 8);
-                            Console.WriteLine("=========== LEVEL UP ===========");
+                            // 레벨업 출력
+                            //Console.SetCursorPosition(40, 8);
+                            //Console.WriteLine("=========== LEVEL UP ===========");
+                            UiManager.LevelUpDraw();
                         }
-
-                        Task.Delay(2000).Wait();
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.SetCursorPosition(40, 7);
-                        Console.WriteLine("                                                   ");
-                        Console.ResetColor();
-
-                        // {몬스터 이미지 지우기
-                        for (int index = 0; index < 11; index++)
-                        {
-                            Console.SetCursorPosition(48, 9+ index);
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine("                                                       ");
-                        }
-                        Console.ResetColor();
-                        // } 몬스터 이미지 지우기
-
-                        Console.SetCursorPosition(40, 10);
-                        Console.WriteLine("=========== Reward ===========");
                         // 경험치 추가
-                        Console.SetCursorPosition(40, 11);
-                        Console.WriteLine("EXP : {0}", stageStepList[i].rewardExp);
                         player.SetExp(stageStepList[i].rewardExp);
                         // 골드 추가
-                        Console.SetCursorPosition(40, 12);
-                        Console.WriteLine("GOLD : {0}", stageStepList[i].rewardGold);
                         player.SetGold(stageStepList[i].rewardGold);
+
                         //획득 아이템 추가
-
-
+                        string rewardItemName = string.Empty;
                         if (stageStepList[i].monsterDropItemID != 0)
                         {
                             ItemData rewardItem = new ItemData();
                             rewardItem = tableManager.FindItemDataByID(stageStepList[i].monsterDropItemID);
-                            Console.SetCursorPosition(40, 13);
-                            Console.WriteLine("Drop : {0}", rewardItem.name);
+                            rewardItemName = rewardItem.name;
                             player.SetIventory(tableManager.FindItemDataByID(stageStepList[i].monsterDropItemID));
                         }
-                        
+                        // 결과창 출력
+                        UiManager.AdventureRewadUIDraw(stageStepList[i].rewardExp, stageStepList[i].rewardGold, rewardItemName);
+
+                        //유저정보 갱신
                         Program.PlayerStatUI(player);
                     }
 
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("아무키나 입력하면 결과창이 종료됩니다.");
+                    // 결과창 닫기 안내 메시지 출력 (아무키나 입력하면 결과창이 종료됩니다.)
+                    UiManager.EnterAnyKeyMessage();
+                
+                    // 결과창 닫기 여부 대기
+                    Console.ReadKey();
 
-                    // 다음 스텝 진행 여부 대기
-                    Console.ReadLine();
+                    // 메시지 삭제
+                    UiManager.EnterAnyKeyMessageClear();
 
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("                                                   ");
-                    Console.ResetColor();
-                    
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.SetCursorPosition(30, 10);
-                    Console.WriteLine("                                                               ");
-                    Console.SetCursorPosition(30, 11);
-                    Console.WriteLine("                                                               ");
-                    Console.SetCursorPosition(30, 12);
-                    Console.WriteLine("                                                               ");
-                    Console.SetCursorPosition(30, 13);
-                    Console.WriteLine("                                                               ");
-                    Console.ResetColor();
+                    // 레벨업 출력 삭제
+                    UiManager.LevelUpDrawClear();
+                    // 결과창 삭제
+                    UiManager.AdventureRewadUIDrawClear();
 
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.SetCursorPosition(45, 22);
-                    Console.WriteLine("                                                               ");
-
-                    
-
-                    Console.SetCursorPosition(40, 7);
-                    Console.WriteLine("====== NEXT STEP ======");
+                    // 마지막 스텝이 아니면,
+                    if (i != stageStepList.Count - 1)
+                    {
+                        // 다음 스텝 시작 알림 메시지
+                        UiManager.NextStepMessageDraw();
+                    }
 
                 }
-
-                Console.SetCursorPosition(40, 7);
-                Console.WriteLine("====== Stage Clear ======");
-
+                               
                 // stage clear reward;
                 StageData stage = tableManager.GetStageByID(sellectStage);
-                Console.SetCursorPosition(40, 7);
-                Console.WriteLine("====== Stage Clear Reward ======");
-                Console.SetCursorPosition(40, 9);
-                Console.WriteLine("스테이지 {0} 클리어 보상 : {1}", sellectStage, tableManager.FindItemDataByID(stage.clearRewardID).name);
+                        
+                // 스테이지 클리어 보상 창 출력
+                UiManager.StageClearRewardDraw(sellectStage, stage.stageName, tableManager.FindItemDataByID(stage.clearRewardID).name);
 
+                //스테이지 보상 캐릭터에게 넣어주기.
                 player.SetIventory(tableManager.FindItemDataByID(stage.clearRewardID));
+
+                UiManager.EnterAnyKeyMessage();
+                // 결과창 닫기 여부 대기
+                Console.ReadKey();
+
+                // 결과장 닫기 여부 메시지 삭제
+                UiManager.EnterAnyKeyMessageClear();
+                // 결과창 삭제
+                UiManager.StageClearRewardDrawClear();
+
 
                 if (sellectStage < tableManager.GetStageCount())
                 {
                     // !! 다음 스테이지 갈지? 모험 그만할지 묻기
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.SetCursorPosition(2, 27);
-                    Console.WriteLine("                                                                                                                   ");
-                    Console.SetCursorPosition(2, 28);
-                    Console.WriteLine("                                                                                                                   ");
-                    Console.ResetColor();
+                    BottomButtonAdventureContinue(false);
 
-                    Console.SetCursorPosition(2, 27);
-                    Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                    Console.SetCursorPosition(2, 28);
-                    Console.WriteLine(String.Format("{0}", $"             Enter : 다음 스테이지 가기           ||            Esc : \"Go To Lobby\"     "));
-                    
-                    
                     while (true)
                     {
+                        // 다음 스테이지 갈지 인풋 받기
                         ConsoleKeyInfo inputKey = Console.ReadKey();
                         switch (inputKey.Key)
                         {
+                            // 다음 스테이지 간다를 선택한 경우
                             case ConsoleKey.Enter:
+                                // 가방 풀 체크
                                 if (player.inventory.Count >= player.GetInvenMaxSize())
                                 {
-                                    Console.SetCursorPosition(30, 15);
-                                    Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
-                                    Console.SetCursorPosition(30, 16);
-                                    Console.WriteLine("정말로 모험을 계속하시겠습니까? Y/N");
-                                  
+                                    //가방 full 안내 메시지 출력
+                                    UiManager.ErrorInventoryFullMessage();
+
                                     while (true)
                                     {
+                                        // 계속 진행 여부 인풋 받기
                                         ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+
+                                        // 가방 full 안내 메시지 삭제
+                                        UiManager.ErrorInventoryFullMessageClear();
                                         if (inputKey_1.Key == ConsoleKey.Y)
                                         {
                                             break;
                                         }
                                         else if (inputKey_1.Key == ConsoleKey.N)
                                         {
-                                            continue;
+                                            // 스테이지 리스트 출력화면으로 돌아가기.
+                                            ShowStageList(player);
+                                            break;
                                         }
                                         else
-                                        {
-                                            Console.SetCursorPosition(30, 17);
-                                            Console.WriteLine("잘못입력하였습니다.");
-                                            Task.Delay(1000).Wait();
-                                            Console.SetCursorPosition(30, 16);
-                                            Console.BackgroundColor = ConsoleColor.Black;
-                                            Console.WriteLine("                                                                       ");
-                                            Console.ResetColor();
+                                        {  // 잘못된 입력 안내 메시지 출력
+                                            UiManager.ErrorInputKey();
                                         }
                                     }
                                 }
 
-                                Console.SetCursorPosition(30, 15);
-                                Console.WriteLine("Next Stage !!");
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(30, 15);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                  ");
-                                Console.ResetColor();
+                                // 다음 스테이지 시작 알림 메시지
+                                UiManager.NextStageMessageDraw();
+           
+                                // 다음스테이지 진입
                                 GoToStage(sellectStage + 1, player);
-
                                 break;
 
                             case ConsoleKey.Escape:
-                                Console.SetCursorPosition(30, 15);
-                                Console.WriteLine("Go to Lobby");
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(30, 15);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                  ");
-                                Console.ResetColor();
-
+                                // 로비 이동 알림 메시지
+                                UiManager.GoToLobbyMessage();
                                 Lobby.ShowLobby(player);
                                 break;
                             default :
-                                Console.SetCursorPosition(30, 15);
-                                Console.WriteLine("잘못된입력입니다.");
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(30, 15);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                  ");
-                                Console.ResetColor();
+                                // 잘못된 입력 안내 메시지 출력
+                                UiManager.ErrorInputKey();
                                 break;
 
                         }
                     }
                 }
                 else
-                {  // !! 다음 스테이지 갈지? 모험 그만할지 묻기
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.SetCursorPosition(2, 27);
-                    Console.WriteLine("                                                                                                                   ");
-                    Console.SetCursorPosition(2, 28);
-                    Console.WriteLine("                                                                                                                   ");
-                    Console.ResetColor();
-
-                    Console.SetCursorPosition(2, 27);
-                    Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                    Console.SetCursorPosition(2, 28);
-                    Console.WriteLine(String.Format("{0}", $"                                                      Esc : \"Go To Lobby\"     "));
-
+                {  // 마지막 스테이지 상태에서, 
+                    // !! 다음 스테이지 갈지? 모험 그만할지 묻기
+                    BottomButtonAdventureContinue(true);
               
                     while (true)
                     {
+                        // 인풋 받기
                         ConsoleKeyInfo inputKey = Console.ReadKey();
                         switch (inputKey.Key)
                         {
-                             case ConsoleKey.Escape:
-                                //Console.WriteLine(" Go to Lobby ");
+                            // 나가기 (" Go to Lobby ")
+                            case ConsoleKey.Escape:
+                                // 로비 씬 전환.
                                 Lobby.ShowLobby(player);
                                 break;
-                             default:
-                                Console.SetCursorPosition(30, 15);
-                                Console.WriteLine("잘못된입력입니다.");
-                                Task.Delay(1000).Wait();
-                                Console.SetCursorPosition(30, 15);
-                                Console.BackgroundColor = ConsoleColor.Black;
-                                Console.WriteLine("                                                                  ");
-                                Console.ResetColor();
+                            case ConsoleKey.Enter:
+                                // 마지막 스테이지라 더 진행 못함 안내 메시지 출력
+                                UiManager.ErrorInputKey_NoNextStage();
+                                // 스테이지 리스트 출력화면으로 돌아가기.
+                                ShowStageList(player);
+                                break;
+                            default:
+                                // 잘못된 입력 안내 메시지 출력
+                                UiManager.ErrorInputKey();
                                 break;
                         }
                     }
                 }
             }
+        }
+
+        public static void BottomButtonAdventureContinue(bool flagLastStage)
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(2, 27);
+            Console.WriteLine("                                                                                                                   ");
+            Console.SetCursorPosition(2, 28);
+            Console.WriteLine("                                                                                                                   ");
+            Console.ResetColor();
+
+            Console.SetCursorPosition(2, 27);
+            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            if (flagLastStage == true)
+            {
+                Console.SetCursorPosition(2, 28);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("                     Enter : 다음 스테이지 가기             ");
+                Console.ResetColor();
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.Write("||               Esc : \"Go To Lobby\"                  ");
+            }
+            else
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 28);
+                Console.WriteLine(String.Format("                     Enter : 다음 스테이지 가기             ||               Esc : \"Go To Lobby\"                  "));
+                Console.ResetColor();
+            }
+           
         }
 
 
@@ -321,116 +289,89 @@ namespace Kproject_Text_RPG
            
             while (true)
             {
+                //스테이지 선택 받기
                 ConsoleKeyInfo inputKey = Console.ReadKey();
                 
                 switch (inputKey.Key)
                 {
+                       // " Go to Lobby "
                     case ConsoleKey.Escape:
-                       // Console.WriteLine(" Go to Lobby ");
-                        
                         return 0;
+
+                       // "Stage 1 Sellect!!!"
                     case ConsoleKey.NumPad1:
                     case ConsoleKey.D1:
-                       // Console.WriteLine("Stage 1 Sellect!!!");
-
+                        // 가방이 가득찬 경우
                         if (player.inventory.Count >= player.GetInvenMaxSize())
                         {
-                            Console.SetCursorPosition(30, 15);
-                            Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
-                            Console.SetCursorPosition(30, 16);
-                            Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
+                            //가방 full 안내 메시지 출력
+                            UiManager.ErrorInventoryFullMessage();
+           
                             while (true)
-                            {
+                            {   
+                                // 계속 진행 여부 인풋 받기
                                 ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+
+                                // 가방 full 안내 메시지 삭제
+                                UiManager.ErrorInventoryFullMessageClear();
+
                                 if (inputKey_1.Key == ConsoleKey.Y)
                                 {
-                                    Console.SetCursorPosition(30, 14);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.SetCursorPosition(30, 15);
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
+                                    // 선택한 스테이지 번호 넘기고
                                     return 1; 
                                 }
                                 else if (inputKey_1.Key == ConsoleKey.N)
                                 {
-                                    Console.SetCursorPosition(30, 14);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.SetCursorPosition(30, 15);
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
+                                    // No 선택했으니, 스테이지 입장안하게 -1 리턴.
                                     return -1;
                                 }
                                 else
                                 {
-                                    Console.SetCursorPosition(30, 17);
-                                    Console.WriteLine("잘못입력하였습니다.");
-                                    Task.Delay(1000).Wait();
-                                    Console.SetCursorPosition(30, 16);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
+                                    // 잘못된 입력 안내 메시지 출력
+                                    UiManager.ErrorInputKey();
                                 }
                             }
-                        }
+                        } // 스테이지 1 선택함 반환
                         return 1;
+                        
+                    //"Stage 2 Sellect!!!"
                     case ConsoleKey.NumPad2:
                     case ConsoleKey.D2:
-                      //  Console.WriteLine("Stage 2 Sellect!!!");
+                        // 가방 가득찬 경우
                         if (player.inventory.Count >= player.GetInvenMaxSize())
-                        {
-                            Console.SetCursorPosition(30, 15);
-                            Console.WriteLine("가방이 가득차서 더 이상 아이템을 획득하지 못합니다.");
-                            Console.SetCursorPosition(30, 16);
-                            Console.WriteLine("정말로 모험을 진행하시겠습니까? Y/N");
-
+                        { 
+                            //가방 full 안내 메시지 출력
+                            UiManager.ErrorInventoryFullMessage();
+                         
                             while (true)
-                            {
+                            {   // 계속 진행 여부 인풋 받기
                                 ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+
+                                //가방 full 안내 메시지 삭제
+                                UiManager.ErrorInventoryFullMessageClear();
+
                                 if (inputKey_1.Key == ConsoleKey.Y)
-                                {
-                                    Console.SetCursorPosition(30, 15);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.SetCursorPosition(30, 16);
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
+                                {   
+                                    // 선택한 스테이지 번호 넘기고
                                     return 2;
                                 }
                                 else if (inputKey_1.Key == ConsoleKey.N)
-                                {
-                                    Console.SetCursorPosition(30, 15);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.SetCursorPosition(30, 16);
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
+                                {    // No 선택했으니, 스테이지 입장 진행 안하고, -1 리턴.
                                     return -1;
                                 }
                                 else
                                 {
-                                    Console.SetCursorPosition(30, 17);
-                                    Console.WriteLine("잘못입력하였습니다.");
-                                    Task.Delay(1000).Wait();
-                                    Console.SetCursorPosition(30, 17);
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.WriteLine("                                                                       ");
-                                    Console.ResetColor();
-
+                                    // 잘못된 입력 안내 메시지 출력
+                                    UiManager.ErrorInputKey();
                                 }
                             }
-                        }
+                        }// 스테이지 2 선택함 반환
                         return 2;
 
                     default:
-                        Console.SetCursorPosition(30, 15);
-                        Console.WriteLine("잘못된입력입니다. 1 ~ {0} 중 입장할 스테이지 번호를 입력하세요.", stageCount);
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(30, 15);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                                                       ");
-                        Console.ResetColor();
+                        // 잘못된 입력 안내 메시지 출력
+                        UiManager.ErrorInputKey();
+            
                         return -1;
                 }
 

@@ -12,27 +12,17 @@ namespace Kproject_Text_RPG
     {
         public static void ShowLobby (Player player)
         {
-            Console.Clear();
-            Program.Ui();
+            //Console.Clear();
+           
+            UiManager.UiInit();
 
             Console.SetCursorPosition(2, 1);
-            Console.WriteLine(String.Format("{0}", "                                                      LOBBY                                                        "));
+            Console.WriteLine(String.Format("{0}", "                                                      LOBBY                                                         "));
             Console.SetCursorPosition(2, 2);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 3);
-            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
-            Console.SetCursorPosition(2, 4);
-            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(), -10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
-            Console.SetCursorPosition(2, 5);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
 
-
-
-
-
-
+            Program.PlayerStatUI(player);
+ 
             BottomButtonInput(player);
         }
         public static void BottomButtonInput(Player player)
@@ -71,27 +61,39 @@ namespace Kproject_Text_RPG
                         Adventure.ShowStageList(player);
                         break;
                     default:
-                        Console.SetCursorPosition(50, 7);
-                        Console.WriteLine("잘못된입력입니다.");
-
-                        Task.Delay(1000).Wait();
-                        Console.SetCursorPosition(40, 7);
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine("                                          ");
-                        Console.ResetColor();
+                        UiManager.ErrorInputKey();
                         break;
                 }
 
             }
         }
 
-        // !!!!!!!!!!!!!!!!!!!!! 23-01-11 인벤 오픈 출력 고쳐야함!!!!
+        
         public static void OpenInventory(Player player)
         {
-            Console.SetCursorPosition(2, 21);
+            Console.SetCursorPosition(2, 20);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ [ INVENTORY ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
             Console.SetCursorPosition(2, 22);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+            Console.WriteLine(String.Format("{0}", "━━━━ [ Equip Slot ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+
+
+            Console.SetCursorPosition(5, 23);
+            for (int index = 0; index < player.equipSlot.Length; index++)
+            {
+                Console.Write(" [ {0} 번 :", index + 1);
+                if (player.equipSlot[index] != null)
+                {
+                    Console.Write("{0} ]", player.equipSlot[index].GetItemName());
+                }
+                else
+                {
+                    Console.Write(" -- empty -- ]");
+                }
+
+            }
+
+            Console.SetCursorPosition(2, 24);
+            Console.WriteLine(String.Format("{0}", "━━━━━ [ Inven Slot ]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
             string[] strInventoryList = new string [10];
             
@@ -100,19 +102,19 @@ namespace Kproject_Text_RPG
                
                 if (player.inventory.Count() == 0 || i >= player.inventory.Count())
                 {
-                    strInventoryList[i] = string.Format("{0, -2} : {1, 10}", $"[{i + 1}]"," -- empty -- ");
+                    strInventoryList[i] = string.Format("{0, -2}: {1, 10}", $"[{i + 1}]"," -- empty -- ");
                 }
                 else if (player.inventory[i] != null)
                 {
-                    strInventoryList[i] = string.Format("{0, -2} : {1, 10}", $"[{i + 1}]",  player.inventory[i].GetItemName());
+                    strInventoryList[i] = string.Format("{0, -2}: {1, 10}", $"[{i + 1}]",  player.inventory[i].GetItemName());
                
                 }
         
             }
 
-            Console.SetCursorPosition(2, 24);
-            Console.WriteLine(String.Format($"{strInventoryList[0],22}|{strInventoryList[1],22}|{strInventoryList[2],22}|{strInventoryList[3],22}|{strInventoryList[4],22}"));
             Console.SetCursorPosition(2, 25);
+            Console.WriteLine(String.Format($"{strInventoryList[0],22}|{strInventoryList[1],22}|{strInventoryList[2],22}|{strInventoryList[3],22}|{strInventoryList[4],22}"));
+            Console.SetCursorPosition(2, 26);
             Console.WriteLine(String.Format($"{strInventoryList[5],22}|{strInventoryList[6],22}|{strInventoryList[7],22}|{strInventoryList[8],22}|{strInventoryList[9],22}"));
 
            
@@ -132,7 +134,7 @@ namespace Kproject_Text_RPG
                 Console.SetCursorPosition(2, 27);
                 Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                 Console.SetCursorPosition(2, 28);
-                Console.WriteLine(String.Format("{0}", "        F1 ~ F10  :   slot number select            ||             Esc :        close inventory          "));
+                Console.WriteLine(String.Format("{0}", " 1~ 3  : equip slot number select  ||  F1 ~ F10  :   inven slot number select    ||   Esc :   close inventory      "));
 
             }
             while (true)
@@ -145,155 +147,148 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    if(player.inventory.Count == 0)
-                    {
-                        Console.WriteLine("빈슬롯은 선택할수없습니다.");
-                    }
-                    else { 
+                    //if(player.inventory.Count == 0)
+                    //{
+                    //    ErrorInvenSellectEmpty();
+                    //}
+                    //else { 
                     int sellectInvenSlotNum = 0;
-                        switch (inputKey.Key)
-                        {
-                            case ConsoleKey.F1:
-                                sellectInvenSlotNum = 0;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F2:
-                                sellectInvenSlotNum = 1;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F3:
-                                sellectInvenSlotNum = 2;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F4:
-                                sellectInvenSlotNum = 3;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F5:
-                                sellectInvenSlotNum = 4;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F6:
-                                sellectInvenSlotNum = 5;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F7:
-                                sellectInvenSlotNum = 6;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F8:
-                                sellectInvenSlotNum = 7;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F9:
-                                sellectInvenSlotNum = 8;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            case ConsoleKey.F10:
-                                sellectInvenSlotNum = 9;
-                                if (player.inventory[sellectInvenSlotNum] == null)
-                                {
-                                    Console.WriteLine("빈슬롯입니다.");
-                                }
-                                else
-                                {
-                                    ShowItemInfo(sellectInvenSlotNum, player);
-                                }
-                                return;
-                            default:
-                                Console.WriteLine("잘못된 입력입니다.");
-                                return;
-                        }
+                    switch (inputKey.Key)
+                    {
+                        case ConsoleKey.F1:
+                            sellectInvenSlotNum = 0;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F2:
+                            sellectInvenSlotNum = 1;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F3:
+                            sellectInvenSlotNum = 2;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F4:
+                            sellectInvenSlotNum = 3;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F5:
+                            sellectInvenSlotNum = 4;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty(); ;
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F6:
+                            sellectInvenSlotNum = 5;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F7:
+                            sellectInvenSlotNum = 6;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F8:
+                            sellectInvenSlotNum = 7;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F9:
+                            sellectInvenSlotNum = 8;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        case ConsoleKey.F10:
+                            sellectInvenSlotNum = 9;
+                            if (player.inventory[sellectInvenSlotNum] == null)
+                            {
+                                UiManager.ErrorInvenSellectEmpty();
+                            }
+                            else
+                            {
+                                ShowItemInfo(sellectInvenSlotNum, player);
+                            }
+                            return;
+                        default:
+                            UiManager.ErrorInputKey();
+                            return;
+                       // }
                     }
-
                 }
-
             }
         }
+
 
         public static void ShowItemInfo(int sellectNum, Player player)
         {
            
             if (sellectNum <= player.inventory.Count)
             {
-                Console.WriteLine("===========[ Item Info ]==============");
-                Console.WriteLine("||[{0}]   type:{1}  ||", player.inventory[sellectNum].GetItemName(), player.inventory[sellectNum].GetItemType());
-                Console.WriteLine("||property :{0}  ||", player.inventory[sellectNum].GetItemProperty());
-                Console.WriteLine("|| desc : {0}  ||", player.inventory[sellectNum].GetDescription()); ;
-                Console.WriteLine("==============================");
+                ItemInfoUIDraw(player, sellectNum);
 
-                Console.WriteLine("==============================");
-                Console.WriteLine("== [use : enter || close  : Esc ] ==");
-                Console.WriteLine("==============================");
 
                 while (true)
                 {
                     ConsoleKeyInfo inputKey = Console.ReadKey();
                     if (inputKey.Key == ConsoleKey.Escape)
                     {
+                        ItemInfoUIClear();
                         OpenInventory(player);
                         break;
                     }
@@ -303,11 +298,13 @@ namespace Kproject_Text_RPG
                         if (player.inventory[sellectNum].GetItemType() == ItemData.ItemType.Weapon || player.inventory[sellectNum].GetItemType() == ItemData.ItemType.Armor)
                         {
                             player.SetEquipSlot(player.inventory[sellectNum]);
+                            ItemInfoUIClear();
                             OpenInventory(player);
                             break;
                         }
                         else
                         {
+                            ItemInfoUIClear();
                             player.UseItem(player.inventory[sellectNum]);
                             OpenInventory(player);
                             break;
@@ -317,8 +314,65 @@ namespace Kproject_Text_RPG
             }
             else
             {
-                Console.WriteLine("잘못된 입력입니다.");
+                UiManager.ErrorInputKey();
             }
+        }
+        
+        // 아이템 정보 창
+        public static void ItemInfoUIDraw(Player player, int sellectNum)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("==============[ Item Info ]==============");
+            Console.SetCursorPosition(32, 11);
+            Console.WriteLine("|| [{0}]   type:{1}  ||", player.inventory[sellectNum].GetItemName(), player.inventory[sellectNum].GetItemType());
+            Console.SetCursorPosition(32, 12);
+            Console.WriteLine("|| property :{0}     ||", player.inventory[sellectNum].GetItemProperty());
+            Console.SetCursorPosition(33, 13);
+            Console.WriteLine("|| desc : {0}        ||", player.inventory[sellectNum].GetDescription()); ;
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("=========================================");
+            Console.SetCursorPosition(32, 15);
+            Console.WriteLine("=========================================");
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("||   use : enter   ||   close  : Esc   ||");
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("=========================================");
+        }
+
+        public static void ItemInfoUIClear()
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 11);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 12);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(33, 13);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 14);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 15);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 16);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+            Console.SetCursorPosition(32, 17);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
         }
 
     }

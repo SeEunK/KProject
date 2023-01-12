@@ -15,8 +15,7 @@ namespace Kproject_Text_RPG
             TableManager tableManager = TableManager.getInstance();
             List<ItemData> itemTable = tableManager.GetItemTable();
 
-            Console.Clear();
-            Program.Ui();
+            UiManager.UiInit();
 
             Console.SetCursorPosition(2, 1);
             Console.WriteLine(String.Format("{0}", "                                                      Shop                                                         "));
