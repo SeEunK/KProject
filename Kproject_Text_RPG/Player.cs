@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Kproject_Text_RPG
             attackPower = 100;
             defense = 1;
             exp = 0;
-            gold = 0;   
+            gold = 0;
             inventory = new List<Item>();
             invenMaxSize = 10;
 
@@ -61,7 +62,7 @@ namespace Kproject_Text_RPG
 
             if (equipSlot[typeIndex] != null)
             {
-                Console.SetCursorPosition(45, 15);
+                Console.SetCursorPosition(30, 15);
                 Console.WriteLine("{0}가 장착중입니다. 해제하고 장착하시겠습니까? Y/N  ", equipSlot[typeIndex].GetItemName());
                 ConsoleKeyInfo inputKey = Console.ReadKey();
                 if (inputKey.Key == ConsoleKey.Y)
@@ -123,7 +124,7 @@ namespace Kproject_Text_RPG
 
         }
 
-        public Item[] GetEquipSlotList()
+        public  Item[]  GetEquipSlotList()
         {
             return equipSlot;
         }
@@ -153,6 +154,7 @@ namespace Kproject_Text_RPG
         }
         public void SetGold(int gainGold)
         {
+            
             gold += gainGold;
         }
 
@@ -227,31 +229,33 @@ namespace Kproject_Text_RPG
             {
                 case ItemData.ItemType.Weapon:
                     attackPower -= itemProValue;
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.WriteLine("{0}를 장착해제하였습니다. (공격력 - {1})", item.GetItemName(), itemProValue);
                     Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("                                                                                    ");
                     Console.ResetColor();
+                    
                     break;
 
                 case ItemData.ItemType.Armor:
                     defense -= itemProValue;
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.WriteLine("{0}를 장착해제하였습니다.(방어력 - {1})", item.GetItemName(), itemProValue);
                     Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("                                                                                    ");
                     Console.ResetColor();
+                    
                     break;
             }
 
              
         }
 
-        public void UseItem(Item item)
+        public void UseItem(Item item )
         {
             ItemData.ItemType itemType = item.GetItemType();
             int itemProValue = item.GetItemPropertyValue();
@@ -265,26 +269,27 @@ namespace Kproject_Text_RPG
                 case ItemData.ItemType.Weapon:
                     attackPower += itemProValue;
 
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.WriteLine("{0}를 장착하여 공격력이 {1}상승했습니다.", itemName, itemProValue);
                     Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                                                                    ");
+                    Console.WriteLine("                                                                                  ");
                     Console.ResetColor();
 
                     inventory.Remove(item);
+                 
 
                     break;
 
                 case ItemData.ItemType.Armor:
                     defense += itemProValue;
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.WriteLine("{0}를 장착하여 방어력이 {1}상승했습니다.", itemName, itemProValue);
                     Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                                                                    ");
+                    Console.WriteLine("                                                                                  ");
                     Console.ResetColor();
 
                     inventory.Remove(item);
@@ -298,12 +303,12 @@ namespace Kproject_Text_RPG
                     }
 
                     hp += itemProValue;
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.WriteLine("{0}을 사용하여 HP가 {1}만큼 회복했습니다.", itemName, itemProValue);
                     Task.Delay(1000).Wait();
-                    Console.SetCursorPosition(45, 15);
+                    Console.SetCursorPosition(30, 7);
                     Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("                                                                                    ");
+                    Console.WriteLine("                                                                                   ");
                     Console.ResetColor();
 
                     inventory.Remove(item);

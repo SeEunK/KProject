@@ -21,14 +21,8 @@ namespace Kproject_Text_RPG
             Console.WriteLine(String.Format("{0}", "                                                      Shop                                                         "));
             Console.SetCursorPosition(2, 2);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 3);
-            Console.WriteLine(String.Format("{0}", $"  {player.name,-10}              ||   HP :  {player.hp,6} / {player.maxHP,6}  ||      Gold : {player.GetGold(),10}      "));
-            Console.SetCursorPosition(2, 4);
-            Console.WriteLine(String.Format("{0}", $"  {player.LevelDisplay(),-10}   ||   AttckPower : {player.attackPower,12}    ||      defence : {player.defense,10}    "));
-            Console.SetCursorPosition(2, 5);
-            Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-            Console.ResetColor();
+
+            Program.PlayerStatUI(player);
 
 
             Console.SetCursorPosition(2, 27);
@@ -41,7 +35,7 @@ namespace Kproject_Text_RPG
 
             while (true)
             {   
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
                     Lobby.ShowLobby(player);
@@ -59,7 +53,8 @@ namespace Kproject_Text_RPG
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    UiManager.ErrorInputKey();
+                   
                 }
             }
 
@@ -67,46 +62,12 @@ namespace Kproject_Text_RPG
 
         public static void ShowInventoryList( Player player)
         {
-            Console.WriteLine("==============[ Inventory ]=============");
-            Console.WriteLine("┌────────────────────────────────────────────────────────────────────────────────────────────────┐");
-            for (int i = 0; i < player.GetInvenMaxSize(); i++)
-            {
-                Console.Write("[ {0} 번 슬롯: ", i + 1);
-
-                if (player.inventory.Count() == 0 || i >= player.inventory.Count())
-                {
-                    Console.Write("empty ]");
-                }
-                else if (player.inventory[i] != null)
-                {
-                    Console.Write("{0}]", player.inventory[i].GetItemName());
-                }
-
-                if (i == 4)
-                {
-                    Console.WriteLine();
-                }
-            }
-            Console.WriteLine();
-            Console.WriteLine("└────────────────────────────────────────────────────────────────────────────────────────────────┘");
-            Console.WriteLine();
-
-            if (player.inventory.Count == 0)
-            {
-                Console.WriteLine("============================================================================");
-                Console.WriteLine("== [   close  : Esc ] ==");
-                Console.WriteLine("============================================================================");
-            }
-            else
-            {
-                Console.WriteLine("============================================================================");
-                Console.WriteLine("== [ select : slot number F1 ~ F10  /  close  : Esc ] ==");
-                Console.WriteLine("============================================================================");
-            }
+            Lobby.OpenInventory(player);
+           
             while (true)
             {
                 
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
                     ShowShop(player);
@@ -116,7 +77,7 @@ namespace Kproject_Text_RPG
                 {
                     if (player.inventory.Count == 0)
                     {
-                        Console.WriteLine("빈슬롯은 선택할수없습니다.");
+                        UiManager.EmptySlotSellectMessage();
                     }
                     else
                     {
@@ -127,10 +88,11 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 0;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
+                                    
                                     ShowSellItemInfo( sellectInvenSlotNum, player);
                                 }
                                 return;
@@ -138,7 +100,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 1;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -149,7 +111,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 2;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -160,7 +122,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 3;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -171,7 +133,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 4;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -182,7 +144,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 5;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -193,7 +155,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 6;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -204,7 +166,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 7;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -215,7 +177,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 8;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -226,7 +188,7 @@ namespace Kproject_Text_RPG
                                 sellectInvenSlotNum = 9;
                                 if (player.inventory[sellectInvenSlotNum] == null)
                                 {
-                                    Console.WriteLine("빈슬롯입니다.");
+                                     UiManager.EmptySlotSellectMessage();
                                 }
                                 else
                                 {
@@ -234,7 +196,8 @@ namespace Kproject_Text_RPG
                                 }
                                 return;
                             default:
-                                Console.WriteLine("잘못된 입력입니다.");
+                                UiManager.ErrorInputKey();
+                               
                                 return;
                         }
                     }
@@ -247,21 +210,15 @@ namespace Kproject_Text_RPG
 
             if (sellectNum <= player.inventory.Count)
             {
-                Console.WriteLine("===========[ Item Info ]==============");
-                Console.WriteLine("||[{0}]   type:{1}  ||", player.inventory[sellectNum].GetItemName(), player.inventory[sellectNum].GetItemType());
-                Console.WriteLine("||property :{0}  ||", player.inventory[sellectNum].GetItemProperty());
-                Console.WriteLine("|| desc : {0}  ||", player.inventory[sellectNum].GetDescription()); ;
-                Console.WriteLine("==============================");
-                Console.WriteLine("|| sell price : {0}  ||", player.inventory[sellectNum].GetSellPrice()); ;
-                Console.WriteLine("==============================");
-                Console.WriteLine("== [sell : enter || close  : Esc ] ==");
-                Console.WriteLine("==============================");
-
+                UiManager.InventoryDrawClear();
+                UiManager.ShopItemInfoDraw(player, sellectNum);
+                
                 while (true)
                 {
-                    ConsoleKeyInfo inputKey = Console.ReadKey();
+                    ConsoleKeyInfo inputKey = Console.ReadKey(true);
                     if (inputKey.Key == ConsoleKey.Escape)
                     {
+                        UiManager.ShopItemInfoClear();
                         ShowInventoryList(player);
                         return ;
                     }
@@ -269,15 +226,22 @@ namespace Kproject_Text_RPG
                     { // 선택한 아이템 판매진행.
                        int sellectSaleItemID = player.inventory[sellectNum].GetID();
                        string sellectSaleItemName = player.inventory[sellectNum].GetItemName();
-                       player.inventory.Remove(player.inventory[sellectNum]); // 인벤에서 아이템 삭제.
-                       player.SetGold( player.FindItemByID(sellectSaleItemID).GetSellPrice()); // 선택한 아이템 판매가격을 유저한테 넣어주고
-                       Console.WriteLine("||  {0} 판매에 성공하였습니다. (+{1}Gold)  ||", sellectSaleItemName, player.FindItemByID(sellectSaleItemID).GetSellPrice());
-                       ShowInventoryList(player);
+                        int sellPrice = player.inventory[sellectNum].GetSellPrice();
+                        // 선택한 아이템 판매가격을 유저한테 넣어주고
+                        player.inventory.RemoveAt(sellectNum); // 인벤에서 아이템 삭제.
+                        player.SetGold(sellPrice);
+                        // 플레이어 정보 갱신
+                        Program.PlayerStatUI(player);
+                        // 판매 성공 출력.
+                        UiManager.ShopItemSellComplete(sellectSaleItemName, player, sellectSaleItemID, sellPrice);
+
+                        UiManager.ShopItemInfoClear();
+                        ShowInventoryList(player);
                        return;
                     }
                     else
                     {
-                        Console.WriteLine("잘못된 입력입니다.");
+                        UiManager.ErrorInputKey();
                     }
                 }
             }
@@ -290,26 +254,17 @@ namespace Kproject_Text_RPG
 
         public static void ShowProductList(List<ItemData> itemTable , Player player)
         {
-            Console.WriteLine("==============[Product List]=============");
-
-            for (int i = 0; i < itemTable.Count; i++)
-            {
-                Console.WriteLine("[F{2} : {0}  price :{1}]", itemTable[i].name, itemTable[i].price, i + 1);
-
-            }
-            Console.WriteLine("======================================");
-
-
-            Console.WriteLine("============================================================================");
-            Console.WriteLine("== [ select : product number F1 ~ F{0}  /  close  : Esc ] ==", itemTable.Count);
-            Console.WriteLine("============================================================================");
-            Console.WriteLine("===[gold : {0} ]===============================", player.GetGold());
-            Console.WriteLine("============================================================================");
+            // 상품 리스트 출력
+            UiManager.ShopProdutItemListDraw(itemTable, player);
+           
+            //유저 인풋 받기
             while (true)
             {
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
+                    // 상품 출력 삭제
+                    UiManager.ShopProdutItemListClear();
                     ShowShop(player);
                     break;
                 }
@@ -322,116 +277,117 @@ namespace Kproject_Text_RPG
                             sellectProductNum = 0;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F2:
                             sellectProductNum = 1;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
+
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F3:
                             sellectProductNum = 2;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
 
                         case ConsoleKey.F4:
                             sellectProductNum = 3;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F5:
                             sellectProductNum = 4;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F6:
                             sellectProductNum = 5;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F7:
                             sellectProductNum = 6;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F8:
                             sellectProductNum = 7;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F9:
                             sellectProductNum = 8;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                                UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         case ConsoleKey.F10:
                             sellectProductNum = 9;
                             if (itemTable[sellectProductNum] == null)
                             {
-                                Console.WriteLine("없는 상품 입니다.");
+                               UiManager.ErrorSellectProductMissing();
                             }
                             else
                             {
                                 ShowProductInfo(sellectProductNum, player, itemTable);
                             }
-                            return;
+                            break;
                         default:
-                            Console.WriteLine("잘못된 입력입니다.");
-                            return;
+                            UiManager.ErrorInputKey();
+                            break;
                     }
 
                 }
@@ -440,25 +396,21 @@ namespace Kproject_Text_RPG
 
         public static void ShowProductInfo(int sellectNum, Player player, List<ItemData> productList)
         {
+            // 상품 리스트 출력 삭제
+            UiManager.ShopProdutItemListClear();
 
             if (sellectNum <= productList.Count)
             {
-                Console.WriteLine("===========[ Item Info ]==============");
-                Console.WriteLine("||[{0}]   type:{1}  ||", productList[sellectNum].name, productList[sellectNum].type);
-                Console.WriteLine("||property :{0}  ||", productList[sellectNum].property);
-                Console.WriteLine("|| desc : {0}  ||", productList[sellectNum].desc); ;
-                Console.WriteLine("|| price : {0}  ||", productList[sellectNum].price); ;
-                Console.WriteLine("==============================");
-
-                Console.WriteLine("==============================");
-                Console.WriteLine("== [Buy : enter || close  : Esc ] ==");
-                Console.WriteLine("==============================");
-
+                // 상품 중 선택한 아이템 정보창 출력
+                UiManager.ShopProdutItemSellectInfo(productList[sellectNum].name, productList[sellectNum].type, productList[sellectNum].property, 
+                                                    productList[sellectNum].desc, productList[sellectNum].price);
                 while (true)
                 {
                     ConsoleKeyInfo inputKey = Console.ReadKey();
                     if (inputKey.Key == ConsoleKey.Escape)
                     {
+                        // 상품 상세 정보창 삭제
+                        UiManager.ShopProdutItemSellectInfoClear();
                         ShowProductList(productList, player);
                         break;
                     }
@@ -469,13 +421,22 @@ namespace Kproject_Text_RPG
                         {
                             player.SetGold(-productList[sellectNum].price);
                             player.SetIventory(productList[sellectNum]);
-                            Console.WriteLine("{0} 구매에 성공하였습니다.", productList[sellectNum].name);
+                            // 플레이어 정보 갱신
+                            Program.PlayerStatUI(player);
+
+                            // 구매 성공 메시지 출력
+                            UiManager.ShopItemBuyComplete(productList[sellectNum].name);
+                          
+                            // 상품 상세 정보창 삭제
+                            UiManager.ShopProdutItemSellectInfoClear();
                             ShowProductList(productList,player);
                             break;
                         }
                         else
-                        {//골드 부족
-                            Console.WriteLine("골드가 부족하여 구매할수없습니다.");
+                        {//골드 부족 안내 메시지 
+                            UiManager.CanNotBuyItemInsufficientCost();
+                            // 상품 상세 정보창 삭제
+                            UiManager.ShopProdutItemSellectInfoClear();
                             ShowShop(player);
                             break;
                         }
@@ -484,7 +445,7 @@ namespace Kproject_Text_RPG
             }
             else
             {
-                Console.WriteLine("잘못된 입력입니다.");
+                UiManager.ErrorInputKey();
             }
         }
 

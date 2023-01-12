@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Kproject_Text_RPG
@@ -16,7 +18,7 @@ namespace Kproject_Text_RPG
         // public int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
         public const int UI_SIZE_X = 60;
         public const int UI_SIZE_Y = 30;
-        
+
         public static void UiInit()
         {
             int[,] _ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
@@ -98,7 +100,7 @@ namespace Kproject_Text_RPG
         public static void ErrorInvenSellectEmpty()
         {
             Console.SetCursorPosition(50, 7);
-            Console.WriteLine("빈슬롯입니다.");
+            UiManager.EmptySlotSellectMessage();
             Console.SetCursorPosition(50, 7);
             Task.Delay(200).Wait();
             Console.BackgroundColor = ConsoleColor.Black;
@@ -110,6 +112,76 @@ namespace Kproject_Text_RPG
         {
             Console.SetCursorPosition(50, 7);
             Console.WriteLine("잘못된 입력입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void ErrorWrongApproach()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("잘못된 접근입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void EmptySlotSellectMessage()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("빈 슬롯 입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void MaxEnhanceLevelItemSellect()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("최대 레벨로 강화된 아이템 입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void DoNotEnhanceItemSellect()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("강화할 수 없는 아이템 입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void DurabilityMaxItemSellect()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("내구도가 최대 상태입니다..");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void DoNotRepairItemSellect()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("수리할 수 없는 아이템 입니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(200).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void ErrorSellectProductMissing()
+        {
+            Console.SetCursorPosition(50, 7);
+            Console.WriteLine("없는 상품 입니다.");
             Console.SetCursorPosition(50, 7);
             Task.Delay(200).Wait();
             Console.BackgroundColor = ConsoleColor.Black;
@@ -151,6 +223,18 @@ namespace Kproject_Text_RPG
             Console.SetCursorPosition(40, 22);
             Console.WriteLine("아무키나 입력하면 결과창이 종료됩니다.");
         }
+
+        public static void EnterAnyKey()
+        {
+            Console.SetCursorPosition(50, 25);
+            Console.WriteLine("아무키나 입력하세요.");
+            Task.Delay(1000).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(50, 25);
+            Console.WriteLine("                     ");
+            Console.ResetColor();
+        }
+      
         public static void EnterAnyKeyMessageClear()
         {
             Console.SetCursorPosition(40, 22);
@@ -166,7 +250,7 @@ namespace Kproject_Text_RPG
         }
         public static void LevelUpDrawClear()
         {
-            Task.Delay(2000).Wait();
+            Task.Delay(1000).Wait();
             Console.SetCursorPosition(40, 8);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("                                          ");
@@ -184,7 +268,7 @@ namespace Kproject_Text_RPG
             Console.ResetColor();
         }
 
-        public static void AdventureRewadUIDraw(int rewardGold , int rewardExp, string dropItem)
+        public static void AdventureRewadUIDraw(int rewardGold, int rewardExp, string dropItem)
         {
             Console.SetCursorPosition(40, 10);
             Console.WriteLine("=========== Reward ===========");
@@ -241,11 +325,13 @@ namespace Kproject_Text_RPG
 
         public static void GoToLobbyMessage()
         {
-
-            Console.SetCursorPosition(30, 15);
+            Console.SetCursorPosition(40, 15);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                   ");
+            Console.SetCursorPosition(40, 15);
             Console.WriteLine("Go to Lobby");
             Task.Delay(500).Wait();
-            Console.SetCursorPosition(30, 15);
+            Console.SetCursorPosition(40, 15);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("                                                   ");
             Console.ResetColor();
@@ -257,17 +343,17 @@ namespace Kproject_Text_RPG
 
             Console.SetCursorPosition(40, 7);
             Console.WriteLine("========  Stage Clear ========");
-         
+
             Console.SetCursorPosition(40, 9);
             Console.WriteLine("[ stage {0} - {1} ]", stageNum, stageName);
-            
+
 
             // stage clear reward;
 
             Console.SetCursorPosition(40, 11);
             Console.WriteLine("======   Clear Reward    ======");
             Console.SetCursorPosition(40, 12);
-            Console.WriteLine(string.Format($"\"{clearRewardItemName}\"").PadLeft(30 - (clearRewardItemName.Length / 2)));
+            Console.WriteLine(string.Format($"\"{clearRewardItemName}\"").PadLeft(30 - (15 - (clearRewardItemName.Length / 2))));
             Console.SetCursorPosition(40, 13);
             Console.WriteLine("===============================");
 
@@ -312,8 +398,8 @@ namespace Kproject_Text_RPG
         {
             Console.SetCursorPosition(45, 7);
             Console.WriteLine("{0}를 만났습니다.", monsterName);
-            
-            Task.Delay(1000).Wait();
+
+            Task.Delay(500).Wait();
             Console.SetCursorPosition(40, 7);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("                                                                       ");
@@ -323,7 +409,7 @@ namespace Kproject_Text_RPG
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.SetCursorPosition(2, 1);
-            Console.WriteLine(String.Format("{0}", $"                            STAGE {stageNum}. {StageName}                       "));
+            Console.WriteLine(String.Format("{0}", $"                                        STAGE {stageNum}. {StageName}                                      "));
             Console.SetCursorPosition(2, 2);
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
             Console.ResetColor();
@@ -350,13 +436,13 @@ namespace Kproject_Text_RPG
             Console.WriteLine("                                                                          ");
             Console.ResetColor();
         }
-        
+
         public static void TakeDamageMessage(string monsterName, int demage)
         {
             Console.SetCursorPosition(2, 22);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("                                                                                     ");
-            
+
             Console.SetCursorPosition(40, 22);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("{0}에게 {1}의 데미지를 입었습니다.", monsterName, demage);
@@ -379,7 +465,7 @@ namespace Kproject_Text_RPG
 
         }
 
-        public static void EquipItemBrokenMessage(string itemName )
+        public static void EquipItemBrokenMessage(string itemName)
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Red;
@@ -424,7 +510,7 @@ namespace Kproject_Text_RPG
         }
         public static void PlayerTurnGuideMessageClear()
         {
-            Console.BackgroundColor= ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.SetCursorPosition(42, 22);
             Console.WriteLine("                                      ");
             Console.ResetColor();
@@ -553,7 +639,7 @@ namespace Kproject_Text_RPG
             Console.WriteLine(String.Format("{0}", "                                                                                                                   "));
             Console.SetCursorPosition(2, 28);
             Console.WriteLine(String.Format("{0}", "                                                                                                                   "));
-          
+
             Console.ResetColor();
         }
 
@@ -565,6 +651,395 @@ namespace Kproject_Text_RPG
             Console.WriteLine(String.Format("{0}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
             Console.SetCursorPosition(2, 28);
             Console.WriteLine(String.Format("{0}", "         F1 : \"Enhance\"            ||          F2 : \"Repair\"            ||        Esc : \"Go To Lobby\"     "));
+            Console.ResetColor();
+        }
+
+        public static void InventoryDrawClear()
+        {
+            for (int i = 0; i < 13; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 14 + i);
+                Console.WriteLine("                                                                                                                    ");
+
+            }
+            Console.ResetColor();
+            Console.SetCursorPosition(0, 0);
+        }
+
+        public static void SmithyEquipItemInfoUIDraw(Player player, int index, int smithyMenuFlag)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("==============[ Item Info ]==============");
+
+            // 강화 수리 - 장착 중 공통
+            Console.SetCursorPosition(32, 11);
+            Console.WriteLine("|| [{0}]   type:{1}  ||", player.equipSlot[index].GetItemName(), player.equipSlot[index].GetItemType());
+            Console.SetCursorPosition(32, 12);
+            Console.WriteLine("|| property :{0}  ||", player.equipSlot[index].GetItemProperty());
+            Console.SetCursorPosition(33, 13);
+            Console.WriteLine("|| desc : {0}  ||", player.equipSlot[index].GetDescription()); ;
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("===========================================");
+
+            if (smithyMenuFlag == 1)
+            {
+                //강화 장착중
+                Console.SetCursorPosition(32, 15);
+                Console.WriteLine("|| enhance level : {0}  ||", player.equipSlot[index].GetEnhanceLevel());
+            }
+            else if (smithyMenuFlag == 2)
+            {
+                //수리 - 장착중
+                Console.SetCursorPosition(32, 15);
+                Console.WriteLine("|| durability : {0} / {1}  ||", player.equipSlot[index].GetDurability(), player.equipSlot[index].GetMaxDurability());
+            }
+            //공통
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("===========================================");
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("|| [sellect : enter || close  : Esc ] ||");
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("===========================================");
+        }
+        public static void SmithyInvenItemInfoUIDraw(Player player, int index, int smithyMenuFlag)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("==============[ Item Info ]==============");
+
+            // 강화 수리 - 장착 중 공통
+            Console.SetCursorPosition(32, 11);
+            Console.WriteLine("||[{0}]   type:{1}  ||", player.inventory[index].GetItemName(), player.inventory[index].GetItemType());
+            Console.SetCursorPosition(32, 12);
+            Console.WriteLine("|| property :{0}  ||", player.inventory[index].GetItemProperty());
+            Console.SetCursorPosition(33, 13);
+            Console.WriteLine("|| desc : {0}  ||", player.inventory[index].GetDescription()); ;
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("===========================================");
+
+            if (smithyMenuFlag == 1)
+            {
+                //강화 장착중
+                Console.SetCursorPosition(32, 15);
+                Console.WriteLine("|| enhance level : {0}  ||", player.inventory[index].GetEnhanceLevel());
+            }
+            else if (smithyMenuFlag == 2)
+            {
+                //수리 - 장착중
+                Console.SetCursorPosition(32, 15);
+                Console.WriteLine("|| durability : {0} / {1}  ||", player.inventory[index].GetDurability(), player.inventory[index].GetMaxDurability());
+            }
+            //공통
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("===========================================");
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("|| [sellect : enter || close  : Esc ] ||");
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("===========================================");
+        }
+
+        public static void SmithyRepairItemInfoDraw(string itemName, ItemData.ItemType type, int preDurability, int maxDurability, int repairRate, int durabilityCost)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("================[ Repair ]================");
+            Console.SetCursorPosition(32, 11);
+            Console.WriteLine("||[{0}] | type:{1}  ||", itemName, type);
+            Console.SetCursorPosition(32, 12);
+            Console.WriteLine("===========================================");
+            Console.SetCursorPosition(32, 13);
+            Console.WriteLine("||      Durability     ||");
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("||     {0} --> {1}   ||", preDurability, maxDurability);
+            Console.SetCursorPosition(32, 15);
+            Console.WriteLine("===========================================");
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("||   Repair Rate : {0} %    || ", repairRate);
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("||   Repair Cost : {0} Gold    || ", durabilityCost);
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("|| [Repair : enter ]|| [close  : Esc ] ||");
+            Console.SetCursorPosition(32, 19);
+            Console.WriteLine("===========================================");
+        }
+
+        public static void SmithyRepairItemInfoClear()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine("                                                                                                                   ");
+            }
+            Console.ResetColor();
+        }
+        public static void SmithyEnhancetemInfoDraw(string itemName, ItemData.ItemType type, int prevEnhanceLevel, int nextEnhanceLevel, int prevPropertyValue, int nextPropertyValue, float successRate, int cost)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("===============[ Enhance ]===============");
+            Console.SetCursorPosition(32, 11);
+            Console.WriteLine("||[{0}] | type:{1}  ||", itemName, type);
+            Console.SetCursorPosition(32, 12);
+            Console.WriteLine("=========================================");
+            Console.SetCursorPosition(32, 13);
+            Console.WriteLine("||            enhance level           ||");
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("||       +{0}     -->     +{1}     ||", prevEnhanceLevel, nextEnhanceLevel);
+            Console.SetCursorPosition(32, 15);
+            Console.WriteLine("|| ------------- property ----------- ||");
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("||        {0}     -->       {1}     ||", prevPropertyValue, prevPropertyValue + nextPropertyValue);
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("|| --------- success rate ---------   ||");
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("||                 {0} %              ||", successRate);
+            Console.SetCursorPosition(32, 19);
+            Console.WriteLine("==========================================");
+            Console.SetCursorPosition(32, 20);
+            Console.WriteLine("||       Enhance Cost {0} Gold       || ", cost);
+            Console.SetCursorPosition(32, 21);
+            Console.WriteLine("== [Enhance : enter ]|| [close  : Esc ] ==");
+            Console.SetCursorPosition(32, 22);
+            Console.WriteLine("===========================================");
+        }
+        public static void SmithyEnhanceItemInfoClear()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine("                                                                                                                   ");
+            }
+            Console.ResetColor();
+        }
+
+        public static void ShopItemInfoDraw(Player player , int sellectNum )
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("====================== [ Item Info ] =======================");
+            Console.SetCursorPosition(32, 11);
+            Console.Write(string.Format("|| [{0}]", player.inventory[sellectNum].GetItemName()));
+            Console.SetCursorPosition(60, 11);
+            Console.Write(string.Format("{0, -10}", " type :"));
+            Console.Write(string.Format("{0,19} ||", player.inventory[sellectNum].GetItemType()));
+            Console.SetCursorPosition(32, 12);
+            Console.Write(string.Format("|| property :"));
+            Console.SetCursorPosition(70, 12);
+            Console.Write(string.Format("{0,19} ||", player.inventory[sellectNum].GetItemProperty()));
+            Console.SetCursorPosition(32, 13);
+            Console.Write(string.Format("|| desc :"));
+            Console.Write(string.Format("{0,36} ||", player.inventory[sellectNum].GetDescription()));
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("||                      sell price :  {0,17}   ||", player.inventory[sellectNum].GetSellPrice());
+            Console.SetCursorPosition(32, 15);
+            Console.WriteLine("============================================================");
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("============================================================");
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("== [      Sell   : enter     ||       close  : Esc      ] ==");
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("============================================================");
+        }
+
+        public static void ShopItemInfoClear()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine("                                                                                                                   ");
+            }
+            Console.ResetColor();
+        }
+
+        public static void ShopProdutItemListDraw(List<ItemData> itemTable, Player player)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("===================== [Product List] ========================");
+
+            int produtLine = itemTable.Count +10;
+            for (int i = 0; i < itemTable.Count; i++)
+            {
+                Console.SetCursorPosition(32, 11+i);
+                Console.Write("[F{0} > {1}", i + 1, itemTable[i].name);
+                Console.SetCursorPosition(60, 11 + i);
+                Console.Write(String.Format("{0,-10}", "price : "));
+                Console.Write(String.Format("{0,20}", itemTable[i].price));
+            }
+            Console.SetCursorPosition(32, produtLine);
+            Console.WriteLine("============================================================");
+            Console.SetCursorPosition(32, produtLine+1);
+            Console.WriteLine("== [ select : product number F1 ~ F{0}  ||  close  : Esc ] ==", itemTable.Count-1);
+            Console.SetCursorPosition(32, produtLine + 2);
+            Console.WriteLine("============================================================");
+
+        }
+        public static void ShopProdutItemListClear()
+        {
+            for (int i = 0; i < 19; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine("                                                                                                                   ");
+            }
+            Console.ResetColor();
+        }
+
+        public static void ShopProdutItemSellectInfo(string name, ItemData.ItemType type, string property, string desc , int price)
+        {
+            Console.SetCursorPosition(32, 10);
+            Console.WriteLine("====================== [ Item Info ] =======================");
+            Console.SetCursorPosition(32, 11);
+            Console.Write(string.Format("|| [{0}]", name));
+            Console.SetCursorPosition(60, 11);
+            Console.Write(string.Format("{0, -10}", " type :"));
+            Console.Write(string.Format("{0,19} ||", type));
+            Console.SetCursorPosition(32, 12);
+            Console.Write(string.Format("|| property :"));
+            Console.SetCursorPosition(70, 12);
+            Console.Write(string.Format("{0,19} ||", property));
+            Console.SetCursorPosition(32, 13);
+            Console.Write(string.Format("|| desc :"));
+            Console.Write(string.Format("{0,36} ||",desc));
+            Console.SetCursorPosition(32, 14);
+            Console.WriteLine("||                           price :  {0,17}   ||", price); 
+            Console.SetCursorPosition(32, 15);
+            Console.WriteLine("============================================================");
+            Console.SetCursorPosition(32, 16);
+            Console.WriteLine("============================================================");
+            Console.SetCursorPosition(32, 17);
+            Console.WriteLine("== [       Buy   : enter     ||       close  : Esc      ] ==");
+            Console.SetCursorPosition(32, 18);
+            Console.WriteLine("============================================================");
+        }
+
+        public static void ShopProdutItemSellectInfoClear()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine("                                                                                                                   ");
+            }
+            Console.ResetColor();
+        }
+        public static void ShopItemSellComplete(string sellectSaleItemName , Player player, int itemID, int sellPrice)
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("  {0} 판매에 성공하였습니다. (+{1}Gold)  ", sellectSaleItemName, sellPrice);
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                                ");
+            Console.ResetColor();
+        }
+
+        public static void ShopItemBuyComplete(string sellectSaleItemName)
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("  {0} 구매에 성공하였습니다. ", sellectSaleItemName);
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                                ");
+            Console.ResetColor();
+        }
+
+        public static void CanNotBuyItemInsufficientCost()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("골드가 부족하여 구매할수없습니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                  ");
+            Console.ResetColor();
+        }
+        public static void CanNotEnhanceInsufficientCost()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("비용이 부족하여 아이템 강화를 진행할수없습니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                  ");
+            Console.ResetColor();
+        }
+        public static void CanNotRepaitInsufficientCost()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("비용이 부족하여 아이템 수리를 진행할 수 없습니다.");
+            Console.SetCursorPosition(50, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                                   ");
+            Console.ResetColor();
+        }
+
+        public static void SuccessRepairItemMessage()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("=========== 수리 성공!!!! ===========");
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void FailRepairItemMessage()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("=========== 수리 실패!!!! ===========");
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void SuccessEnhanceItemMessage()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("=========== 강화 성공!!!! ===========");
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+        public static void FailEnhanceItemMessage()
+        {
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine("=========== 강화 실패!!!! ===========");
+            Console.SetCursorPosition(30, 7);
+            Task.Delay(500).Wait();
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("                                          ");
+            Console.ResetColor();
+        }
+
+        public static void TitleDraw()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(20, 7);
+            Console.WriteLine("■■■■■□■■■■□■□□□■□■■■■■□□■■■□□■■■□□□■■■□");
+            Console.SetCursorPosition(20, 8);
+            Console.WriteLine("□□■□□□■□□□□□■□■□□□□■□□□□■□□■□■□□■□■□□□□");
+            Console.SetCursorPosition(20, 9);
+            Console.WriteLine("□□■□□□■■■□□□□■□□□□□■□□□□■■■□□■■■□□■□■■□");
+            Console.SetCursorPosition(20, 10);
+            Console.WriteLine("□□■□□□■□□□□□■□■□□□□■□□□□■□□■□■□□□□■□□■□");
+            Console.SetCursorPosition(20, 11);
+            Console.WriteLine("□□■□□□■■■■□■□□□■□□□■□□□□■□□■□■□□□□□■■■□");
+
+        }
+        public static void TitleDrawClear()
+        {
+            for (int i = 0; i < 19; i++)
+            {
+                Console.SetCursorPosition(20, 7+i);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine("                                                                               ");
+            } 
             Console.ResetColor();
         }
     }
