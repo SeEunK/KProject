@@ -2,6 +2,7 @@
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Kproject_Text_RPG
 {
@@ -12,39 +13,22 @@ namespace Kproject_Text_RPG
         public static void Main(string[] args)
         {
 
-            // int left = 9; // x 좌표
-            // int top = 5;  // y 좌표
-            //Console.SetCursorPosition(left, top);
-
-            //const int UI_SIZE_X = 60;
-            //const int UI_SIZE_Y = 30;
-
-            //int[,] ui_screen = new int[UI_SIZE_Y, UI_SIZE_X];
-
-            //UiManager uiManager = new UiManager();
-
-            //uiManager.UISet(UI_SIZE_Y, UI_SIZE_X, ui_screen);
-            //uiManager.DrawUI(UI_SIZE_Y, UI_SIZE_X, ui_screen);
+        
 
             UiManager.UiInit();
 
             //UiManager.UiInit();
+            UiManager.TitleDraw();
 
+            UiManager.EnterAnyKey();
+
+            Console.ReadKey(true);
+            UiManager.TitleDrawClear();
             TableManager tableManager =  TableManager.getInstance();
 
-            if(false){
-                Console.SetCursorPosition(0, 0);
+            tableManager.GetEnhanceTable();
 
-                for (int i = 1; i < 10; i++)
-                {
-                    Console.Read();
-                    BackGround(i);
-                    Task.Delay(100).Wait();
-                    // BackGround(0);
-                }
-
-                Console.Read();
-            }
+ 
             
             //{ 캐릭터 닉네임 입력 부분
             Console.SetCursorPosition(45, 10);
@@ -66,11 +50,13 @@ namespace Kproject_Text_RPG
             // } 캐릭터 닉네임 입력 부분
             
             Console.SetCursorPosition(2, 1);
+            player.SetGold(1000);
             Lobby.ShowLobby(player);
+            
 
         }
 
-      
+   
 
         public static bool Battle(Player player, int monsterId, int stageNum )
         {
@@ -121,7 +107,7 @@ namespace Kproject_Text_RPG
                     //Console.WriteLine(String.Format("{0}", "             F1 : 공격          ||             F2 : 스킬            ||         F3 :  HP 물약             "));
                    
                     // 행동 입력 대기
-                    inputKey = Console.ReadKey();
+                    inputKey = Console.ReadKey(true);
 
                     // 행동 입력 후 버튼 막기.
                     UiManager.PlayerTurnActionButtinBlock();
@@ -137,6 +123,15 @@ namespace Kproject_Text_RPG
                         // 데미지 계산
                         int demage = player.attackPower - monster.defense;
                         monster.hp = monster.hp - demage;
+
+                        if (player.attackPower <= monster.defense)
+                        {
+                            demage = 1;
+                        }
+                        if (monster.hp < player.attackPower - monster.defense)
+                        {
+                            demage = monster.hp;
+                        }
 
                         // 플레이어 공격 데미지 출력
                         UiManager.InflictDamageMessage(monster.name, demage);
@@ -170,6 +165,14 @@ namespace Kproject_Text_RPG
                         // 데미지 계산
                         int skillAttack = player.attackPower * 2;
                         int demage = skillAttack - monster.defense;
+                        if(skillAttack <= monster.defense)
+                        {
+                            demage = 1;
+                        }
+                        if(monster.hp < skillAttack - monster.defense)
+                        {
+                            demage = monster.hp;
+                        }
                         monster.hp = monster.hp - (skillAttack - monster.defense);
 
                         // 플레이어 공격 데미지 출력
@@ -209,6 +212,7 @@ namespace Kproject_Text_RPG
                             }
                             else
                             {
+                                
                                 player.UseItem(player.FindItemByID(300));
                                 PlayerStatUI(player);
                                 turnCount++;
@@ -227,6 +231,14 @@ namespace Kproject_Text_RPG
                     UiManager.MonsterTurnGuideMessage();
                     // 데미지 계산
                     int  demage = monster.attackPower - player.defense;
+                    if(monster.attackPower <= player.defense)
+                    {
+                        demage = 1;
+                    }
+                    if (player.hp < demage)
+                    {
+                        demage = player.hp;
+                    }
                     player.hp = player.hp - demage;
 
                     //입은 데미지 출력
@@ -246,13 +258,7 @@ namespace Kproject_Text_RPG
 
                                 // 내구도 0으로 장착 아이템 효과 해제 메시지 출력
                                 UiManager.EquipItemBrokenMessage(player.GetEquipItemBySlotIndex(1).GetItemName());
-                                //Console.SetCursorPosition(45, 22);
-                                //Console.WriteLine("{0}의 내구도가 0이 되어 장착 효과가 해제 되었습니다.", player.GetEquipItemBySlotIndex(1).GetItemName());
-                                //Task.Delay(1000).Wait();
-                                //Console.SetCursorPosition(45, 22);
-                                //Console.BackgroundColor = ConsoleColor.Black;
-                                //Console.WriteLine("                                                                       ");
-                                //Console.ResetColor();
+                     
 
                             }
                         }
@@ -282,7 +288,7 @@ namespace Kproject_Text_RPG
                     // 아무키 입력 안내 메시지 출력
                     UiManager.EnterAnyKeyMessage();
                     // 입력 받기
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     // 아무키 입력 안내 메시지 삭제
                     UiManager.EnterAnyKeyMessageClear();
                     // 플레이어 사망 출력 삭제

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Kproject_Text_RPG
            
             while (true)
             {
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
                     Lobby.ShowLobby(player);
@@ -63,88 +64,42 @@ namespace Kproject_Text_RPG
 
         public static void ShowInvenList(TableManager tableManager, Player player, int smithySubMenu)
         {
-            Console.WriteLine("==============[ Inventory ]=============");
-            Console.WriteLine("┌────────────────────────────────────────Equip Slot─────────────────────────────────────────────────┐");
-            for (int index = 0; index < player.equipSlot.Length; index++)
-            {
-                Console.Write(" [ {0} 번 :" , index + 1);
-                if(player.equipSlot[index] != null)
-                {
-                    Console.Write("{0} ]", player.equipSlot[index].GetItemName());
-                }
-                else
-                {
-                    Console.Write(" empty ]");
-                }
-
-            }
-            
-            Console.WriteLine("└────────────────────────────────────────────────────────────────────────────────────────────────┘");
-            Console.WriteLine("┌────────────────────────────────────────inven Slot────────────────────────────────────────────────┐");
-            for (int i = 0; i < player.GetInvenMaxSize(); i++)
-            {
-                Console.Write("[ {0} 번 슬롯: ", i + 1);
-
-                if (player.inventory.Count() == 0 || i >= player.inventory.Count())
-                {
-                    Console.Write("empty ]");
-                }
-                else if (player.inventory[i] != null)
-                {
-                    Console.Write("{0}]", player.inventory[i].GetItemName());
-                }
-
-                if (i == 4)
-                {
-                    Console.WriteLine();
-                }
-            }
-            Console.WriteLine();
-            Console.WriteLine("└────────────────────────────────────────────────────────────────────────────────────────────────┘");
-            Console.WriteLine();
-
-            if (player.inventory.Count == 0)
-            {
-                Console.WriteLine("============================================================================");
-                Console.WriteLine("== [   close  : Esc ] ==");
-                Console.WriteLine("============================================================================");
-            }
-            else
-            {
-                Console.WriteLine("============================================================================");
-                Console.WriteLine("== [ select : equip slot number 1~ 3 || inven slot number F1 ~ F10   ||  close  : Esc ] ==");
-                Console.WriteLine("============================================================================");
-            }
+            Lobby.OpenInventory(player);
 
             while (true)
             {
 
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
+                    UiManager.InventoryDrawClear();
                     ShowSmithy(player);
                     break;
                 }
                 else
                 {
-                    if (player.inventory.Count == 0)
+                    if (player.inventory.Count == 0&& player.equipSlot.Length==0)
                     {
-                        Console.WriteLine("빈슬롯은 선택할수없습니다.");
+                        UiManager.EmptySlotSellectMessage();
                     }
                     else
                     {
+                        int sellectEquipSlotNum = -1;
                         int sellectInvenSlotNum = -1;
                         switch (inputKey.Key)
                         {
                                 //equip 
+                            case ConsoleKey.D1:
                             case ConsoleKey.NumPad1:
-                                sellectInvenSlotNum = 100;
+                                sellectEquipSlotNum = 0;
                                 break;
+                            case ConsoleKey.D2:
                             case ConsoleKey.NumPad2:
-                                sellectInvenSlotNum = 101;
+                                sellectEquipSlotNum = 1;
                                 break;
+                            case ConsoleKey.D3:
                             case ConsoleKey.NumPad3:
-                                sellectInvenSlotNum = 102; 
+                                sellectEquipSlotNum = 2; 
                                 break;
 
                                 // inven
@@ -192,198 +147,247 @@ namespace Kproject_Text_RPG
                                 break;
                         }
                         
-                        if (0 <= sellectInvenSlotNum )
+                        if (0 >= sellectInvenSlotNum || 0>=sellectEquipSlotNum) 
                         {
                             // enhance menu
                             if (smithySubMenu == 1)
                             {
-                                if (sellectInvenSlotNum >= 100)
+                                if (sellectInvenSlotNum == -1)
                                 {  // 장착 중인 아이템 선택 한 경우,
-                                    int slotNum = sellectInvenSlotNum - 100;
-                                    if (player.equipSlot[slotNum] == null)
+                                    
+                                    if (player.equipSlot[sellectEquipSlotNum] == null)
                                     {
-                                        Console.WriteLine("빈슬롯입니다.");
+                                        UiManager.EmptySlotSellectMessage();
                                     }
-                                    else if (player.equipSlot[slotNum].GetEnhanceLevel() == 5)
+                                    else if (player.equipSlot[sellectEquipSlotNum].GetEnhanceLevel() == 5)
                                     {
-                                        Console.WriteLine("최대 레벨로 강화된 아이템 입니다.");
+                                        UiManager.MaxEnhanceLevelItemSellect();
                                     }
                                     else
                                     { // 강화 진행 함수로 이동
-                                        ShowItemInfoINSmithy(sellectInvenSlotNum, player, tableManager, smithySubMenu);
+                                        UiManager.InventoryDrawClear();
+                                        ShowItemInfoINSmithy(sellectInvenSlotNum, sellectEquipSlotNum, player, tableManager, smithySubMenu); //
                                     }
                                 }
-                                else 
+                                else if (sellectEquipSlotNum == -1)
                                 { // 미 장착 아이템 선택
                                     if (player.inventory[sellectInvenSlotNum] == null)
                                     {
-                                        Console.WriteLine("빈슬롯입니다.");
+                                         UiManager.EmptySlotSellectMessage();
                                     }
                                     else if (player.inventory[sellectInvenSlotNum].GetItemType() == ItemData.ItemType.Weapon ||
                                             player.inventory[sellectInvenSlotNum].GetItemType() == ItemData.ItemType.Armor)
                                     {
                                         if (player.inventory[sellectInvenSlotNum].GetEnhanceLevel() == 5)
                                         {
-                                            Console.WriteLine("최대 레벨로 강화된 아이템 입니다.");
+                                            UiManager.MaxEnhanceLevelItemSellect();
                                         }
                                         else
                                         {
-                                            ShowItemInfoINSmithy(sellectInvenSlotNum, player, tableManager, smithySubMenu);
+                                            UiManager.InventoryDrawClear();
+                                        ShowItemInfoINSmithy(sellectInvenSlotNum, sellectEquipSlotNum, player, tableManager, smithySubMenu);
                                         }
                                     }
                                     else
                                     { //무기 , 방어구가 아닌 아이템 선택시
-                                        Console.WriteLine("강화할 수 없는 아이템 입니다.");
+                                        UiManager.DoNotEnhanceItemSellect();
                                     }
                                 }
                             }
                             // repair menu
                             else if (smithySubMenu == 2)
                             {
-                                if (sellectInvenSlotNum >= 100)
+                                if (sellectInvenSlotNum == -1)
                                 {  // 장착 중인 아이템 선택 한 경우,
-                                    int slotNum = sellectInvenSlotNum - 100;
-                                    if (player.equipSlot[slotNum] == null)
+
+                                    if (player.equipSlot[sellectEquipSlotNum] == null)
                                     {
-                                        Console.WriteLine("빈슬롯입니다.");
+                                        UiManager.EmptySlotSellectMessage();
                                     }
-                                    else if (player.equipSlot[slotNum].GetDurability() == player.equipSlot[slotNum].GetMaxDurability())
+                                    else if (player.equipSlot[sellectEquipSlotNum].GetDurability() == player.equipSlot[sellectEquipSlotNum].GetMaxDurability())
                                     {
-                                        Console.WriteLine("내구도가 최대 상태입니다..");
+                                        UiManager.DurabilityMaxItemSellect();
                                     }
                                     else
                                     {
                                         // 수리 진행 함수로 이동
-                                        ShowItemInfoINSmithy(sellectInvenSlotNum, player, tableManager, smithySubMenu);
+                                        UiManager.InventoryDrawClear();
+                                        ShowItemInfoINSmithy( sellectInvenSlotNum, sellectEquipSlotNum, player, tableManager, smithySubMenu);
                                     }
                                 }
-                                else
+                                else if(sellectEquipSlotNum == -1)
                                 {// 미 장착 아이템 선택 한 경우,
                                     if (player.inventory[sellectInvenSlotNum] == null)
                                     {
-                                        Console.WriteLine("빈슬롯입니다.");
+                                         UiManager.EmptySlotSellectMessage();
                                     }
                                     else if (player.inventory[sellectInvenSlotNum].GetItemType() == ItemData.ItemType.Weapon ||
                                             player.inventory[sellectInvenSlotNum].GetItemType() == ItemData.ItemType.Armor)
                                     {
                                         if (player.inventory[sellectInvenSlotNum].GetDurability() == player.inventory[sellectInvenSlotNum].GetMaxDurability())
                                         {
-                                            Console.WriteLine("내구도가 최대 상태입니다..");
+                                            UiManager.DurabilityMaxItemSellect();
                                         }
                                         else
                                         {// 수리 진행 함수로 이동
-                                            ShowItemInfoINSmithy(sellectInvenSlotNum, player, tableManager, smithySubMenu);
-                                        }
+                                            UiManager.InventoryDrawClear();
+                                        ShowItemInfoINSmithy(sellectInvenSlotNum,sellectEquipSlotNum, player, tableManager, smithySubMenu);
+                                    }
                                     }
                                     else
                                     { //무기 , 방어구가 아닌 아이템 선택시
-                                        Console.WriteLine("수리할 수 없는 아이템 입니다.");
+                                        UiManager.DoNotRepairItemSellect();
                                     }
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("잘못된 접근입니다.");
+                                UiManager.ErrorWrongApproach();
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine("잘못된 접근입니다.");
-                        }
+                       }
+                       else
+                       {
+                           UiManager.ErrorWrongApproach();
+                       }
                     }
                 }
             }
         }
 
 
-
-
-
         // 이것도 수리랑 같이 쓸까?
-        public static void ShowItemInfoINSmithy(int sellectNum,  Player player, TableManager tableManager, int smithySubMenu)
+        public static void ShowItemInfoINSmithy(int sellectNum, int sellectEquipNum, Player player, TableManager tableManager, int smithySubMenu)
         {
-            Console.WriteLine("===========[ Item Info ]==============");
-
             if (smithySubMenu == 1)
             { //강화
-                if (sellectNum >= 100)
+                if (sellectNum == -1)
                 {//장착중인 장비 
-                    int equipIndex = sellectNum - 100;
-                    Console.WriteLine("||[{0}]   type:{1}  ||", player.equipSlot[equipIndex].GetItemName(), player.equipSlot[equipIndex].GetItemType());
-                    Console.WriteLine("|| property :{0}  ||", player.equipSlot[equipIndex].GetItemProperty());
-                    Console.WriteLine("|| desc : {0}  ||", player.equipSlot[equipIndex].GetDescription()); ;
-                    Console.WriteLine("==============================");
-                    Console.WriteLine("|| enhance level : {0}  ||", player.equipSlot[equipIndex].GetEnhanceLevel());
+                   
+                    UiManager.SmithyEquipItemInfoUIDraw(player, sellectEquipNum, smithySubMenu);
+                    SmithSellectItemProgressInput(sellectNum, sellectEquipNum, player, tableManager, smithySubMenu);
                 }
                 else
                 {// 미장착 장비
-                    Console.WriteLine("||[{0}]   type:{1}  ||", player.inventory[sellectNum].GetItemName(), player.inventory[sellectNum].GetItemType());
-                    Console.WriteLine("|| property :{0}  ||", player.inventory[sellectNum].GetItemProperty());
-                    Console.WriteLine("|| desc : {0}  ||", player.inventory[sellectNum].GetDescription()); ;
-                    Console.WriteLine("==============================");
-                    Console.WriteLine("|| enhance level : {0}  ||", player.inventory[sellectNum].GetEnhanceLevel());
+                    UiManager.SmithyInvenItemInfoUIDraw(player, sellectNum, smithySubMenu);
+                    SmithSellectItemProgressInput(sellectNum, sellectEquipNum, player, tableManager, smithySubMenu);
                 }
             }
             else if (smithySubMenu == 2)
             { //수리
-                if (sellectNum >= 100)
+                if (sellectNum == -1)
                 { //장착중인 장비 
-                    int equipIndex = sellectNum - 100;
-                    Console.WriteLine("||[{0}]   type:{1}  ||", player.equipSlot[equipIndex].GetItemName(), player.equipSlot[equipIndex].GetItemType());
-                    Console.WriteLine("|| property :{0}  ||", player.equipSlot[equipIndex].GetItemProperty());
-                    Console.WriteLine("|| desc : {0}  ||", player.equipSlot[equipIndex].GetDescription()); ;
-                    Console.WriteLine("|| durability : {0} / {1}  ||", player.equipSlot[equipIndex].GetDurability(), player.equipSlot[equipIndex].GetMaxDurability());
+                   
+                    UiManager.SmithyEquipItemInfoUIDraw(player, sellectEquipNum, smithySubMenu);
+                    SmithSellectItemProgressInput(sellectNum, sellectEquipNum, player, tableManager, smithySubMenu);
+                    // ~~~~~~~~~~~~?
+
                 }
                 else
                 { // 미장착 장비
-                    Console.WriteLine("||[{0}]   type:{1}  ||", player.inventory[sellectNum].GetItemName(), player.inventory[sellectNum].GetItemType());
-                    Console.WriteLine("|| property :{0}  ||", player.inventory[sellectNum].GetItemProperty());
-                    Console.WriteLine("|| desc : {0}  ||", player.inventory[sellectNum].GetDescription()); ;
-                    Console.WriteLine("|| durability : {0} / {1}  ||", player.inventory[sellectNum].GetDurability(), player.inventory[sellectNum].GetMaxDurability());
+                    UiManager.SmithyInvenItemInfoUIDraw(player, sellectNum, smithySubMenu);
+                    SmithSellectItemProgressInput(sellectNum, sellectEquipNum, player, tableManager, smithySubMenu);                                                   
                 }
             }
-                Console.WriteLine("==============================");
-                Console.WriteLine("|| [sellect : enter || close  : Esc ] ||");
-                Console.WriteLine("==============================");
 
-                while (true)
+            // 뜯자.
+            
+        }
+
+        public static void SmithSellectItemProgressInput(int sellectNum, int equipNum, Player player, TableManager tableManager, int smithySubMenu)
+        {
+            while (true)
+            {
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
+                if (inputKey.Key == ConsoleKey.Escape)
                 {
-                    ConsoleKeyInfo inputKey = Console.ReadKey();
-                    if (inputKey.Key == ConsoleKey.Escape)
+                    UiManager.SmithyEnhanceItemInfoClear();
+                    ShowInvenList(tableManager, player, smithySubMenu);
+                    break;
+                }
+                else if (inputKey.Key == ConsoleKey.Enter)
+                {   // 선택한 아이템 강화 대기 
+                    if (smithySubMenu == 1)
                     {
-                        ShowInvenList(tableManager, player, smithySubMenu);
+                        if (equipNum == -1)
+                        { // 미장착 아이템 선택
+                            if (player.inventory[sellectNum].GetEnhanceLevel() == 5) //~!!!!!!!!!!!
+                            {
+                                UiManager.MaxEnhanceLevelItemSellect();
+                                UiManager.SmithyEnhanceItemInfoClear();
+                                ShowInvenList(tableManager, player, smithySubMenu);
+                                break;
+                            }
+                            else
+                            {
+                                SellectItemEnhance(sellectNum, equipNum, player, tableManager);
+                            }
+                        }
+                        else if (sellectNum == -1)
+                        {// 장착 아이템 선택
+                            if (player.equipSlot[equipNum].GetEnhanceLevel() == 5) //~!!!!!!!!!!!
+                            {
+                                UiManager.MaxEnhanceLevelItemSellect();
+                                UiManager.SmithyEnhanceItemInfoClear();
+                                ShowInvenList(tableManager, player, smithySubMenu);
+                                break;
+                            }
+                            else
+                            {
+                                SellectItemEnhance(sellectNum, equipNum, player, tableManager);
+                            }
+                        }
                         break;
                     }
-                    else if (inputKey.Key == ConsoleKey.Enter)
-                    {   // 선택한 아이템 강화 대기 
-                        if (smithySubMenu == 1)
-                        {
-                            SellectItemEnhance(sellectNum, player, tableManager);
+                    // 수리 하러가기
+                    else if (smithySubMenu == 2)
+                    {
+                        if (equipNum == -1)
+                        {// 미장착 아이템 수리선택
+                            if (player.inventory[sellectNum].GetDurability() == player.inventory[sellectNum].GetMaxDurability())
+                            {
+                                // 내구도 풀이라 안됨
+                                UiManager.DurabilityMaxItemSellect();
+                                UiManager.SmithyRepairItemInfoClear();
+                                ShowInvenList(tableManager, player, smithySubMenu);
+                                break;
+                            }
+                            else
+                            {
+                                ShowRepairItem(sellectNum, equipNum, player, tableManager);
+                            }
                             break;
                         }
-                        // 수리 하러가기
-                        else if (smithySubMenu == 2)
-                        {
-                            ShowRepairItem(sellectNum, player, tableManager);
+                        else if (sellectNum == -1)
+                        {// 장착 아이템 수리선택
+                            if (player.equipSlot[equipNum].GetDurability() == player.equipSlot[equipNum].GetMaxDurability())
+                            {
+                                // 내구도 풀이라 안됨
+                                UiManager.DurabilityMaxItemSellect();
+                                UiManager.SmithyRepairItemInfoClear();
+                                ShowInvenList(tableManager, player, smithySubMenu);
+                                break;
+                            }
+                            else
+                            {
+                                ShowRepairItem(sellectNum, equipNum, player, tableManager);
+                            }
                             break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("잘못된 접근입니다.");
-                       
                         }
                     }
                     else
                     {
-                         UiManager.ErrorInputKey();
+                        UiManager.ErrorWrongApproach();
                     }
                 }
+                else
+                {
+                    UiManager.ErrorInputKey();
+                }
+            }
         }
 
-
-        public static void ShowRepairItem(int sellectNum, Player player, TableManager tableManager )
+        public static void ShowRepairItem(int sellectNum,int equipNum, Player player, TableManager tableManager )
         { // 수리 하기 진입
-            int index = 0;
             int preDurability = 0;
             int maxDurability = 0;
             int repairValue = 0;
@@ -392,44 +396,36 @@ namespace Kproject_Text_RPG
             ItemData.ItemType type  = ItemType.None;
             int repairRate = 50;
 
-            if (sellectNum >= 100)
+            if (sellectNum == -1)
             { //장착중인 장비
-                index = sellectNum - 100;
-                preDurability =  player.equipSlot[index].GetDurability();
-                maxDurability = player.equipSlot[index].GetMaxDurability();
-                itemName = player.equipSlot[index].GetItemName();
-                type = player.equipSlot[index].GetItemType();
+              
+                preDurability =  player.equipSlot[equipNum].GetDurability();
+                maxDurability = player.equipSlot[equipNum].GetMaxDurability();
+                itemName = player.equipSlot[equipNum].GetItemName();
+                type = player.equipSlot[equipNum].GetItemType();
             }
             else
             {// 미장착 장비
-                index = sellectNum;
-                preDurability = player.inventory[index].GetDurability();
-                maxDurability = player.inventory[index].GetMaxDurability();
-                itemName = player.inventory[index].GetItemName();
-                type = player.inventory[index].GetItemType();
+               
+                preDurability = player.inventory[sellectNum].GetDurability();
+                maxDurability = player.inventory[sellectNum].GetMaxDurability();
+                itemName = player.inventory[sellectNum].GetItemName();
+                type = player.inventory[sellectNum].GetItemType();
             }
 
             repairValue = maxDurability - preDurability;
             durabilityCost = repairValue * 10;
-
-            Console.WriteLine("===========[ Repair ]==============");
-            Console.WriteLine("||[{0}] | type:{1}  ||", itemName , type);
-            Console.WriteLine("==============================");
-            Console.WriteLine("||      Durability     ||");
-            Console.WriteLine("||     {0} --> {1}   ||", preDurability, maxDurability);
-            Console.WriteLine("==============================");
-            Console.WriteLine("||   Repair Rate : {0} %    || ", repairRate);
-            Console.WriteLine("||   Repair Cost : {0} Gold    || ", durabilityCost);
-            Console.WriteLine("|| [Repair : enter ]|| [close  : Esc ] ||");
-            Console.WriteLine("==============================");
-
+           
+            UiManager.SmithyRepairItemInfoDraw(itemName, type, preDurability, maxDurability, repairRate, durabilityCost);
    
             Random random = new Random();
             while (true)
             {
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
+                    // SmithyRepairItemInfoDraw 삭제
+                    UiManager.SmithyRepairItemInfoClear();
                     ShowInvenList(tableManager, player, 2);
                     break;
                 }
@@ -439,48 +435,60 @@ namespace Kproject_Text_RPG
                     { //진행
                         int randomRate = random.Next(1, 100 + 1);
                         player.SetGold(-durabilityCost);
-
+                        // 플레이어 정보 갱신
+                        Program.PlayerStatUI(player);
                         if (randomRate <= repairRate)
                         { //성공 처리 
-                            if (sellectNum >= 100)
+                            if (sellectNum == -1)
                             { //장착중인 장비
-                                Console.WriteLine("=========== 수리 성공!!!! ===========");
-                                index = sellectNum - 100;
-                                if (player.equipSlot[index].GetDurability() == 0)
+                                //수리 성공 메시지 출력
+                                UiManager.SuccessRepairItemMessage();
+
+                                //장착 장비의 경우, 내구도 0으로 작착효과 해제된거 다시 복구 해줘야함.
+                                if (player.equipSlot[equipNum].GetDurability() == 0)
                                 { // 내구도 0 이였다가 수리된 경우, 
                                     if (type == ItemType.Weapon)
                                     {
-                                        player.attackPower = player.attackPower + player.equipSlot[index].GetItemPropertyValue();
+                                        player.attackPower = player.attackPower + player.equipSlot[equipNum].GetItemPropertyValue();
                                     }
                                     else if (type == ItemType.Armor)
                                     {
-                                        player.defense = player.defense + player.equipSlot[index].GetItemPropertyValue();
+                                        player.defense = player.defense + player.equipSlot[equipNum].GetItemPropertyValue();
                                     }
                                 }
-                                    player.equipSlot[index].SetDurability(repairValue);
-                                
+                                player.equipSlot[equipNum].SetDurability(repairValue);
+
                             }
                             else
                             { //미 장착 장비
+                                //수리 성공 메시지 출력
+                                UiManager.SuccessRepairItemMessage();
+
                                 player.inventory[sellectNum].SetDurability(repairValue);
                             }
-                             // 수리 대상 선택 직전으로 돌아감.
-                            ShowItemInfoINSmithy(sellectNum, player, tableManager, 2);
+                            // 수리 대상 선택 직전으로 돌아감.
+                            // SmithyRepairItemInfoDraw 삭제
+                            UiManager.SmithyRepairItemInfoClear();
+                            ShowItemInfoINSmithy(sellectNum, equipNum, player, tableManager, 2);
                             break;
-                           
+
                         }
                         else
                         {
-                            Console.WriteLine("=========== 수리 실패!!!! ===========");
+                            //수리 실패 메시지 출력
+                            UiManager.FailRepairItemMessage();
+                           
                             // 강화 대상 선택 상태 유지.
-                            ShowRepairItem(sellectNum, player, tableManager);
+                            ShowRepairItem(sellectNum, equipNum,player, tableManager);
                             break;
                         }
                     }
                     else
                     { // 비용 부족.
-                        Console.WriteLine("수리 비용이 부족하여 수리를 진행할수없습니다.");
-                        ShowItemInfoINSmithy(sellectNum, player, tableManager, 2);
+                        UiManager.CanNotRepaitInsufficientCost();
+                        // SmithyRepairItemInfoDraw 삭제
+                        UiManager.SmithyRepairItemInfoClear();
+                        ShowItemInfoINSmithy(sellectNum, equipNum, player, tableManager, 2);
                         break;
                     }
                 }
@@ -492,34 +500,32 @@ namespace Kproject_Text_RPG
         }
 
 
-        public static void SellectItemEnhance(int sellectNum, Player player, TableManager tableManager)
+        public static void SellectItemEnhance(int sellectNum, int equipNum, Player player, TableManager tableManager)
         {
             int prevEnhanceLevel= 0; 
             int nextEnhanceLevel =0; 
             ItemData.ItemType type = ItemType.None;
-            int index = 0;
             string itemName = string.Empty;
             int enhanceID = 0;
             int prevPropertyValue = 0;
 
-            if (sellectNum >= 100)
+            if (sellectNum == -1)
             { //장착중인 장비
-                index = sellectNum - 100;
-               
-                itemName = player.equipSlot[index].GetItemName();
-                type = player.equipSlot[index].GetItemType();
-                prevEnhanceLevel = player.equipSlot[index].GetEnhanceLevel();
+             
+                itemName = player.equipSlot[equipNum].GetItemName();
+                type = player.equipSlot[equipNum].GetItemType();
+                prevEnhanceLevel = player.equipSlot[equipNum].GetEnhanceLevel();
                 nextEnhanceLevel = prevEnhanceLevel + 1;
-                prevPropertyValue = player.equipSlot[index].GetItemPropertyValue();
+                prevPropertyValue = player.equipSlot[equipNum].GetItemPropertyValue();
             }
             else
             {// 미장착 장비
-                index = sellectNum;
-                itemName = player.inventory[index].GetItemName();
-                type = player.inventory[index].GetItemType();
-                prevEnhanceLevel = player.inventory[index].GetEnhanceLevel();
+               
+                itemName = player.inventory[sellectNum].GetItemName();
+                type = player.inventory[sellectNum].GetItemType();
+                prevEnhanceLevel = player.inventory[sellectNum].GetEnhanceLevel();
                 nextEnhanceLevel = prevEnhanceLevel + 1;
-                prevPropertyValue = player.inventory[index].GetItemPropertyValue();
+                prevPropertyValue = player.inventory[sellectNum].GetItemPropertyValue();
             }
 
 
@@ -535,26 +541,17 @@ namespace Kproject_Text_RPG
             int cost = tableManager.GetEnhanceCost(enhanceID, nextEnhanceLevel);
             int nextPropertyValue = tableManager.GetEnhanceValue(enhanceID, nextEnhanceLevel);
 
-            Console.WriteLine("===========[ Enhance ]==============");
-            Console.WriteLine("||[{0}] | type:{1}  ||", itemName, type);
-            Console.WriteLine("==============================");
-            Console.WriteLine("||      enhance level       ||");
-            Console.WriteLine("||    +{0}    -->     +{1}   ||", prevEnhanceLevel, nextEnhanceLevel) ;
-            Console.WriteLine("|| ------- property -------- ||");
-            Console.WriteLine("||     {0}   -->      {1}  ||", prevPropertyValue, prevPropertyValue+ nextPropertyValue);
-            Console.WriteLine("|| ----- success rate ----   ||");
-            Console.WriteLine("||            {0} %          ||",successRate);
-            Console.WriteLine("==============================");
-            Console.WriteLine("||   Enhance Cost {0} Gold    || ", cost);
-            Console.WriteLine("== [Enhance : enter ]|| [close  : Esc ] ==");
-            Console.WriteLine("==============================");
+            // 강화 진행 팝업 출력
+            UiManager.SmithyEnhancetemInfoDraw(itemName, type, prevEnhanceLevel, nextEnhanceLevel, prevPropertyValue, nextPropertyValue, successRate, cost);
+       
 
             Random random = new Random();
             while (true)
             {
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 if (inputKey.Key == ConsoleKey.Escape)
                 {
+                    UiManager.SmithyEnhanceItemInfoClear();
                     ShowInvenList(tableManager, player, 1);
                     break; 
                 }
@@ -564,35 +561,64 @@ namespace Kproject_Text_RPG
                     { //진행
                         int randomRate = random.Next(1,100+1);
                         player.SetGold(-cost);
+                        // 플레이어 정보 갱신
+                        Program.PlayerStatUI(player);
 
                         if (randomRate <= successRate)
                         { //성공 처리 
-                            Console.WriteLine("=========== 강화 성공!!!! ===========");
-                            player.inventory[sellectNum].SetEnhanceLevelUp(nextPropertyValue);
+                          //강화 성공 메시지 출력
+                            UiManager.SuccessEnhanceItemMessage();
+                            if (sellectNum == -1)
+                            {//장착 장비
+                                player.equipSlot[equipNum].SetEnhanceLevelUp(nextPropertyValue);
 
-                            if (player.inventory[sellectNum].GetEnhanceLevel() != 5)
-                            { // 강화 대상 선택 상태 유지.
-                                SellectItemEnhance(sellectNum, player, tableManager);
-                                break;
+                                if (player.equipSlot[equipNum].GetEnhanceLevel() != 5)
+                                { // 강화 대상 선택 상태 유지.
+                                    SellectItemEnhance(sellectNum, equipNum, player, tableManager);
+                                    break;
+                                }
+                                else
+                                { // 강화 대상 선택 직전으로 돌아감.
+                                  // 강화 진행 팝업 삭제
+                                    UiManager.SmithyEnhanceItemInfoClear();
+                                    ShowItemInfoINSmithy(sellectNum, equipNum, player, tableManager, 1);
+                                    break;
+                                }
                             }
                             else
-                            { // 강화 대상 선택 직전으로 돌아감.
-                                ShowItemInfoINSmithy(sellectNum, player, tableManager, 1);
-                                break;
+                            { // 미 장착 장비
+                                player.inventory[sellectNum].SetEnhanceLevelUp(nextPropertyValue);
+
+                                if (player.inventory[sellectNum].GetEnhanceLevel() != 5)
+                                { // 강화 대상 선택 상태 유지.
+                                    SellectItemEnhance(sellectNum, equipNum, player, tableManager);
+                                    break;
+                                }
+                                else
+                                { // 강화 대상 선택 직전으로 돌아감.
+                                  // 강화 진행 팝업 삭제
+                                    UiManager.SmithyEnhanceItemInfoClear();
+                                    ShowItemInfoINSmithy(sellectNum, equipNum, player, tableManager, 1);
+                                    break;
+                                }
                             }
                         }
                         else
                         {
-                            Console.WriteLine("=========== 강화 실패!!!! ===========");
+                            //강화 실패 메시지 출력
+                            UiManager.FailEnhanceItemMessage();
                             // 강화 대상 선택 상태 유지.
-                            SellectItemEnhance(sellectNum, player, tableManager);
+
+                            SellectItemEnhance(sellectNum, equipNum, player, tableManager);
                             break;
                         }
                     }
                     else
-                    { // 비용 부족.
-                        Console.WriteLine("강화 비용이 부족하여 강화를 진행할수없습니다.");
-                        ShowItemInfoINSmithy(sellectNum, player, tableManager,1);
+                    { // 비용 부족출력
+                        UiManager.CanNotEnhanceInsufficientCost();
+                        // 강화 진행 팝업 삭제
+                        UiManager.SmithyEnhanceItemInfoClear();
+                        ShowItemInfoINSmithy(sellectNum, equipNum, player, tableManager,1);
                         break;
                     }
                 }

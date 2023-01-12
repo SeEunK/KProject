@@ -143,7 +143,7 @@ namespace Kproject_Text_RPG
             {
                 if(_enhanceTable[i].id == enhanceID)
                 {
-                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceCost;
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel - 1].enhanceCost;
                 }
             }
             return 0;
@@ -154,7 +154,7 @@ namespace Kproject_Text_RPG
             {
                 if (_enhanceTable[i].id == enhanceID)
                 {
-                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceValue;
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel - 1].enhanceValue;
                 }
             }
             return 0;
@@ -165,12 +165,16 @@ namespace Kproject_Text_RPG
             {
                 if (_enhanceTable[i].id == enhanceID)
                 {
-                    return _enhanceTable[i].enhanceLevelList[enhanceLevel + 1].enhanceSuccessRate;
+                    return _enhanceTable[i].enhanceLevelList[enhanceLevel - 1].enhanceSuccessRate;
                 }
             }
             return 0;
         }
 
+        public int GetEnchanceMaxLevel()
+        {
+            return _enhanceLevelTable.Count;
+        }
         public string GetStageName(int index)
         {
             return _stageTable[index].stageName;
@@ -223,6 +227,7 @@ namespace Kproject_Text_RPG
             return stageTable;
         }
 
+    
 
         public List<EnhanceData> EnhanceDataSet()
         {

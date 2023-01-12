@@ -119,7 +119,7 @@ namespace Kproject_Text_RPG
                     UiManager.EnterAnyKeyMessage();
                 
                     // 결과창 닫기 여부 대기
-                    Console.ReadKey();
+                    Console.ReadKey(true);
 
                     // 메시지 삭제
                     UiManager.EnterAnyKeyMessageClear();
@@ -149,7 +149,7 @@ namespace Kproject_Text_RPG
 
                 UiManager.EnterAnyKeyMessage();
                 // 결과창 닫기 여부 대기
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 // 결과장 닫기 여부 메시지 삭제
                 UiManager.EnterAnyKeyMessageClear();
@@ -165,7 +165,7 @@ namespace Kproject_Text_RPG
                     while (true)
                     {
                         // 다음 스테이지 갈지 인풋 받기
-                        ConsoleKeyInfo inputKey = Console.ReadKey();
+                        ConsoleKeyInfo inputKey = Console.ReadKey(true);
                         switch (inputKey.Key)
                         {
                             // 다음 스테이지 간다를 선택한 경우
@@ -179,7 +179,7 @@ namespace Kproject_Text_RPG
                                     while (true)
                                     {
                                         // 계속 진행 여부 인풋 받기
-                                        ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                        ConsoleKeyInfo inputKey_1 = Console.ReadKey(true);
 
                                         // 가방 full 안내 메시지 삭제
                                         UiManager.ErrorInventoryFullMessageClear();
@@ -228,7 +228,7 @@ namespace Kproject_Text_RPG
                     while (true)
                     {
                         // 인풋 받기
-                        ConsoleKeyInfo inputKey = Console.ReadKey();
+                        ConsoleKeyInfo inputKey = Console.ReadKey(true);
                         switch (inputKey.Key)
                         {
                             // 나가기 (" Go to Lobby ")
@@ -290,7 +290,7 @@ namespace Kproject_Text_RPG
             while (true)
             {
                 //스테이지 선택 받기
-                ConsoleKeyInfo inputKey = Console.ReadKey();
+                ConsoleKeyInfo inputKey = Console.ReadKey(true);
                 
                 switch (inputKey.Key)
                 {
@@ -310,7 +310,7 @@ namespace Kproject_Text_RPG
                             while (true)
                             {   
                                 // 계속 진행 여부 인풋 받기
-                                ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                ConsoleKeyInfo inputKey_1 = Console.ReadKey(true);
 
                                 // 가방 full 안내 메시지 삭제
                                 UiManager.ErrorInventoryFullMessageClear();
@@ -345,7 +345,7 @@ namespace Kproject_Text_RPG
                          
                             while (true)
                             {   // 계속 진행 여부 인풋 받기
-                                ConsoleKeyInfo inputKey_1 = Console.ReadKey();
+                                ConsoleKeyInfo inputKey_1 = Console.ReadKey(true);
 
                                 //가방 full 안내 메시지 삭제
                                 UiManager.ErrorInventoryFullMessageClear();
