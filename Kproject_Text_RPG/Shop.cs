@@ -86,7 +86,7 @@ namespace Kproject_Text_RPG
                         {
                             case ConsoleKey.F1:
                                 sellectInvenSlotNum = 0;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -98,7 +98,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F2:
                                 sellectInvenSlotNum = 1;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -109,7 +109,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F3:
                                 sellectInvenSlotNum = 2;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -120,7 +120,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F4:
                                 sellectInvenSlotNum = 3;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -131,7 +131,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F5:
                                 sellectInvenSlotNum = 4;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -142,7 +142,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F6:
                                 sellectInvenSlotNum = 5;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -153,7 +153,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F7:
                                 sellectInvenSlotNum = 6;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -164,7 +164,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F8:
                                 sellectInvenSlotNum = 7;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -175,7 +175,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F9:
                                 sellectInvenSlotNum = 8;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }
@@ -186,7 +186,7 @@ namespace Kproject_Text_RPG
                                 return;
                             case ConsoleKey.F10:
                                 sellectInvenSlotNum = 9;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                      UiManager.EmptySlotSellectMessage();
                                 }

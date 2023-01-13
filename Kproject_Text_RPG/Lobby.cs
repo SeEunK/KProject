@@ -254,7 +254,7 @@ namespace Kproject_Text_RPG
                                 // 미장착 인벤 아이템 선택
                             case ConsoleKey.F1:
                                 sellectInvenSlotNum = 0;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -265,7 +265,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F2:
                                 sellectInvenSlotNum = 1;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -276,7 +276,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F3:
                                 sellectInvenSlotNum = 2;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -287,7 +287,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F4:
                                 sellectInvenSlotNum = 3;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -298,7 +298,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F5:
                                 sellectInvenSlotNum = 4;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty(); ;
                                 }
@@ -309,7 +309,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F6:
                                 sellectInvenSlotNum = 5;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -320,7 +320,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F7:
                                 sellectInvenSlotNum = 6;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -331,7 +331,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F8:
                                 sellectInvenSlotNum = 7;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -342,7 +342,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F9:
                                 sellectInvenSlotNum = 8;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -353,7 +353,7 @@ namespace Kproject_Text_RPG
                                 break;
                             case ConsoleKey.F10:
                                 sellectInvenSlotNum = 9;
-                                if (player.inventory[sellectInvenSlotNum] == null)
+                                if (player.inventory.Count == sellectInvenSlotNum)
                                 {
                                     UiManager.ErrorInvenSellectEmpty();
                                 }
@@ -512,38 +512,15 @@ namespace Kproject_Text_RPG
 
         public static void ItemInfoUIClear()
         {
-            Console.SetCursorPosition(2, 10);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
+            for (int i = 0; i < 8; i++)
+            {
+                Console.SetCursorPosition(2, 10 + i);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine("                                                                                                                   ");
+            }
             Console.ResetColor();
-            Console.SetCursorPosition(2, 11);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 12);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 13);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 14);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 15);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 16);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
-            Console.SetCursorPosition(2, 17);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                                                                                                                   ");
-            Console.ResetColor();
+
+           
         }
 
     }

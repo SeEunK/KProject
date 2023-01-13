@@ -488,6 +488,177 @@ namespace Kproject_Text_RPG
             Console.Write("■■■■■■■■■■■■■");
            
         }
+
+        public static void WolfDote()
+        {
+            //Slime Test 도트..?
+            Console.SetCursorPosition(48, 9);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■■■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□□□□");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■■■■");
+
+            Console.SetCursorPosition(48, 10);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■■");
+
+
+            Console.SetCursorPosition(48, 11);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■■■■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+
+
+            Console.SetCursorPosition(48, 12);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+
+
+            Console.SetCursorPosition(48, 13);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□");
+
+
+            Console.SetCursorPosition(48, 14);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+
+            Console.SetCursorPosition(48, 15);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■■■■■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+
+            Console.SetCursorPosition(48, 16);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■■■■■■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+
+
+            Console.SetCursorPosition(48, 17);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("■■■■■■");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("■■");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□");
+
+
+            Console.SetCursorPosition(48, 18);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("□□□□□□□□□□□");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■");
+
+
+            Console.SetCursorPosition(48, 19);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("■■■■■■■■■■■■■");
+
+        }
+
         public static void BackGround(int value)
         {
             switch (value)

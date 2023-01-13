@@ -171,7 +171,7 @@ namespace Kproject_Text_RPG
                                 }
                                 else if (sellectEquipSlotNum == -1)
                                 { // 미 장착 아이템 선택
-                                    if (player.inventory[sellectInvenSlotNum] == null)
+                                    if (player.inventory.Count == sellectInvenSlotNum)
                                     {
                                          UiManager.EmptySlotSellectMessage();
                                     }
@@ -217,7 +217,7 @@ namespace Kproject_Text_RPG
                                 }
                                 else if(sellectEquipSlotNum == -1)
                                 {// 미 장착 아이템 선택 한 경우,
-                                    if (player.inventory[sellectInvenSlotNum] == null)
+                                    if (player.inventory.Count == sellectInvenSlotNum)
                                     {
                                          UiManager.EmptySlotSellectMessage();
                                     }
